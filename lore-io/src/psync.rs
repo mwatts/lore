@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Epic Games, Inc.
+// SPDX-FileCopyrightText: 2026 Mark Watts
 // SPDX-License-Identifier: MIT
 use std::fs::File;
 use std::path::PathBuf;
@@ -570,11 +571,78 @@ fn holds_name_exactly_impl(path: &std::path::Path) -> Option<bool> {
     )
 }
 
-// macOS holds one spelling and answers lookups in any other, as Windows does,
-// but without a call that is cheaper than reading the directory the caller
-// would otherwise read. There is nothing to answer with that is not that read,
-// so it does not answer.
-#[cfg(not(any(target_os = "linux", target_family = "windows")))]
+// macOS resolves a path in any case, so `metadata` cannot tell the spelling
+// apart from another. `getattrlist` reports the name the filesystem holds,
+// which is one lookup rather than a read of every neighbour.
+#[cfg(target_os = "macos")]
+fn holds_name_exactly_impl(path: &std::path::Path) -> Option<bool> {
+    use std::ffi::CString;
+    use std::os::unix::ffi::OsStrExt;
+
+    let Some(name) = path.file_name() else {
+        return Some(false);
+    };
+    let Ok(c_path) = CString::new(path.as_os_str().as_bytes()) else {
+        return Some(false);
+    };
+
+    let mut attrs = libc::attrlist {
+        bitmapcount: libc::ATTR_BIT_MAP_COUNT,
+        reserved: 0,
+        commonattr: libc::ATTR_CMN_NAME,
+        volattr: 0,
+        dirattr: 0,
+        fileattr: 0,
+        forkattr: 0,
+    };
+    // Leading length, the name reference, then the name bytes.
+    let mut buf = [0u8; 4 + std::mem::size_of::<libc::attrreference_t>() + 1024];
+    // SAFETY: `c_path` is a nul-terminated path, `attrs` is the attribute
+    // request, and `buf` is writable for the size passed in. The call writes
+    // that buffer and nothing else.
+    let rc = unsafe {
+        libc::getattrlist(
+            c_path.as_ptr(),
+            (&raw mut attrs).cast(),
+            buf.as_mut_ptr().cast(),
+            buf.len(),
+            0,
+        )
+    };
+    if rc != 0 {
+        let err = std::io::Error::last_os_error();
+        return match err.raw_os_error() {
+            Some(code)
+                if code == libc::ENOENT || code == libc::ENOTDIR || code == libc::ENAMETOOLONG =>
+            {
+                Some(false)
+            }
+            _ => None,
+        };
+    }
+
+    let name_at = std::mem::size_of::<u32>();
+    // SAFETY: a successful call wrote the leading length and the name
+    // reference at `name_at`. The read stays inside `buf`.
+    let name_ref = unsafe {
+        buf.as_ptr()
+            .add(name_at)
+            .cast::<libc::attrreference_t>()
+            .read_unaligned()
+    };
+    let start = name_at.checked_add(usize::try_from(name_ref.attr_dataoffset).ok()?)?;
+    let len = usize::try_from(name_ref.attr_length).ok()?;
+    let end = start.checked_add(len)?;
+    if end > buf.len() || len == 0 {
+        return None;
+    }
+    let found = buf[start..end]
+        .strip_suffix(&[0])
+        .unwrap_or(&buf[start..end]);
+    Some(found == name.as_bytes())
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_family = "windows")))]
 fn holds_name_exactly_impl(_path: &std::path::Path) -> Option<bool> {
     None
 }
