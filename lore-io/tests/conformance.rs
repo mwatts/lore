@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Epic Games, Inc.
+// SPDX-FileCopyrightText: 2026 Mark Watts
 // SPDX-License-Identifier: MIT
 //! Backend conformance suite. Every backend must pass these tests with
 //! identical observable semantics; new backends join the [`drivers`] list.
@@ -395,11 +396,14 @@ async fn read_dir_yields_every_child_with_metadata() {
     }
 }
 
-/// A verdict where the platform has a lookup to reach one with, and `None` where it has none:
-/// macOS cannot say anything about a spelling short of the directory read the caller would
-/// otherwise do, so every expectation below collapses to "cannot say" there.
+/// A verdict where the platform has a lookup to reach one with, and `None` where it has none.
 fn verdict(held: bool) -> Option<bool> {
-    cfg!(any(target_os = "linux", target_family = "windows")).then_some(held)
+    cfg!(any(
+        target_os = "linux",
+        target_os = "macos",
+        target_family = "windows"
+    ))
+    .then_some(held)
 }
 
 /// The verdict is about the spelling, not about the file: a name the filesystem holds answers
@@ -419,6 +423,11 @@ async fn holds_name_exactly_answers_for_a_name_the_filesystem_holds() {
         assert_eq!(
             driver.holds_name_exactly(dir.child("Rock.mesh")).await,
             verdict(true)
+        );
+        assert_eq!(
+            driver.holds_name_exactly(dir.child("rock.mesh")).await,
+            verdict(false),
+            "a different spelling is not the name on disk"
         );
         assert_eq!(
             driver.holds_name_exactly(dir.child("Meshes")).await,
