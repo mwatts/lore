@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Epic Games, Inc.
+// SPDX-FileCopyrightText: 2026 Mark Watts
 // SPDX-License-Identifier: MIT
 // Fixtures build filesystem state directly; what these test is how the primitives read it.
 #![allow(clippy::disallowed_methods)]
@@ -72,11 +73,14 @@ fn second_filesystem_directory(beside: &Path) -> Option<PathBuf> {
 }
 
 /// What the lookup answers where the platform has one, and `None` where it
-/// has not — macOS can say nothing about a case variation short of the
-/// directory read this exists to avoid, so every expectation collapses to that
-/// there.
+/// has not.
 fn verdict(held: bool) -> Option<bool> {
-    cfg!(any(target_os = "linux", target_family = "windows")).then_some(held)
+    cfg!(any(
+        target_os = "linux",
+        target_os = "macos",
+        target_family = "windows"
+    ))
+    .then_some(held)
 }
 
 #[tokio::test]
