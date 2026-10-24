@@ -91,6 +91,8 @@ pub fn insecure_decode_token(
     let header = jsonwebtoken::decode_header(token)?;
     let key = jsonwebtoken::DecodingKey::from_secret(&[]);
     let mut validation = jsonwebtoken::Validation::new(header.alg);
+    // Kept over `dangerous::insecure_decode`, which would stop requiring `exp`.
+    #[allow(deprecated)]
     validation.insecure_disable_signature_validation();
     validation.validate_aud = false;
     validation.validate_exp = false;
