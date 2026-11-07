@@ -170,6 +170,47 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn a_large_batch_adds_and_edits_in_one_directory() {
+        let repository = Repository::create("contents-large-batch").await;
+        let bytes = |n: usize, round: usize| format!("file {n} round {round}").into_bytes();
+        let first: Vec<(String, Vec<u8>)> = (0..40)
+            .map(|n| (format!("meta/notes/{n}"), bytes(n, 0)))
+            .collect();
+        let writes: Vec<(&str, &[u8])> = first
+            .iter()
+            .map(|(path, bytes)| (path.as_str(), bytes.as_slice()))
+            .collect();
+        let (status, revision) = repository.commit(&writes, &[]).await;
+        assert_eq!(status, 0);
+        let revision = revision.unwrap();
+        // Half rewritten, half unchanged, and new names beside them.
+        let second: Vec<(String, Vec<u8>)> = (0..60)
+            .map(|n| (format!("meta/notes/{n}"), bytes(n, usize::from(n % 2 == 0))))
+            .collect();
+        let writes: Vec<(&str, &[u8])> = second
+            .iter()
+            .map(|(path, bytes)| (path.as_str(), bytes.as_slice()))
+            .collect();
+        let (status, next) = repository.commit(&writes, &[]).await;
+        assert_eq!(status, 0);
+        let next = next.unwrap();
+        for (path, bytes) in &second {
+            assert_eq!(
+                repository.read(&next, path).await.as_deref(),
+                Some(bytes.as_slice()),
+                "{path}"
+            );
+        }
+        for (path, bytes) in &first {
+            assert_eq!(
+                repository.read(&revision, path).await.as_deref(),
+                Some(bytes.as_slice()),
+                "{path}"
+            );
+        }
+    }
+
+    #[tokio::test]
     async fn unchanged_contents_commit_nothing() {
         let repository = Repository::create("contents-unchanged").await;
         let (_, first) = repository.commit(&[("meta/a", b"same")], &[]).await;
