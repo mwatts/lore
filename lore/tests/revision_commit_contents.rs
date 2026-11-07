@@ -23,12 +23,28 @@ mod tests {
     use super::test_util::TempDir;
 
     struct Repository {
-        _dir: TempDir,
+        _dir: Option<TempDir>,
         out: TempDir,
         globals: LoreGlobalArgs,
     }
 
     impl Repository {
+        /// The repository another process created at `path`.
+        fn at(path: &Path) -> Self {
+            Self {
+                _dir: None,
+                out: TempDir::new("lore-commit-contents-out-"),
+                globals: LoreGlobalArgs {
+                    repository_path: path.into(),
+                    offline: 1,
+                    local: 1,
+                    identity: "test-user".into(),
+                    sync_data: 1,
+                    ..Default::default()
+                },
+            }
+        }
+
         async fn create(name: &str) -> Self {
             let dir = TempDir::new("lore-commit-contents-");
             let globals = LoreGlobalArgs {
@@ -53,7 +69,7 @@ mod tests {
                 "Failed to create repository"
             );
             Self {
-                _dir: dir,
+                _dir: Some(dir),
                 out: TempDir::new("lore-commit-contents-out-"),
                 globals,
             }
@@ -285,5 +301,174 @@ mod tests {
         assert_ne!(status, 0);
         assert_eq!(revision, None);
         assert_eq!(repository.current().await, first);
+    }
+
+    const FOLD_CHILD: &str = "LORE_COMMIT_CONTENTS_FOLD_CHILD";
+    const FOLD_REVISIONS: u64 = 40;
+
+    /// Revision `n`'s large file: 1 MiB that does not compress, so the revisions
+    /// pass the immutable store journal's 16 MiB fold size.
+    fn fold_payload(n: u64) -> Vec<u8> {
+        let mut state = n.wrapping_mul(0x9e37_79b9_7f4a_7c15) | 1;
+        (0..1024 * 1024 / 8)
+            .flat_map(|_| {
+                state ^= state << 13;
+                state ^= state >> 7;
+                state ^= state << 17;
+                state.to_le_bytes()
+            })
+            .collect()
+    }
+
+    fn fold_note(n: u64) -> Vec<u8> {
+        format!("note {n}").into_bytes()
+    }
+
+    /// Bytes under `dir` in files whose path passes `keep`.
+    fn bytes_under(dir: &Path, keep: &dyn Fn(&Path) -> bool) -> u64 {
+        let mut total = 0;
+        for entry in std::fs::read_dir(dir).into_iter().flatten().flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                total += bytes_under(&path, keep);
+            } else if keep(&path) {
+                total += entry.metadata().map(|m| m.len()).unwrap_or(0);
+            }
+        }
+        total
+    }
+
+    /// The writer: commit `FOLD_REVISIONS` revisions, wait until they are durable,
+    /// log their ids, and end the process without closing anything, as a crash would.
+    async fn fold_child(path: &Path) {
+        let mut repository = Repository::at(path);
+        let args = LoreRepositoryCreateArgs {
+            repository_url: "lore://localhost/contents-folds".into(),
+            id: LoreString::default(),
+            description: LoreString::default(),
+            use_shared_store: LoreSharedStoreMode::Disabled,
+            shared_store_path: LoreString::default(),
+            vfs: Default::default(),
+        };
+        assert_eq!(
+            lore::repository::create(repository.globals.clone(), args, None).await,
+            0,
+            "the writer creates the repository"
+        );
+        // Keep the stores open from one call to the next, as a Cairn session does, so
+        // the journal grows to its fold size instead of being folded by each open.
+        repository.globals.store_keep_alive = 1;
+        repository.globals.store_keep_alive_seconds = 2;
+        let mut log = String::new();
+        for n in 0..FOLD_REVISIONS {
+            let large = fold_payload(n);
+            let note = fold_note(n);
+            let (status, revision) = repository
+                .commit(
+                    &[
+                        (&format!("bytes/{n}"), &large),
+                        (&format!("meta/notes/{n}"), &note),
+                        ("meta/latest", &note),
+                    ],
+                    &[],
+                )
+                .await;
+            assert_eq!(status, 0, "revision {n} commits");
+            log.push_str(&revision.expect("a revision is reported"));
+            log.push('\n');
+        }
+        // Wait for every call's flush, as Cairn does after a commit, so every revision
+        // is durable before it is logged.
+        assert_eq!(
+            lore::repository::flush(
+                repository.globals.clone(),
+                lore::repository::LoreRepositoryFlushArgs {},
+                None
+            )
+            .await,
+            0,
+            "the revisions flush"
+        );
+        std::fs::write(path.join("revisions.log"), log).expect("the log writes");
+        std::process::exit(0);
+    }
+
+    /// Revisions committed across journal folds, by a process that ended
+    /// without closing its stores, all read back whole in a new process: every
+    /// file at every revision, with the bytes that revision gave it.
+    #[tokio::test]
+    async fn revisions_past_several_folds_reopen_whole() {
+        if let Some(path) = std::env::var_os(FOLD_CHILD) {
+            fold_child(Path::new(&path)).await;
+            return;
+        }
+        // Only the writer opens the repository before the reopen below.
+        let dir = TempDir::new("lore-commit-contents-folds-");
+        let repository = Repository::at(dir.path());
+        let status = std::process::Command::new(std::env::current_exe().expect("test binary"))
+            .args([
+                "--exact",
+                "tests::revisions_past_several_folds_reopen_whole",
+                "--test-threads=1",
+                "--nocapture",
+            ])
+            .env(FOLD_CHILD, repository.path())
+            .stdout(std::process::Stdio::null())
+            .status()
+            .expect("the writer runs");
+        assert!(status.success(), "the writer committed every revision");
+        let revisions: Vec<String> =
+            std::fs::read_to_string(repository.path().join("revisions.log"))
+                .expect("the writer logged its revisions")
+                .lines()
+                .map(str::to_owned)
+                .collect();
+        assert_eq!(revisions.len() as u64, FOLD_REVISIONS);
+
+        // The premise: most payloads reached their packfiles before the reopen, through
+        // a fold, and the journal still holds the revisions after it, for the reopen to
+        // replay.
+        let store = repository.path().join(".lore").join("immutable");
+        let packed = bytes_under(&store, &|path| {
+            path.components().any(|part| part.as_os_str() == "pack")
+        });
+        let journal = std::fs::metadata(store.join("journal"))
+            .map(|m| m.len())
+            .unwrap_or(0);
+        assert!(
+            packed >= 32 * 1024 * 1024,
+            "the writer folded: {packed} B in packfiles, {journal} B in the journal"
+        );
+        assert!(
+            journal > 0,
+            "the writer left journaled revisions for the reopen to replay"
+        );
+
+        for (n, revision) in (0..FOLD_REVISIONS).zip(&revisions) {
+            assert_eq!(
+                repository.read(revision, &format!("bytes/{n}")).await,
+                Some(fold_payload(n)),
+                "revision {n}'s large file"
+            );
+            assert_eq!(
+                repository.read(revision, "meta/latest").await,
+                Some(fold_note(n)),
+                "revision {n}'s edited file"
+            );
+            for earlier in [0, n / 2, n] {
+                assert_eq!(
+                    repository
+                        .read(revision, &format!("meta/notes/{earlier}"))
+                        .await,
+                    Some(fold_note(earlier)),
+                    "revision {n} holds note {earlier}"
+                );
+            }
+        }
+        assert_eq!(
+            repository.current().await,
+            *revisions.last().expect("a revision"),
+            "the tip is the last revision the writer committed"
+        );
     }
 }
