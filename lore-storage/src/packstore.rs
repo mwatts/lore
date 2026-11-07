@@ -30,10 +30,14 @@ struct PackFile {
     file: Option<IoFile>,
     buffer: Vec<u8>,
     dirty: AtomicBool,
-    /// Payloads stored but not yet written to `file`, in offset order, ending at
-    /// `size`. Only a deferred store keeps any: its payloads are made durable by
-    /// the store's journal, and reach the file in a fold
-    /// ([`PackStore::write_tails`]).
+    /// Payloads stored but not yet written to `file`, in offset order, never
+    /// overlapping, the last ending at `size`. Only a deferred store keeps any: its
+    /// payloads are made durable by the store's journal, and reach the file in a fold
+    /// ([`PackStore::write_tails`]). A payload a store stores lands at `size`, after
+    /// the file's written bytes; one replayed from the journal when the store opens
+    /// ([`PackStore::replay_tail`]) can lie over bytes the file holds already, which a
+    /// fold cut short may have written only in part, so the tail wins wherever it has
+    /// bytes.
     tail: Vec<TailItem>,
 }
 
@@ -45,45 +49,49 @@ struct TailItem {
 }
 
 impl PackFile {
-    /// The bytes `[offset, offset + size)` when any of them are in the tail, which
-    /// starts where the file's written bytes end: the part before the tail is read
-    /// from the file. `None` when the range ends before the tail.
+    /// The bytes `[offset, offset + size)` when any of them are in the tail: the tail
+    /// supplies the bytes it holds, and the file the rest. `None` when no tail item
+    /// overlaps the range.
     async fn read_with_tail(
         &self,
         offset: usize,
         size: usize,
     ) -> Option<Result<Bytes, PackfileError>> {
-        let start = self.tail.first()?.offset;
         let end = offset.checked_add(size)?;
-        if end <= start {
+        let first = self
+            .tail
+            .partition_point(|item| item.offset + item.bytes.len() <= offset);
+        let item = self.tail.get(first)?;
+        if item.offset >= end {
             return None;
         }
-        if offset >= start
-            && let Ok(index) = self.tail.binary_search_by_key(&offset, |item| item.offset)
-            && size <= self.tail[index].bytes.len()
-        {
-            return Some(Ok(self.tail[index].bytes.slice(..size)));
+        if item.offset <= offset && end <= item.offset + item.bytes.len() {
+            return Some(Ok(item
+                .bytes
+                .slice(offset - item.offset..end - item.offset)));
         }
         let mut out = BytesMut::with_capacity(size);
-        if offset < start {
-            let Some(file) = self.file.as_ref() else {
-                return Some(Err(PackfileError::internal(
-                    "Failed reading from packstore, boundary violation",
-                )));
-            };
-            match packfile_read(file, offset, start - offset).await {
+        let mut at = offset;
+        for item in &self.tail[first..] {
+            if item.offset >= end {
+                break;
+            }
+            if item.offset > at {
+                match self.read_file(at, item.offset - at).await {
+                    Ok(bytes) => out.extend_from_slice(&bytes),
+                    Err(err) => return Some(Err(err)),
+                }
+                at = item.offset;
+            }
+            let to = end.min(item.offset + item.bytes.len());
+            out.extend_from_slice(&item.bytes[at - item.offset..to - item.offset]);
+            at = to;
+        }
+        if at < end {
+            match self.read_file(at, end - at).await {
                 Ok(bytes) => out.extend_from_slice(&bytes),
                 Err(err) => return Some(Err(err)),
             }
-        }
-        for item in &self.tail {
-            let item_end = item.offset + item.bytes.len();
-            if item_end <= offset.max(start) || item.offset >= end {
-                continue;
-            }
-            let from = offset.max(item.offset) - item.offset;
-            let to = end.min(item_end) - item.offset;
-            out.extend_from_slice(&item.bytes[from..to]);
         }
         if out.len() != size {
             return Some(Err(PackfileError::internal(
@@ -93,7 +101,67 @@ impl PackFile {
         Some(Ok(out.freeze()))
     }
 
-    /// Write the whole tail to the file at its offset, in one write, and sync it.
+    async fn read_file(&self, offset: usize, size: usize) -> Result<Bytes, PackfileError> {
+        let Some(file) = self.file.as_ref() else {
+            return Err(PackfileError::internal(
+                "Failed reading from packstore, boundary violation",
+            ));
+        };
+        packfile_read(file, offset, size).await
+    }
+
+    /// Copy `bytes`, meant for `[offset, offset + bytes.len())`, into the tail items
+    /// that range overlaps, and return the parts of the range no item covers.
+    fn write_over_tail(&mut self, offset: usize, bytes: &[u8]) -> Vec<(usize, usize)> {
+        let end = offset + bytes.len();
+        let mut uncovered = Vec::new();
+        let mut at = offset;
+        let first = self
+            .tail
+            .partition_point(|item| item.offset + item.bytes.len() <= offset);
+        for item in &mut self.tail[first..] {
+            if item.offset >= end {
+                break;
+            }
+            if item.offset > at {
+                uncovered.push((at, item.offset));
+                at = item.offset;
+            }
+            let to = end.min(item.offset + item.bytes.len());
+            let source = &bytes[at - offset..to - offset];
+            let target = at - item.offset..to - item.offset;
+            if item.bytes[target.clone()] != *source {
+                let mut changed = BytesMut::from(item.bytes.as_ref());
+                changed[target].copy_from_slice(source);
+                item.bytes = changed.freeze();
+            }
+            at = to;
+        }
+        if at < end {
+            uncovered.push((at, end));
+        }
+        uncovered
+    }
+
+    /// Lay journaled `bytes` at `offset` over the tail, adding items for the parts no
+    /// item covers yet, and grow `size` to cover them.
+    fn replay_into_tail(&mut self, offset: usize, bytes: &Bytes) {
+        for (from, to) in self.write_over_tail(offset, bytes) {
+            let index = self.tail.partition_point(|item| item.offset < from);
+            self.tail.insert(
+                index,
+                TailItem {
+                    offset: from,
+                    bytes: bytes.slice(from - offset..to - offset),
+                    journaled: true,
+                },
+            );
+        }
+        self.size = self.size.max(offset + bytes.len());
+    }
+
+    /// Write the tail to the file, one write for each run of adjacent items, and sync
+    /// it.
     async fn write_tail(&mut self, sync_data: bool) -> Result<(), PackfileError> {
         if self.tail.is_empty() {
             return Ok(());
@@ -102,13 +170,18 @@ impl PackFile {
             self.tail.clear();
             return Ok(());
         };
-        let start = self.tail[0].offset;
-        let mut buffer = BytesMut::with_capacity(self.size - start);
+        let mut runs: Vec<(usize, BytesMut)> = Vec::new();
         for item in &self.tail {
-            debug_assert_eq!(item.offset, start + buffer.len(), "a tail is contiguous");
-            buffer.extend_from_slice(&item.bytes);
+            match runs.last_mut() {
+                Some((start, run)) if *start + run.len() == item.offset => {
+                    run.extend_from_slice(&item.bytes);
+                }
+                _ => runs.push((item.offset, BytesMut::from(item.bytes.as_ref()))),
+            }
         }
-        packfile_write(file, buffer.freeze(), start).await?;
+        for (start, run) in runs {
+            packfile_write(file, run.freeze(), start).await?;
+        }
         if sync_data {
             crate::fs_util::retry_transient(|| file.sync_data())
                 .await
@@ -783,23 +856,19 @@ impl PackStore {
             return Err(PackfileError::internal("Packfile ID mismatch index"));
         }
 
+        // Zero what the tail holds of the range; only the rest is in the file.
         let mut packfile = packfile;
-        if let Some(item) = packfile
-            .tail
-            .iter_mut()
-            .find(|item| item.offset <= offset && offset + size <= item.offset + item.bytes.len())
-        {
-            let start = offset - item.offset;
-            let mut bytes = BytesMut::from(item.bytes.as_ref());
-            bytes[start..start + size].fill(0);
-            item.bytes = bytes.freeze();
+        let uncovered = packfile.write_over_tail(offset, &zeros);
+        if uncovered.is_empty() {
             return Ok(());
         }
 
         packfile.dirty.store(true, Ordering::Relaxed);
 
         if let Some(file) = packfile.file.as_ref() {
-            packfile_write(file, zeros, offset).await?;
+            for (from, to) in uncovered {
+                packfile_write(file, zeros.slice(from - offset..to - offset), from).await?;
+            }
             let _ = file.sync_data().await;
         }
 
@@ -920,6 +989,61 @@ impl PackStore {
                 .sum::<usize>();
         }
         size
+    }
+
+    /// Whether packfile `id` has a file on disk, so a replay can lay journaled bytes
+    /// over it once the store resumes. Always false for a store in memory.
+    pub fn holds_packfile_file(&self, id: u32) -> bool {
+        id != 0
+            && self
+                .path
+                .as_ref()
+                .is_some_and(|path| path.join(id.to_string()).is_file())
+    }
+
+    /// Lay journaled bytes over packfile `id` at `offset`, in memory: replaying a
+    /// journal when a deferred store opens. They join the tail, as journaled, and
+    /// reach the file in the next fold; reads see them meanwhile. Idempotent, and
+    /// applied in journal order, so a later record wins over an earlier one. Writes
+    /// nothing to disk. The packfile must exist ([`Self::holds_packfile_file`]).
+    pub async fn replay_tail(
+        &self,
+        id: u32,
+        offset: u64,
+        bytes: Bytes,
+    ) -> Result<(), PackfileError> {
+        if bytes.is_empty() {
+            return Ok(());
+        }
+        let mut packfiles = self.packfile.read().await;
+        if packfiles.is_empty() {
+            drop(packfiles);
+            self.resume().await?;
+            packfiles = self.packfile.read().await;
+        }
+        let Some(packfile) = (id as usize)
+            .checked_sub(1)
+            .and_then(|index| packfiles.get(index))
+        else {
+            return Err(PackfileError::internal("Invalid packfile"));
+        };
+        let mut packfile = packfile.write().await;
+        if packfile.id != id || packfile.file.is_none() {
+            return Err(PackfileError::internal("Packfile ID mismatch index"));
+        }
+        let before = packfile.size;
+        packfile.replay_into_tail(offset as usize, &bytes);
+        let grown = packfile.size - before;
+        let full = packfile.size >= PACKSTORE_SIZE_LIMIT as usize;
+        drop(packfile);
+        drop(packfiles);
+        if let Some(gc) = &self.gc_counters {
+            gc.add_loaded_size(grown as u64);
+        }
+        if full {
+            self.mark_full(id).await;
+        }
+        Ok(())
     }
 
     /// Write journaled bytes back to packfile `id` at `offset`, before the store

@@ -9,7 +9,10 @@
 //! synced. The parent kills it with SIGKILL partway, reopens the stores, and
 //! checks that every logged round reads back whole, and that no fragment of a
 //! later round reads back wrong. Rounds are large enough that some flushes fold
-//! the journal, so kills land in folds too.
+//! the journal, so kills land in folds too. A second writer then opens the
+//! stores the first left, whose journals an open replays into memory and does
+//! not fold, and is killed in turn: kills land after such an open, and in the
+//! fold that later writes what it replayed.
 
 use std::io::Write;
 use std::path::Path;
@@ -33,6 +36,8 @@ use lore_storage::MutableStoreSettings;
 use lore_storage::Partition;
 
 const CHILD: &str = "LORE_STORAGE_JOURNAL_CRASH_CHILD";
+/// The round a writer starts at.
+const CHILD_START: &str = "LORE_STORAGE_JOURNAL_CRASH_START";
 const FRAGMENTS_PER_ROUND: u64 = 24;
 
 fn partition() -> Partition {
@@ -133,7 +138,7 @@ async fn write_round(
         .expect("the mutable flush succeeds");
 }
 
-fn child(root: PathBuf) {
+fn child(root: PathBuf, start: u64) {
     let runtime = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
@@ -144,7 +149,7 @@ fn child(root: PathBuf) {
             .append(true)
             .open(log_path(&root))
             .expect("the log opens");
-        for round in 0.. {
+        for round in start.. {
             write_round(&immutable, &mutable, round).await;
             writeln!(log, "{round}").expect("log write");
             log.sync_all().expect("log sync");
@@ -182,7 +187,11 @@ async fn read(immutable: &Arc<LocalImmutableStore>, round: u64, n: u64) -> Optio
 #[test]
 fn a_killed_writer_reopens_with_every_flush_it_finished() {
     if let Some(root) = std::env::var_os(CHILD) {
-        child(PathBuf::from(root));
+        let start = std::env::var(CHILD_START)
+            .ok()
+            .and_then(|start| start.parse().ok())
+            .unwrap_or(0);
+        child(PathBuf::from(root), start);
         return;
     }
     let runtime = tokio::runtime::Runtime::new().expect("runtime");
@@ -194,84 +203,105 @@ fn a_killed_writer_reopens_with_every_flush_it_finished() {
         let root = dir.path().join("store");
         std::fs::create_dir_all(&root).expect("store directory");
         std::fs::write(log_path(&root), b"").expect("log");
-        let mut writer = std::process::Command::new(std::env::current_exe().expect("test binary"))
-            .args([
-                "--exact",
-                "a_killed_writer_reopens_with_every_flush_it_finished",
-                "--test-threads=1",
-            ])
-            .env(CHILD, &root)
-            .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::null())
-            .spawn()
-            .expect("the writer starts");
-        let wanted = 2 + attempt;
-        let started = Instant::now();
-        while logged(&root).len() < wanted {
-            assert!(
-                started.elapsed() < Duration::from_secs(120),
-                "attempt {attempt}: the writer logged {} rounds in 120 s",
-                logged(&root).len()
-            );
-            assert!(
-                writer.try_wait().expect("wait").is_none(),
-                "attempt {attempt}: the writer exited"
-            );
-            std::thread::sleep(Duration::from_millis(1));
-        }
-        std::thread::sleep(Duration::from_millis(extra_ms));
-        writer.kill().expect("kill");
-        writer.wait().expect("reap");
+        run_writer(&root, attempt, 0, 2 + attempt, extra_ms);
+        runtime.block_on(check(&root, attempt));
+        // A second writer opens what the first left, its journals unfolded, and is
+        // killed partway as well.
+        let start = logged(&root).last().expect("a logged round") + 1;
+        run_writer(&root, attempt, start, 2, extra_ms);
+        runtime.block_on(check(&root, attempt));
+    }
+}
 
-        let rounds = logged(&root);
-        let last = *rounds.last().expect("a logged round");
-        runtime.block_on(async {
-            let (immutable, mutable) = open(&root).await;
-            for &round in &rounds {
-                for n in 0..FRAGMENTS_PER_ROUND {
-                    let got = read(&immutable, round, n).await;
-                    assert!(
-                        got.as_ref() == Some(&payload(round, n)),
-                        "attempt {attempt}: round {round} fragment {n} was flushed and reads back {:?} bytes",
-                        got.map(|bytes| bytes.len())
-                    );
-                }
-            }
-            // The round the kill interrupted may be partly there; what is there is whole.
-            for n in 0..FRAGMENTS_PER_ROUND {
-                if let Some(bytes) = read(&immutable, last + 1, n).await {
-                    assert!(
-                        bytes == payload(last + 1, n),
-                        "attempt {attempt}: an unflushed fragment reads back torn"
-                    );
-                }
-            }
-            // Each key holds the value of the last round that wrote it, or a later one.
-            for slot in 0..5u64 {
-                let Some(written) = rounds.iter().rev().find(|round| *round % 5 == slot) else {
-                    continue;
-                };
-                let got = mutable
-                    .clone()
-                    .load(partition(), key(*written), KeyType::Untyped)
-                    .await
-                    .expect("a flushed key loads");
-                assert!(
-                    got == value(*written) || got == value(written + 5),
-                    "attempt {attempt}: key {slot} holds neither round {written} nor a later one"
-                );
-            }
-            // The reopened stores take more writes, and keep them over another reopen.
-            write_round(&immutable, &mutable, last + 2).await;
-            drop(immutable);
-            drop(mutable);
-            let (immutable, _mutable) = open(&root).await;
-            for n in 0..FRAGMENTS_PER_ROUND {
-                assert!(
-                    read(&immutable, last + 2, n).await == Some(payload(last + 2, n)),
-                    "attempt {attempt}: a write after the reopen did not survive another reopen"
-                );
-            }
-        });
+/// Run a writer from round `start` until it has logged `wanted` more rounds, then
+/// `extra_ms` later kill it.
+fn run_writer(root: &Path, attempt: usize, start: u64, wanted: usize, extra_ms: u64) {
+    let wanted = logged(root).len() + wanted;
+    let mut writer = std::process::Command::new(std::env::current_exe().expect("test binary"))
+        .args([
+            "--exact",
+            "a_killed_writer_reopens_with_every_flush_it_finished",
+            "--test-threads=1",
+        ])
+        .env(CHILD, root)
+        .env(CHILD_START, start.to_string())
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .spawn()
+        .expect("the writer starts");
+    let started = Instant::now();
+    while logged(root).len() < wanted {
+        assert!(
+            started.elapsed() < Duration::from_secs(120),
+            "attempt {attempt}: the writer logged {} rounds in 120 s",
+            logged(root).len()
+        );
+        assert!(
+            writer.try_wait().expect("wait").is_none(),
+            "attempt {attempt}: the writer exited"
+        );
+        std::thread::sleep(Duration::from_millis(1));
+    }
+    std::thread::sleep(Duration::from_millis(extra_ms));
+    writer.kill().expect("kill");
+    writer.wait().expect("reap");
+}
+
+/// Reopen the stores a killed writer left and check every logged round, then write one
+/// more round, log it, and check it survives another reopen.
+async fn check(root: &Path, attempt: usize) {
+    let rounds = logged(root);
+    let last = *rounds.last().expect("a logged round");
+    let (immutable, mutable) = open(root).await;
+    for &round in &rounds {
+        for n in 0..FRAGMENTS_PER_ROUND {
+            let got = read(&immutable, round, n).await;
+            assert!(
+                got.as_ref() == Some(&payload(round, n)),
+                "attempt {attempt}: round {round} fragment {n} was flushed and reads back {:?} bytes",
+                got.map(|bytes| bytes.len())
+            );
+        }
+    }
+    // The round the kill interrupted may be partly there; what is there is whole.
+    for n in 0..FRAGMENTS_PER_ROUND {
+        if let Some(bytes) = read(&immutable, last + 1, n).await {
+            assert!(
+                bytes == payload(last + 1, n),
+                "attempt {attempt}: an unflushed fragment reads back torn"
+            );
+        }
+    }
+    // Each key holds the value of the last round that wrote it, or a later one.
+    for slot in 0..5u64 {
+        let Some(written) = rounds.iter().rev().find(|round| *round % 5 == slot) else {
+            continue;
+        };
+        let got = mutable
+            .clone()
+            .load(partition(), key(*written), KeyType::Untyped)
+            .await
+            .expect("a flushed key loads");
+        assert!(
+            got == value(*written) || got == value(written + 5),
+            "attempt {attempt}: key {slot} holds neither round {written} nor a later one"
+        );
+    }
+    // The reopened stores take more writes, and keep them over another reopen.
+    write_round(&immutable, &mutable, last + 2).await;
+    drop(immutable);
+    drop(mutable);
+    let mut log = std::fs::OpenOptions::new()
+        .append(true)
+        .open(log_path(root))
+        .expect("the log opens");
+    writeln!(log, "{}", last + 2).expect("log write");
+    log.sync_all().expect("log sync");
+    let (immutable, _mutable) = open(root).await;
+    for n in 0..FRAGMENTS_PER_ROUND {
+        assert!(
+            read(&immutable, last + 2, n).await == Some(payload(last + 2, n)),
+            "attempt {attempt}: a write after the reopen did not survive another reopen"
+        );
     }
 }

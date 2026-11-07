@@ -76,8 +76,8 @@ pub struct MutableStoreSettings {
     /// Make a flush durable through the store's journal (`local::journal`) for a store on
     /// disk: the entries changed since the last flush are appended to the journal in one
     /// write and synced once, instead of rewriting every bucket that changed. The buckets
-    /// catch up in a fold, when the journal passes [`JOURNAL_FOLD_SIZE`] and when the
-    /// store opens.
+    /// catch up in a fold, when the journal passes [`JOURNAL_FOLD_SIZE`]. An open replays
+    /// the journal into memory and keeps appending to it.
     pub journal: bool,
 }
 
@@ -917,12 +917,13 @@ impl LocalMutableStore {
             }));
         }
 
-        // A journal a journaled open left behind is folded even by an open that keeps
-        // none, so what it holds is not lost.
+        // A journaled open replays the journal into memory and keeps it. An open that
+        // keeps none folds a journal a journaled open left behind, so what it holds is
+        // not lost.
         if let Some(path) = store.path.clone()
             && (settings.journal || journal::holds_records(&path.join(JOURNAL_FILE)))
         {
-            let journal = store.open_journal(path).await?;
+            let journal = store.open_journal(path, settings.journal).await?;
             if settings.journal {
                 store.journal = Some(Mutex::new(journal));
             }
@@ -931,12 +932,21 @@ impl LocalMutableStore {
         Ok(store)
     }
 
-    /// Open the journal, fold the entries it holds into their buckets, write and sync
-    /// them, and empty it. Replay is idempotent: each record sets its entry to the value
-    /// it had when the journal took it, in order, and since every fold empties the
-    /// journal and no bucket is written between folds, no record is older than the
-    /// bucket it lands in.
-    async fn open_journal(&self, path: Arc<PathBuf>) -> Result<Journal, LocalMutableStoreError> {
+    /// Open the journal and replay the entries it holds into their buckets, marked dirty.
+    /// A journaled store (`keep`) stops there, writing nothing: the journal keeps its
+    /// records and takes new ones after them, and the next fold writes the buckets and
+    /// empties it. A journal past [`JOURNAL_FOLD_SIZE`] is folded by the first flush,
+    /// which folds before it appends. A store opened without a journal writes and syncs
+    /// the buckets and empties the journal, since nothing after this open would keep it.
+    ///
+    /// Replay is idempotent: each record sets its entry to the value it had when the
+    /// journal took it, in order, and since every fold empties the journal and no bucket
+    /// is written between folds, no record is older than the bucket it lands in.
+    async fn open_journal(
+        &self,
+        path: Arc<PathBuf>,
+        keep: bool,
+    ) -> Result<Journal, LocalMutableStoreError> {
         let (mut journal, records) =
             Journal::open(path.join(JOURNAL_FILE))
                 .await
@@ -957,6 +967,9 @@ impl LocalMutableStore {
             self.replay_entry(path.as_ref(), entry).await?;
             replayed = true;
         }
+        if keep {
+            return Ok(journal);
+        }
         if replayed {
             flush_buckets(&self.group, path.clone(), true, self.authoritative).await?;
         }
@@ -967,7 +980,7 @@ impl LocalMutableStore {
     }
 
     /// Set the entry a journal record holds in its bucket, at the layout the store
-    /// opened at, and mark the bucket for the fold that follows.
+    /// opened at, and mark the bucket for the next fold.
     async fn replay_entry(
         &self,
         path: &Path,
