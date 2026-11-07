@@ -1964,7 +1964,11 @@ pub async fn create_mutable_store_at_path(
 
     let store = crate::store::mutable::create(
         Some(path.as_path()),
-        crate::store::mutable::MutableStoreSettings::default(),
+        crate::store::mutable::MutableStoreSettings {
+            /* Make flushes durable through the store journal */
+            journal: true,
+            ..Default::default()
+        },
         immutable_store,
     )
     .await
