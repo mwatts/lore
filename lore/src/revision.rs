@@ -173,6 +173,49 @@ async fn commit_local(
     .await
 }
 
+/// File contents to commit as one revision, held in memory (Rust callers only).
+pub type LoreRevisionCommitContentsArgs = lore_revision::commit_contents::CommitContents;
+
+/// Commits file contents the caller holds in memory as one revision on the
+/// current branch, with no working tree and no staged state.
+///
+/// For a caller that already holds the bytes: [`commit`] stages from the working
+/// tree first, which serializes a whole staged state only for the commit to
+/// replace it. This loads the current revision, applies `args` to it in memory,
+/// and publishes the result, moving the branch tip and the current anchor as
+/// [`commit`] does. The working tree is neither read nor written. An instance
+/// with a staged state is refused, since this commit would publish past it.
+///
+/// When every write already holds its bytes and every removal is absent, nothing
+/// is committed: the call completes with no
+/// [`LoreEvent::RevisionCommitRevision`](crate::interface::LoreEvent::RevisionCommitRevision).
+///
+/// # Events
+///
+/// | Event | Description |
+/// |-------|-------------|
+/// | [`LoreEvent::RevisionCommitRevision`](crate::interface::LoreEvent::RevisionCommitRevision) | Emitted with the committed revision details (hash, branch, parents) |
+/// | [`LoreEvent::Metadata`](crate::interface::LoreEvent::Metadata) | Emitted for each metadata entry of the committed revision |
+/// | [`LoreEvent::Complete`](crate::interface::LoreEvent::Complete) | Always emitted at the end; `status` is `0` on success or the error code on failure |
+pub async fn commit_contents(
+    globals: LoreGlobalArgs,
+    args: LoreRevisionCommitContentsArgs,
+    callback: LoreEventCallback,
+) -> i32 {
+    repository_call_write(
+        globals,
+        callback,
+        args,
+        commit_contents,
+        move |repository, token, args| async move {
+            lore_revision::commit_contents::commit_contents(repository, &token, args)
+                .await
+                .map(|_| ())
+        },
+    )
+    .await
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct LoreRevisionCommitWithMetadataArgs {
     // Message

@@ -3900,6 +3900,44 @@ pub async fn commit_in_memory_revision(
     current_revision: Hash,
     branch: BranchId,
 ) -> Result<Hash, InMemoryCommitFailure> {
+    commit_in_memory_revision_with(
+        repository,
+        token,
+        state_staged,
+        metadata,
+        current_revision,
+        branch,
+        InMemoryCommitRecovery::Snapshot,
+    )
+    .await
+}
+
+/// How [`commit_in_memory_revision_with`] lets a caller recover from a failure once
+/// the freeze has begun.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum InMemoryCommitRecovery {
+    /// Serialize the staged state before the freeze, so a failure carries a
+    /// snapshot to rebuild it from ([`InMemoryCommitFailure::restore_from`]).
+    #[default]
+    Snapshot,
+    /// Write no snapshot. A failure from the freeze on leaves the state part-frozen
+    /// with nothing to restore it from, so the caller must drop it. For a caller
+    /// that built the state for this one commit and can build it again: the
+    /// snapshot is a whole serialized state, written only to be thrown away when
+    /// the commit succeeds.
+    Discard,
+}
+
+/// [`commit_in_memory_revision`] with a choice of [`InMemoryCommitRecovery`].
+pub async fn commit_in_memory_revision_with(
+    repository: Arc<RepositoryContext>,
+    token: &RepositoryWriteToken,
+    state_staged: Arc<State>,
+    metadata: Metadata,
+    current_revision: Hash,
+    branch: BranchId,
+    recovery: InMemoryCommitRecovery,
+) -> Result<Hash, InMemoryCommitFailure> {
     let observed_tip = branch::load_latest(repository.clone(), branch)
         .await
         .unwrap_or_default();
@@ -3927,17 +3965,23 @@ pub async fn commit_in_memory_revision(
         .await
         .map_err(InMemoryCommitFailure::rejected)?;
 
-    state_staged.mark_dirty();
-    let restore_from = state_staged
-        .serialize(repository.clone(), token)
-        .await
-        .forward::<CommitError>("Failed to snapshot the staged state")
-        .map_err(InMemoryCommitFailure::rejected)?;
-    debug_assert!(
-        !restore_from.is_zero(),
-        "the snapshot must be a real state, or a post-freeze failure has nothing to restore from"
-    );
-    state_staged.mark_dirty();
+    let restore_from = match recovery {
+        InMemoryCommitRecovery::Snapshot => {
+            state_staged.mark_dirty();
+            let restore_from = state_staged
+                .serialize(repository.clone(), token)
+                .await
+                .forward::<CommitError>("Failed to snapshot the staged state")
+                .map_err(InMemoryCommitFailure::rejected)?;
+            debug_assert!(
+                !restore_from.is_zero(),
+                "the snapshot must be a real state, or a post-freeze failure has nothing to restore from"
+            );
+            state_staged.mark_dirty();
+            Some(restore_from)
+        }
+        InMemoryCommitRecovery::Discard => None,
+    };
 
     state_staged.set_parent_self(current_revision);
     state_staged.set_parent_other(Hash::default());
@@ -4007,28 +4051,32 @@ pub async fn commit_in_memory_revision(
 pub struct InMemoryCommitFailure {
     /// What went wrong.
     pub error: CommitError,
-    /// Signature of the pre-commit state, zero until the freeze has begun. The two
-    /// facts are one: a tree nothing has mutated needs no snapshot to go back to.
+    /// Signature of the pre-commit state, zero until the freeze has begun, and zero
+    /// throughout under [`InMemoryCommitRecovery::Discard`], which takes none.
     pub restore_from: Hash,
+    /// Whether the freeze had begun.
+    mutated: bool,
 }
 
 impl InMemoryCommitFailure {
     /// Whether the freeze had begun, so `state_staged` can no longer be trusted.
     pub fn tree_mutated(&self) -> bool {
-        !self.restore_from.is_zero()
+        self.mutated
     }
 
     fn rejected(error: impl Into<CommitError>) -> Self {
         Self {
             error: error.into(),
             restore_from: Hash::default(),
+            mutated: false,
         }
     }
 
-    fn while_freezing(error: impl Into<CommitError>, restore_from: Hash) -> Self {
+    fn while_freezing(error: impl Into<CommitError>, restore_from: Option<Hash>) -> Self {
         Self {
             error: error.into(),
-            restore_from,
+            restore_from: restore_from.unwrap_or_default(),
+            mutated: true,
         }
     }
 }
