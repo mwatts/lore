@@ -6,6 +6,7 @@ pub mod branch;
 pub mod change;
 pub mod cluster;
 pub mod commit;
+pub mod commit_contents;
 pub mod dependency;
 pub mod diff;
 pub mod environment;
