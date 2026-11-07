@@ -14,10 +14,15 @@ use crate::LocalImmutableStoreError;
 /// Magic value at the start of the info file. Bytes spell `IS_I` on a little-endian target.
 const INFO_MAGIC: u32 = u32::from_le_bytes(*b"IS_I");
 
-/// Bumped only if the file's binary layout changes.
+/// Bumped only if the file's binary layout changes, or when a store needs something of its
+/// readers that an older binary would not do.
 #[repr(u32)]
 enum ImmutableStoreInfoVersion {
     Initial = 0,
+    /// The store has kept a journal (`local::journal`): payloads and index entries it holds
+    /// may live only there until a fold, so a reader must replay it. A binary that knows only
+    /// `Initial` refuses the store instead of opening it without them.
+    Journaled = 1,
 }
 
 #[repr(C)]
@@ -34,6 +39,19 @@ pub struct ImmutableStoreInfo {
     /// are known to never contain Oodle since it is no longer allowed by `lore_storage`.
     /// Therefore, groups are migrated from N down.
     pub next_group_index_to_migrate_oodle: i32,
+}
+
+impl ImmutableStoreInfo {
+    /// Whether the store has kept a journal, so a reader must replay it.
+    pub fn journaled(&self) -> bool {
+        self.version == ImmutableStoreInfoVersion::Journaled as u32
+    }
+
+    /// Record that the store keeps a journal. Written before the journal takes a record, it
+    /// makes a binary that cannot replay the journal refuse the store.
+    pub fn set_journaled(&mut self) {
+        self.version = ImmutableStoreInfoVersion::Journaled as u32;
+    }
 }
 
 impl Default for ImmutableStoreInfo {
@@ -82,13 +100,15 @@ pub async fn read_info_file(path: &Path) -> std::io::Result<Option<ImmutableStor
             ),
         ));
     }
-    if header.version != ImmutableStoreInfoVersion::Initial as u32 {
+    if header.version != ImmutableStoreInfoVersion::Initial as u32
+        && header.version != ImmutableStoreInfoVersion::Journaled as u32
+    {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidData,
             format!(
-                "Info file has unsupported version {}, expected {}",
+                "Info file has unsupported version {}, expected at most {}",
                 header.version,
-                ImmutableStoreInfoVersion::Initial as u32
+                ImmutableStoreInfoVersion::Journaled as u32
             ),
         ));
     }
@@ -227,7 +247,7 @@ mod tests {
         async fn an_unsupported_version_is_rejected() {
             let dir = crate::test_util::TempDir::new("is_info_version_");
             let path = info_path_for_store_root(dir.path());
-            let unsupported = ImmutableStoreInfoVersion::Initial as u32 + 1;
+            let unsupported = ImmutableStoreInfoVersion::Journaled as u32 + 1;
             let bytes =
                 corrupted_bytes(|bytes| bytes[4..8].copy_from_slice(&unsupported.to_ne_bytes()));
             std::fs::write(&path, bytes).expect("file writes");

@@ -1302,6 +1302,25 @@ impl LocalImmutableStore {
             store.info = info.into();
         }
 
+        // A journaled store says so in its info file before its journal takes a record: a
+        // binary that cannot replay the journal refuses the store's info file, so it cannot
+        // open the store and silently go without what the journal holds.
+        if let Some(path) = immutable_path.as_deref()
+            && store.settings.journal
+            && !store.info.get_mut().journaled()
+        {
+            let info = store.info.get_mut();
+            info.set_journaled();
+            write_info_file(info, &info_path_for_store_root(path))
+                .await
+                .map_err(|err| {
+                    LocalImmutableStoreError::internal_with_context(
+                        err,
+                        "Failed to mark the store journaled",
+                    )
+                })?;
+        }
+
         // A journal a journaled open left behind is folded even by an open that keeps
         // none, so what it holds is not lost.
         if let Some(path) = immutable_path.as_deref()
