@@ -1881,6 +1881,8 @@ pub async fn create_immutable_store_at_path(
         ImmutableStoreSettings {
             protect_local_fragment: true, /* Protect local fragments from eviction */
             verify_write,
+            /* Make flushes durable through the store journal */
+            journal: true,
             ..Default::default()
         },
     )

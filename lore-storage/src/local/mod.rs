@@ -2,4 +2,5 @@
 // SPDX-License-Identifier: MIT
 pub mod fan_out;
 pub mod immutable_store;
+pub mod journal;
 pub mod mutable_store;
