@@ -128,6 +128,11 @@ pub fn decode(bytes: &Bytes) -> (Vec<Record>, usize) {
     (records, at)
 }
 
+/// Whether a journal file exists at `path` and holds anything.
+pub fn holds_records(path: &Path) -> bool {
+    std::fs::metadata(path).is_ok_and(|metadata| metadata.len() > 0)
+}
+
 /// The journal file of one store.
 pub struct Journal {
     path: PathBuf,

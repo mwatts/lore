@@ -78,9 +78,16 @@ async fn open(root: &Path) -> (Arc<LocalImmutableStore>, Arc<LocalMutableStore>)
     .expect("the immutable store opens");
     let dyn_immutable: Arc<dyn ImmutableStore> = immutable.clone();
     let mutable = Arc::new(
-        LocalMutableStore::new(Some(root), MutableStoreSettings::default(), dyn_immutable)
-            .await
-            .expect("the mutable store opens"),
+        LocalMutableStore::new(
+            Some(root),
+            MutableStoreSettings {
+                journal: true,
+                ..Default::default()
+            },
+            dyn_immutable,
+        )
+        .await
+        .expect("the mutable store opens"),
     );
     (immutable, mutable)
 }
