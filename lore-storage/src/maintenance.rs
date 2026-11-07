@@ -812,6 +812,7 @@ mod tests {
             flush_lock: std::sync::Arc::new(tokio::sync::Mutex::new(())),
             packstore: PackStore::new(Some(tempdir.to_path_buf()), 1, None),
             flush: tokio::sync::Mutex::new(JoinSet::new()),
+            journal_pending: parking_lot::Mutex::new(Vec::new()),
         });
 
         // Buffer lengths are primes to ensure test actually verify the correct thing

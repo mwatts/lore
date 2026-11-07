@@ -115,6 +115,8 @@ async fn migrate_initial_to_typed(
         needs_upgrade: AtomicBool::new(false),
         // Authoritative: a corrupt bucket must fail the upgrade, not be silently dropped.
         authoritative: true,
+        journal: None,
+        journal_needs_fold: AtomicBool::new(false),
     };
 
     for _ in 0..GROUP_COUNT {
@@ -132,6 +134,7 @@ async fn migrate_initial_to_typed(
                 lore_storage::local::fan_out::FAN_OUT_LEVEL_MAX,
             ),
             flush_lock: std::sync::Arc::new(tokio::sync::Mutex::new(())),
+            journal_pending: parking_lot::Mutex::new(Vec::new()),
         }));
     }
 
@@ -179,6 +182,7 @@ async fn migrate_initial_to_typed(
                 lore_storage::local::fan_out::FAN_OUT_LEVEL_MAX,
             ),
             flush_lock: std::sync::Arc::new(tokio::sync::Mutex::new(())),
+            journal_pending: parking_lot::Mutex::new(Vec::new()),
         }));
     }
 
