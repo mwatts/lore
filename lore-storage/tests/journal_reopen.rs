@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2026 Epic Games, Inc.
 // SPDX-License-Identifier: MIT
 //! What a journaled store leaves on disk for the next open: a store closed
-//! before its first fold reopens with the bucket layout a new store has.
+//! before its first fold reopens with the bucket layout a new store has, and a
+//! journaled store's info file names a version that a binary which cannot
+//! replay the journal refuses.
 
 use std::path::Path;
 use std::sync::Arc;
@@ -139,4 +141,29 @@ async fn a_store_closed_before_its_first_fold_reopens_with_a_new_stores_layout()
             if *marked { "a" } else { "no" }
         );
     }
+}
+
+/// A binary without the journal reads only the packfiles and buckets, so it would open a
+/// journaled store and go without what the journal holds. The only info file version such
+/// a binary accepts is 0; a journaled store's says otherwise before the journal takes a
+/// record. A binary with the journal still opens it, journaled or not, and replays it.
+#[tokio::test]
+async fn a_journaled_store_names_a_version_older_binaries_refuse() {
+    let dir = lore_base::test_util::TempDir::new("lore-journal-reopen-version-");
+    let root = dir.path().join("store");
+    write_and_close(&root).await;
+
+    let info = std::fs::read(root.join("immutable").join("info")).expect("the info file reads");
+    let version = u32::from_ne_bytes(info[4..8].try_into().expect("4 bytes"));
+    assert_ne!(
+        version, 0,
+        "the info file names a version a binary that cannot replay the journal refuses"
+    );
+
+    let store = open(&root, false).await;
+    assert_eq!(
+        reads_back(&store).await,
+        FRAGMENTS,
+        "an open without the journal setting still replays it"
+    );
 }
