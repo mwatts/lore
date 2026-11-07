@@ -406,8 +406,8 @@ pub struct ImmutableStoreSettings {
     /// packfile that took a payload and rewriting every bucket that changed. They stay in
     /// memory and reach their packfiles and buckets in a fold: when the journal passes
     /// [`JOURNAL_FOLD_SIZE`], after a change the journal does not record (an eviction, a
-    /// compaction, an obliteration), before a compaction drops a packfile, and when the
-    /// store opens.
+    /// compaction, an obliteration), and before a compaction drops a packfile. An open
+    /// replays the journal into memory and keeps appending to it.
     pub journal: bool,
 }
 
@@ -1321,8 +1321,9 @@ impl LocalImmutableStore {
                 })?;
         }
 
-        // A journal a journaled open left behind is folded even by an open that keeps
-        // none, so what it holds is not lost.
+        // A journaled open replays the journal into memory and keeps it. An open that
+        // keeps none folds a journal a journaled open left behind, so what it holds is
+        // not lost.
         if let Some(path) = immutable_path.as_deref()
             && (store.settings.journal || journal::holds_records(&path.join(JOURNAL_FILE)))
         {
@@ -1362,9 +1363,11 @@ impl LocalImmutableStore {
         &self.group[group_index].packstore
     }
 
-    /// Open the journal and fold what it holds: payloads back into their packfiles,
-    /// synced, entries into their buckets, written and synced, and then empty it. From
-    /// here on payloads and entries go to the journal.
+    /// Open the journal and replay what it holds. A journaled store replays it into
+    /// memory and keeps it ([`Self::replay_journal`]), and a store opened without a
+    /// journal folds it: payloads back into their packfiles, synced, entries into their
+    /// buckets, written and synced, and then it is emptied, since nothing after this
+    /// open would keep it.
     ///
     /// Replay is idempotent: a payload record writes the same bytes at the same offset
     /// a fold already wrote, a zero record zeroes them again, and an entry record sets
@@ -1382,6 +1385,9 @@ impl LocalImmutableStore {
                         "Failed to open the store journal",
                     )
                 })?;
+        if self.settings.journal && self.replay_journal(path, &records).await? {
+            return Ok(journal);
+        }
         let mut replayed: HashMap<usize, Vec<u32>> = HashMap::new();
         let mut entries = Vec::new();
         for record in &records {
@@ -1445,8 +1451,73 @@ impl LocalImmutableStore {
         Ok(journal)
     }
 
+    /// Replay a journaled store's journal into memory, writing nothing: each payload
+    /// and zero record onto its packfile's tail and each entry into its bucket, marked
+    /// dirty, which is the state a flush that journaled them left them in. The journal
+    /// keeps its records and takes new ones after them, and the next fold writes it all
+    /// out and empties it. An open that finds the journal past [`JOURNAL_FOLD_SIZE`]
+    /// leaves the fold to its first flush, which folds before it appends: the journal
+    /// only grows by a flush, so it cannot grow past one flush's records beyond the
+    /// threshold, and an open that only reads stays free of writes.
+    ///
+    /// Returns false, having changed nothing, when a record names a packfile with no
+    /// file on disk (its name was not yet durable when the store last stopped), which
+    /// only a fold can recreate.
+    async fn replay_journal(
+        &self,
+        path: &Path,
+        records: &[journal::Record],
+    ) -> Result<bool, LocalImmutableStoreError> {
+        let mut payloads = Vec::new();
+        let mut entries = Vec::new();
+        for record in records {
+            let (group, id, offset, bytes) = match record.kind {
+                RecordKind::ImmutableEntry => {
+                    if let Ok(entry) = ImmutableStoreEntry::read_from_bytes(&record.body) {
+                        entries.push(entry);
+                    }
+                    continue;
+                }
+                RecordKind::Payload => {
+                    let Some(payload) = journal::parse_payload(&record.body) else {
+                        continue;
+                    };
+                    payload
+                }
+                RecordKind::Zero => {
+                    let Some((group, id, offset, len)) = journal::parse_zero(&record.body) else {
+                        continue;
+                    };
+                    (group, id, offset, Bytes::from(vec![0u8; len as usize]))
+                }
+                _ => continue,
+            };
+            let Some(store_group) = self.group.get(group) else {
+                continue;
+            };
+            if !store_group.packstore.holds_packfile_file(id) {
+                return Ok(false);
+            }
+            payloads.push((group, id, offset, bytes));
+        }
+        for (group, id, offset, bytes) in payloads {
+            self.group[group]
+                .packstore
+                .replay_tail(id, offset, bytes)
+                .await
+                .forward::<LocalImmutableStoreError>("Failed to replay the store journal")?;
+        }
+        for entry in entries {
+            self.replay_entry(path, entry).await?;
+        }
+        for group in &self.group {
+            group.packstore.set_deferred(true);
+        }
+        Ok(true)
+    }
+
     /// Set the entry a journal record holds in its bucket, at the bucket layout the
-    /// store opened at, and mark the bucket for the fold that follows.
+    /// store opened at, and mark the bucket for the next fold.
     async fn replay_entry(
         &self,
         path: &Path,

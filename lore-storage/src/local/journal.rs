@@ -9,8 +9,9 @@
 //! directory sync. A small revision touches a dozen groups, so a flush costs a
 //! dozen of each. With it, a flush appends what changed to this file and syncs
 //! it once; the packfiles and buckets catch up in a fold, when the journal has
-//! grown past a threshold or the store opens, after which the journal is
-//! emptied.
+//! grown past a threshold, after which the journal is emptied. A store that
+//! opens with its journal replays it into memory and appends after it, so an
+//! open writes nothing; one that opens without its journal folds it.
 //!
 //! A record is a fixed header (magic, kind, body length, and a checksum of the
 //! kind, length, and body) followed by its body. A crash can leave a torn last
