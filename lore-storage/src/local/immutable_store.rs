@@ -1210,6 +1210,16 @@ impl LocalImmutableStore {
         let any_marker_seen = group_levels
             .iter()
             .any(|level| matches!(level, GroupLevel::Marked(_)));
+        // An `index/` directory holding no bucket file and no marker holds no index: the
+        // packstore makes the group directories when a store first opens, before a bucket is
+        // written. A journaled store writes buckets only in a fold, so one closed before its
+        // first fold is in that state, and reading it as a pre-fan-out store would start
+        // every group at 256 buckets for good, which makes every fold rewrite that many more
+        // bucket files. Such a store is fresh.
+        let index_existed_on_disk = index_existed_on_disk
+            && group_levels
+                .iter()
+                .any(|level| !matches!(level, GroupLevel::Unwritten));
 
         // Determine serialize_version per Decision 8. Fresh stores, stores with markers, and
         // existing stores with bucket files at any older version (v1-v3) all go to LazyFanOut.
