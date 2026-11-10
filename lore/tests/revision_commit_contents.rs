@@ -240,6 +240,36 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn an_empty_file_commits_and_reads_back_empty() {
+        let repository = Repository::create("contents-empty").await;
+        let (status, first) = repository
+            .commit(&[("meta/empty", b""), ("meta/full", b"bytes")], &[])
+            .await;
+        assert_eq!(status, 0, "an empty file commits");
+        let first = first.expect("the first commit lands");
+        assert_eq!(
+            repository.read(&first, "meta/empty").await.as_deref(),
+            Some(&b""[..])
+        );
+        // Filled, then emptied again: each is a change, and each reads back.
+        let (_, filled) = repository.commit(&[("meta/empty", b"now full")], &[]).await;
+        let filled = filled.expect("filling the file is a change");
+        let (status, emptied) = repository.commit(&[("meta/empty", b"")], &[]).await;
+        assert_eq!(status, 0);
+        let emptied = emptied.expect("emptying the file is a change");
+        assert_eq!(
+            repository.read(&filled, "meta/empty").await.as_deref(),
+            Some(&b"now full"[..])
+        );
+        assert_eq!(
+            repository.read(&emptied, "meta/empty").await.as_deref(),
+            Some(&b""[..])
+        );
+        let (_, again) = repository.commit(&[("meta/empty", b"")], &[]).await;
+        assert_eq!(again, None, "an empty file left empty is no change");
+    }
+
+    #[tokio::test]
     async fn a_removal_leaves_the_tip_and_earlier_revisions_keep_it() {
         let repository = Repository::create("contents-remove").await;
         let (_, first) = repository

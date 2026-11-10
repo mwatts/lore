@@ -44,6 +44,7 @@ use crate::repository::RepositoryWriteToken;
 use crate::state::State;
 use crate::state::StateNodeChildrenIterator;
 use crate::util::path::RelativePath;
+use zerocopy::FromZeros;
 
 /// One revision's worth of changes, held in memory.
 #[derive(Clone, Default)]
@@ -204,14 +205,26 @@ async fn write_file(
         _ => Context::from(uuid::Uuid::now_v7()),
     };
     let size = bytes.len() as u64;
-    let address = immutable::write(
-        repository.clone(),
-        context,
-        bytes,
-        immutable::write_options_from_repository(repository.clone()),
-    )
-    .await
-    .forward_with::<CommitError, _>(|| format!("Failed writing file {path} to immutable store"))?;
+    // An empty file stores no payload: its address is its context with a zero
+    // hash, as committing an empty working-tree file records it, and a read of
+    // a zero-size node fetches nothing.
+    let address = if bytes.is_empty() {
+        Address {
+            context,
+            hash: Hash::new_zeroed(),
+        }
+    } else {
+        immutable::write(
+            repository.clone(),
+            context,
+            bytes,
+            immutable::write_options_from_repository(repository.clone()),
+        )
+        .await
+        .forward_with::<CommitError, _>(|| {
+            format!("Failed writing file {path} to immutable store")
+        })?
+    };
 
     match existing {
         Some((node_id, node)) => {
