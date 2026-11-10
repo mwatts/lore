@@ -183,6 +183,12 @@ async fn a_journaled_store_names_a_version_older_binaries_refuse() {
         version, 0,
         "the info file names a version a binary that cannot replay the journal refuses"
     );
+    // Lore 4e9cdb9 replays the journal but reads node blocks of 512 nodes only, and it
+    // accepts versions 0 and 1.
+    assert!(
+        version >= 2,
+        "the info file names a version a binary that cannot read small node blocks refuses: {version}"
+    );
 
     let store = open(&root, false).await;
     assert_eq!(

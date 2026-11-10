@@ -561,6 +561,27 @@ struct StateRuntime {
     name_table_deprecated: Option<Arc<NameTable>>,
     /// Rehash node names
     rehash_node_names: bool,
+    /// The stored 512-node blocks of a tree of format 1, which this state
+    /// presents as blocks of the current size until it is serialized.
+    legacy: Option<LegacyNodeBlocks>,
+    /// Memory buffer holding the addresses of the 512-node blocks in `legacy`
+    legacy_block_address: Bytes,
+}
+
+/// Where a tree of format 1 keeps its 512-node blocks.
+///
+/// Such a tree is read in place: its header is held in memory as a tree of the
+/// current format with [`LEGACY_BLOCK_SPLIT`] times the blocks and no block
+/// list, and a block is read by splitting the 512-node block that holds its
+/// nodes. The first serialize that writes the tree writes every block at the
+/// current size and drops this, so the tree is converted once, by the first
+/// commit on it, and the revisions before it keep their blocks.
+#[derive(Clone, Copy)]
+struct LegacyNodeBlocks {
+    /// The stored block list, of 512-node blocks
+    hash_node: Hash,
+    /// The stored block count, of 512-node blocks
+    block_count: usize,
 }
 
 impl StateRuntime {
@@ -579,6 +600,8 @@ impl StateRuntime {
             link_list: None,
             name_table_deprecated: None,
             rehash_node_names,
+            legacy: None,
+            legacy_block_address: Bytes::default(),
         }
     }
 }
@@ -778,6 +801,22 @@ impl State {
             result?;
         }
 
+        // A tree read from 512-node blocks is written at the current size the
+        // first time any of it is written. A state that writes nothing of its
+        // tree leaves the stored tree, and its format, as they are.
+        let convert_legacy = {
+            let lock = self.runtime.read();
+            lock.legacy.is_some()
+                && (!lock.block_dirty.is_empty()
+                    || !lock.block_file_metadata_dirty.is_empty()
+                    || lock
+                        .tree
+                        .is_some_and(|tree| tree.flags & TreeFlags::Dirty != 0))
+        };
+        if convert_legacy {
+            self.convert_legacy_blocks(repository.clone()).await?;
+        }
+
         let (block_dirty, block_file_metadata_dirty) = {
             let lock = self.runtime.read();
             (
@@ -942,7 +981,9 @@ impl State {
                 let lock = self.runtime.read();
                 // Resize buffer with empty hashes if needed
                 lock.block_file_metadata_address
-                    .clone_and_resize_zeroed::<Hash>(block_count)
+                    .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(
+                        block_count,
+                    ))
             };
             {
                 let block_hash = block_hash_bytes.as_type_slice_mut();
@@ -1360,10 +1401,18 @@ impl State {
             }
         }
 
-        let (mut block_hash_bytes, rehash_node_names) = {
+        let (mut block_hash_bytes, rehash_node_names, legacy) = {
             let lock = self.runtime.read();
-            (lock.block_address.clone(), lock.rehash_node_names)
+            (lock.block_address.clone(), lock.rehash_node_names, lock.legacy)
         };
+
+        if let Some(legacy) = legacy {
+            let result = self
+                .legacy_block_deserialize(repository, block_index, block_count, legacy)
+                .await;
+            drop(loading_permit);
+            return result;
+        }
 
         if block_index >= block_hash_bytes.count::<Hash>() {
             // Avoid multiple tasks deserializing block list and block at the same time
@@ -1468,11 +1517,14 @@ impl State {
 
         // Deserialize the node file metadata block as well to force it to be cached in local store
         let metadata_block_cache = self
-            .block_file_metadata_cache(repository.clone(), block_index)
+            .block_file_metadata_cache(
+                repository.clone(),
+                NodeFileMetadataBlock::index_of_node_block(block_index),
+            )
             .await;
 
         let address = Address::zero_context_hash(block_hash[block_index]);
-        let result = match NodeBlock::deserialize(repository.clone(), self, address).await {
+        let result = match NodeBlock::deserialize(repository.clone(), address).await {
             Ok(block) => {
                 let block = Arc::new(block);
                 {
@@ -1515,6 +1567,184 @@ impl State {
         }
 
         result
+    }
+
+    /// Read block `block_index` of a tree of format 1 by splitting the 512-node
+    /// block that holds it. Every part of that block is installed, so the
+    /// block is read once for all of them.
+    async fn legacy_block_deserialize(
+        &self,
+        repository: Arc<RepositoryContext>,
+        block_index: usize,
+        block_count: usize,
+        legacy: LegacyNodeBlocks,
+    ) -> Result<Arc<NodeBlock>, StateError> {
+        let legacy_index = block_index / LEGACY_BLOCK_SPLIT;
+        let mut block_hash_bytes = self.runtime.read().legacy_block_address.clone();
+        if block_hash_bytes.count::<Hash>() < legacy.block_count && !legacy.hash_node.is_zero() {
+            // Avoid multiple tasks deserializing the block list at the same time
+            let _guard = self
+                .block_deserialize
+                .acquire()
+                .await
+                .internal("Failed to deserialize node block")?;
+            block_hash_bytes = self.runtime.read().legacy_block_address.clone();
+            if block_hash_bytes.count::<Hash>() < legacy.block_count {
+                lore_trace!("Deserialize 512-node block address list");
+                block_hash_bytes = immutable::read(
+                    repository.clone(),
+                    Address::zero_context_hash(legacy.hash_node),
+                    None, /* Read the full array of block hashes */
+                    immutable::read_options_from_repository(&repository)
+                        .with_cache()
+                        .with_priority(),
+                )
+                .await
+                .forward::<StateError>("Failed to deserialize node block list")?;
+                if block_hash_bytes.count::<Hash>() < legacy.block_count {
+                    block_hash_bytes = block_hash_bytes
+                        .clone_and_resize_zeroed::<Hash>(legacy.block_count)
+                        .freeze();
+                }
+                self.runtime.write().legacy_block_address = block_hash_bytes.clone();
+            }
+        }
+
+        let hash = block_hash_bytes
+            .as_type_slice::<Hash>()
+            .get(legacy_index)
+            .copied()
+            .unwrap_or_default();
+        let parts = if hash.is_zero() {
+            (0..LEGACY_BLOCK_SPLIT)
+                .map(|part| {
+                    let block = NodeBlock::new_zeroed();
+                    if legacy_index == 0 && part == 0 {
+                        // Reserve root node
+                        block.write().node_block().node_count = 1;
+                    }
+                    block
+                })
+                .collect()
+        } else {
+            lore_trace!("Deserialize 512-node block {legacy_index}");
+            // Cache the file metadata block too, as the normal path does
+            let metadata_block_cache = self
+                .block_file_metadata_cache(repository.clone(), legacy_index)
+                .await;
+            let parts = NodeBlock::deserialize_legacy(
+                repository.clone(),
+                self,
+                Address::zero_context_hash(hash),
+            )
+            .await;
+            if let Some(cache_task) = metadata_block_cache {
+                let _ = cache_task.await;
+            }
+            parts?
+        };
+
+        let mut lock = self.runtime.write();
+        if lock.block.len() < block_count {
+            lock.block.resize(block_count, Weak::default());
+        }
+        let rehash_node_names = lock.rehash_node_names;
+        for (part, block) in parts.into_iter().enumerate() {
+            let index = legacy_index * LEGACY_BLOCK_SPLIT + part;
+            if index >= lock.block.len() || lock.block[index].upgrade().is_some() {
+                continue;
+            }
+            let block = Arc::new(block);
+            if rehash_node_names {
+                lock.block_dirty.push((block.clone(), index));
+            }
+            lock.block[index] = Arc::downgrade(&block);
+            if lock.block_cache.len() < MAX_BLOCK_CACHE {
+                lock.block_cache.push(block);
+            } else {
+                let cache_index = lock
+                    .block_cache_counter
+                    .fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+                    as usize;
+                lock.block_cache[cache_index % MAX_BLOCK_CACHE] = block;
+            }
+        }
+        lock.block[block_index].upgrade().ok_or_else(|| {
+            StateError::internal(format!("Node block {block_index} was not kept"))
+        })
+    }
+
+    /// Write every block of a tree of format 1 at the current size, so the tree
+    /// this state serializes is of the current format and none of its blocks
+    /// are the 512-node blocks it was read from.
+    ///
+    /// The chain of blocks with unused slots linked 512-node blocks, so it is
+    /// rebuilt over the new blocks: every block with a free slot, in index
+    /// order.
+    async fn convert_legacy_blocks(
+        &self,
+        repository: Arc<RepositoryContext>,
+    ) -> Result<(), StateError> {
+        let block_count = self.block_count();
+        lore_debug!("Converting a tree of 512-node blocks to {block_count} blocks");
+        let mut blocks = Vec::with_capacity(block_count);
+        for block_index in 0..block_count {
+            blocks.push(self.block(repository.clone(), block_index).await?);
+        }
+        {
+            let mut runtime = self.runtime.write();
+            let mut head = INVALID_BLOCK;
+            for (block_index, block) in blocks.iter().enumerate().rev() {
+                let mut writer = block.write();
+                writer.clear_first_unused_node();
+                if writer.is_full() {
+                    writer.node_block().block_unused_next = INVALID_BLOCK;
+                } else {
+                    writer.node_block().block_unused_next = head;
+                    head = block_index as u32;
+                }
+            }
+            runtime.legacy = None;
+            runtime.legacy_block_address = Bytes::default();
+            runtime.block_address = Bytes::default();
+            if let Some(tree) = runtime.tree.as_mut() {
+                tree.format = TreeFormat::SmallNodeBlocks as u32;
+                tree.block_unused_first = head;
+                tree.flags |= TreeFlags::Dirty;
+            }
+        }
+        for (block_index, block) in blocks.into_iter().enumerate() {
+            let dirtied = block.write().mark_dirty();
+            if dirtied {
+                self.block_modified(block, block_index);
+            }
+        }
+        self.mark_dirty();
+        Ok(())
+    }
+
+    /// Whether this state's tree is stored in 512-node blocks, the blocks of a
+    /// tree of format 1, and has not been converted by a serialize.
+    pub async fn has_legacy_node_blocks(
+        &self,
+        repository: Arc<RepositoryContext>,
+    ) -> Result<bool, StateError> {
+        self.tree(repository).await?;
+        Ok(self.runtime.read().legacy.is_some())
+    }
+
+    /// The address of the node block list the stored tree holds: the list of
+    /// 512-node blocks for a tree of format 1 not yet converted.
+    async fn stored_node_block_list(
+        &self,
+        repository: Arc<RepositoryContext>,
+    ) -> Result<Hash, StateError> {
+        let tree = self.tree(repository).await?;
+        Ok(self
+            .runtime
+            .read()
+            .legacy
+            .map_or(tree.hash_node, |legacy| legacy.hash_node))
     }
 
     pub async fn block_with_nametable(
@@ -1577,9 +1807,9 @@ impl State {
                     return None;
                 };
                 block_hash_bytes = hash_bytes;
-                if block_hash_bytes.count::<Hash>() < tree.block_count as usize {
+                if block_hash_bytes.count::<Hash>() < NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
                     block_hash_bytes = block_hash_bytes
-                        .clone_and_resize_zeroed::<Hash>(tree.block_count as usize)
+                        .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize))
                         .freeze();
                 }
                 {
@@ -1641,7 +1871,7 @@ impl State {
         }
 
         let tree = self.tree(repository.clone()).await?;
-        if block_index >= tree.block_count as usize {
+        if block_index >= NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
             return Err(StateError::internal(format!(
                 "Invalid block index: {block_index}"
             )));
@@ -1686,7 +1916,7 @@ impl State {
         }
 
         let tree = self.tree(repository.clone()).await?;
-        if block_index >= tree.block_count as usize {
+        if block_index >= NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
             return Err(StateError::internal(format!(
                 "Invalid block index: {block_index}"
             )));
@@ -1711,7 +1941,7 @@ impl State {
             let mut lock = self.runtime.write();
             if block_index >= lock.block_file_metadata.len() {
                 lock.block_file_metadata
-                    .resize(tree.block_count as usize, Weak::default());
+                    .resize(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize), Weak::default());
             }
 
             lock.block_file_metadata_address.clone()
@@ -1756,9 +1986,9 @@ impl State {
                 )
                 .await
                 .forward::<StateError>("Failed to deserialize node block list")?;
-                if block_hash_bytes.count::<Hash>() < tree.block_count as usize {
+                if block_hash_bytes.count::<Hash>() < NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
                     block_hash_bytes = block_hash_bytes
-                        .clone_and_resize_zeroed::<Hash>(tree.block_count as usize)
+                        .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize))
                         .freeze();
                 }
                 {
@@ -3908,7 +4138,7 @@ impl State {
             if hash_tree.is_zero() {
                 let mut tree = Tree::new_zeroed();
                 tree.magic = TREE_MAGIC;
-                tree.format = TreeFormat::Initial as u32;
+                tree.format = TreeFormat::SmallNodeBlocks as u32;
                 tree.block_count = 1;
                 {
                     let mut lock = self.runtime.write();
@@ -3928,25 +4158,44 @@ impl State {
                     .forward::<StateError>("Failed to deserialize tree")?;
                 if tree.magic != TREE_MAGIC {
                     return Err(StateError::internal("Tree corrupt header"));
-                } else if tree.format == 0 || tree.format > TreeFormat::Initial as u32 {
+                } else if tree.format == 0 || tree.format > TreeFormat::SmallNodeBlocks as u32 {
                     return Err(StateError::internal(format!(
                         "Tree invalid format: {}",
                         tree.format
                     )));
-                } else if tree.block_count > MAX_TREE_BLOCK_COUNT {
+                }
+                let limit = if tree.format == TreeFormat::Initial as u32 {
+                    MAX_LEGACY_TREE_BLOCK_COUNT
+                } else {
+                    MAX_TREE_BLOCK_COUNT
+                };
+                if tree.block_count > limit {
                     return Err(StateError::from(Oversized {
                         context: format!(
-                            "tree block count {} exceeds limit {}",
-                            tree.block_count, MAX_TREE_BLOCK_COUNT
+                            "tree block count {} exceeds limit {limit}",
+                            tree.block_count
                         ),
                     }));
                 }
+                let legacy = (tree.format == TreeFormat::Initial as u32).then(|| {
+                    let legacy = LegacyNodeBlocks {
+                        hash_node: tree.hash_node,
+                        block_count: tree.block_count as usize,
+                    };
+                    tree.format = TreeFormat::SmallNodeBlocks as u32;
+                    tree.block_count *= LEGACY_BLOCK_SPLIT as u32;
+                    tree.hash_node = Hash::default();
+                    // The chain linked 512-node blocks; the conversion rebuilds it.
+                    tree.block_unused_first = INVALID_BLOCK;
+                    legacy
+                });
                 {
                     let mut lock = self.runtime.write();
                     if let Some(current_tree) = &lock.tree {
                         tree = *current_tree;
                     } else {
                         lock.tree = Some(tree);
+                        lock.legacy = legacy;
                     }
                 }
                 tree
@@ -3964,7 +4213,9 @@ impl State {
 
         let mut address = Vec::with_capacity(5);
 
-        address.push(Address::zero_context_hash(tree.hash_node));
+        address.push(Address::zero_context_hash(
+            self.stored_node_block_list(repository.clone()).await?,
+        ));
 
         {
             let data = self.data.read();
@@ -5350,15 +5601,25 @@ impl Default for Tree {
 
 const TREE_MAGIC: u32 = 0x3C71BF05u32;
 
-/// Maximum number of blocks in a tree. Guards against malicious or corrupt
-/// tree headers triggering unbounded allocations when blocks are accessed.
-pub const MAX_TREE_BLOCK_COUNT: u32 = 1_000_000;
+/// Maximum number of 512-node blocks in a tree of format 1. Guards against
+/// malicious or corrupt tree headers triggering unbounded allocations when
+/// blocks are accessed.
+pub const MAX_LEGACY_TREE_BLOCK_COUNT: u32 = 1_000_000;
+
+/// Maximum number of blocks in a tree: the same number of nodes as
+/// [`MAX_LEGACY_TREE_BLOCK_COUNT`] allows a tree of format 1.
+pub const MAX_TREE_BLOCK_COUNT: u32 = MAX_LEGACY_TREE_BLOCK_COUNT * LEGACY_BLOCK_SPLIT as u32;
 
 /// Tree format version identifiers
 #[repr(u32)]
 pub enum TreeFormat {
-    /// Initial version
+    /// Initial version: node blocks of 512 nodes
     Initial = 1,
+    /// Node blocks of [`BLOCK_NODE_COUNT`] nodes. A save stores each node block
+    /// it changes whole, so smaller blocks keep less per save. File metadata
+    /// blocks keep 512 entries. A Lore that knows only format 1 refuses a tree
+    /// of this format rather than misread its blocks.
+    SmallNodeBlocks = 2,
 }
 
 fn named_node_sort(node: &mut [StateNamedNode]) {
@@ -7248,7 +7509,9 @@ async fn collect_state_fragments(
     }
 
     let tree = state.tree(repository.clone()).await?;
-    addresses.push(Address::zero_context_hash(tree.hash_node));
+    addresses.push(Address::zero_context_hash(
+        state.stored_node_block_list(repository.clone()).await?,
+    ));
     addresses.push(Address::zero_context_hash(tree.hash_file_metadata));
     addresses.push(Address::zero_context_hash(tree.hash_delta));
 
@@ -7267,9 +7530,9 @@ async fn collect_node_blocks(
 ) -> Result<Vec<Address>, StateError> {
     let mut addresses = Vec::with_capacity(32);
 
-    let tree = state.tree(repository.clone()).await?;
-    if !tree.hash_node.is_zero() {
-        let block_address = Address::zero_context_hash(tree.hash_node);
+    let hash_node = state.stored_node_block_list(repository.clone()).await?;
+    if !hash_node.is_zero() {
+        let block_address = Address::zero_context_hash(hash_node);
         let buffer = immutable::read(
             repository.clone(),
             block_address,
@@ -7332,6 +7595,11 @@ async fn collect_name_fragments(
             async move {
                 if let Ok(block_data) =
                     NodeBlockData::read_box_from_immutable(repository.clone(), address, true).await
+                {
+                    Ok(block_data.name_table)
+                } else if let Ok(block_data) =
+                    NodeBlockDataLegacy::read_box_from_immutable(repository.clone(), address, true)
+                        .await
                 {
                     Ok(block_data.name_table)
                 } else {

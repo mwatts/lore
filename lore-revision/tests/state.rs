@@ -40,8 +40,8 @@ mod tests {
         // Create a node block data with some random data
         let mut block = NodeBlockData::new_from_heap_zeroed();
         block.flags = NodeBlockFlags::Dirty.as_u32();
-        block.node[100].flags = NodeFlags::Discarded.as_u32() as u16;
-        block.node_count = 150;
+        block.node[BLOCK_NODE_COUNT - 1].flags = NodeFlags::Discarded.as_u32() as u16;
+        block.node_count = BLOCK_NODE_COUNT as u32;
 
         // Clone it
         let cloned = block.clone_on_heap();
