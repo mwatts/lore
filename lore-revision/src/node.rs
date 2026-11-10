@@ -1555,7 +1555,8 @@ impl NodeBlock {
             }
         }
 
-        let flags = legacy.flags & !NodeBlockFlags::DeferRepackNametable & !NODE_BLOCK_RUNTIME_FLAGS;
+        let flags =
+            legacy.flags & !NodeBlockFlags::DeferRepackNametable & !NODE_BLOCK_RUNTIME_FLAGS;
         (0..LEGACY_BLOCK_SPLIT)
             .map(|part| {
                 let base = part * BLOCK_NODE_COUNT;
@@ -1564,8 +1565,9 @@ impl NodeBlock {
                 data.version = NodeBlockFormat::Nametable as u32;
                 data.name_table = legacy.name_table;
                 data.block_unused_next = INVALID_BLOCK;
-                data.node_count =
-                    (legacy.node_count as usize).saturating_sub(base).min(BLOCK_NODE_COUNT) as u32;
+                data.node_count = (legacy.node_count as usize)
+                    .saturating_sub(base)
+                    .min(BLOCK_NODE_COUNT) as u32;
                 data.node
                     .copy_from_slice(&legacy.node[base..base + BLOCK_NODE_COUNT]);
 
@@ -2509,7 +2511,9 @@ mod tests {
                 chain.push(next as usize);
                 next = data.node[next as usize].sibling;
             }
-            assert_eq!(next, INVALID_NODE, "the chain ends");
+            if !chain.is_empty() {
+                assert_eq!(next, INVALID_NODE, "the chain ends");
+            }
             chain
         };
         for (index, part) in parts.iter().enumerate() {

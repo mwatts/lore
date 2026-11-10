@@ -343,7 +343,7 @@ mod tests {
 
                 // Deserialize it back via NodeBlock::deserialize which should detect V0 and convert
                 let state = State::new();
-                let deserialized = NodeBlock::deserialize(repository.clone(), &state, address)
+                let deserialized = NodeBlock::deserialize(repository.clone(), address)
                     .await
                     .expect("Failed to deserialize V0 block");
 
@@ -613,7 +613,7 @@ mod tests {
 
                 // Deserialize it back via NodeBlock::deserialize which should detect V2 and convert
                 let state = State::new();
-                let deserialized = NodeBlock::deserialize(repository.clone(), &state, address)
+                let deserialized = NodeBlock::deserialize(repository.clone(), address)
                     .await
                     .expect("Failed to deserialize V2 block");
 

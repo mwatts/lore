@@ -541,6 +541,8 @@ struct StateRuntime {
     tree: Option<Tree>,
     /// Memory buffer holding all block addresses
     block_address: Bytes,
+    /// The chunk addresses of the stored node block list `block_address` came from
+    block_address_chunks: Bytes,
     /// Weak references to each block
     block: Vec<Weak<NodeBlock>>,
     /// Dirty blocks kept in memory
@@ -551,6 +553,13 @@ struct StateRuntime {
     block_cache_counter: AtomicU64,
     /// Memory buffer holding all file metadata block addresses
     block_file_metadata_address: Bytes,
+    /// The chunk addresses of the stored file metadata block list
+    /// `block_file_metadata_address` came from
+    block_file_metadata_address_chunks: Bytes,
+    /// Write the file metadata block list at the next serialize even if no
+    /// file metadata block is dirty: a converted tree of format 1 holds it in
+    /// the old, unchunked form
+    rewrite_file_metadata_list: bool,
     /// Weak references to each file metadata block
     block_file_metadata: Vec<Weak<NodeFileMetadataBlock>>,
     /// Dirty blocks kept in memory
@@ -590,11 +599,14 @@ impl StateRuntime {
             signature,
             tree: None,
             block_address: Bytes::default(),
+            block_address_chunks: Bytes::default(),
             block: vec![],
             block_dirty: vec![],
             block_cache: vec![],
             block_cache_counter: AtomicU64::new(0),
             block_file_metadata_address: Bytes::default(),
+            block_file_metadata_address_chunks: Bytes::default(),
+            rewrite_file_metadata_list: false,
             block_file_metadata: vec![],
             block_file_metadata_dirty: vec![],
             link_list: None,
@@ -885,11 +897,15 @@ impl State {
                 });
             }
 
-            let mut block_hash_bytes = {
+            let (mut block_hash_bytes, previous_list, previous_chunks) = {
                 let lock = self.runtime.read();
                 // Resize buffer with empty hashes if needed
-                lock.block_address
-                    .clone_and_resize_zeroed::<Hash>(block_count)
+                (
+                    lock.block_address
+                        .clone_and_resize_zeroed::<Hash>(block_count),
+                    lock.block_address.clone(),
+                    lock.block_address_chunks.clone(),
+                )
             };
             {
                 let block_hash = block_hash_bytes.as_type_slice_mut();
@@ -916,13 +932,11 @@ impl State {
 
             // Write out the block address list
             let block_hash_bytes = block_hash_bytes.freeze();
-            let list_address = immutable::write(
-                repository.clone(),
-                Context::default(),
-                block_hash_bytes.clone(),
-                immutable::write_options_from_repository(repository.clone())
-                    .with_local_cache_priority()
-                    .with_max_size_chunk(),
+            let (list_hash, list_chunks) = write_block_list(
+                &repository,
+                &block_hash_bytes,
+                &previous_list,
+                &previous_chunks,
             )
             .await
             .forward::<StateError>("Failed to serialize node block list")?;
@@ -932,19 +946,21 @@ impl State {
                 lore_trace!(
                     "Update tree node block list from {} to {}",
                     tree.hash_node,
-                    list_address.hash
+                    list_hash
                 );
-                tree.hash_node = list_address.hash;
+                tree.hash_node = list_hash;
                 tree.flags |= TreeFlags::Dirty;
                 {
                     let mut lock = self.runtime.write();
                     lock.tree = Some(tree);
                     lock.block_address = block_hash_bytes;
+                    lock.block_address_chunks = list_chunks;
                 }
             }
         }
 
-        if !block_file_metadata_dirty.is_empty() {
+        let rewrite_file_metadata_list = self.runtime.read().rewrite_file_metadata_list;
+        if !block_file_metadata_dirty.is_empty() || rewrite_file_metadata_list {
             lore_trace!(
                 "Serializing {} dirty file metadata blocks",
                 block_file_metadata_dirty.len()
@@ -977,13 +993,17 @@ impl State {
                 });
             }
 
-            let mut block_hash_bytes = {
+            let (mut block_hash_bytes, previous_list, previous_chunks) = {
                 let lock = self.runtime.read();
                 // Resize buffer with empty hashes if needed
-                lock.block_file_metadata_address
-                    .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(
-                        block_count,
-                    ))
+                (
+                    lock.block_file_metadata_address
+                        .clone_and_resize_zeroed::<Hash>(
+                            NodeFileMetadataBlock::count_for_node_blocks(block_count),
+                        ),
+                    lock.block_file_metadata_address.clone(),
+                    lock.block_file_metadata_address_chunks.clone(),
+                )
             };
             {
                 let block_hash = block_hash_bytes.as_type_slice_mut();
@@ -1010,13 +1030,11 @@ impl State {
 
             // Write out the block address list
             let block_hash_bytes = block_hash_bytes.freeze();
-            let list_address = immutable::write(
-                repository.clone(),
-                Context::default(),
-                block_hash_bytes.clone(),
-                immutable::write_options_from_repository(repository.clone())
-                    .with_local_cache_priority()
-                    .with_max_size_chunk(),
+            let (list_hash, list_chunks) = write_block_list(
+                &repository,
+                &block_hash_bytes,
+                &previous_list,
+                &previous_chunks,
             )
             .await
             .forward::<StateError>("Failed to serialize file metadata block list")?;
@@ -1026,14 +1044,16 @@ impl State {
                 lore_trace!(
                     "Update tree file metadata node block list from {} to {}",
                     tree.hash_file_metadata,
-                    list_address.hash
+                    list_hash
                 );
-                tree.hash_file_metadata = list_address.hash;
+                tree.hash_file_metadata = list_hash;
                 tree.flags |= TreeFlags::Dirty;
                 {
                     let mut lock = self.runtime.write();
                     lock.tree = Some(tree);
                     lock.block_file_metadata_address = block_hash_bytes;
+                    lock.block_file_metadata_address_chunks = list_chunks;
+                    lock.rewrite_file_metadata_list = false;
                 }
             }
         }
@@ -1403,7 +1423,11 @@ impl State {
 
         let (mut block_hash_bytes, rehash_node_names, legacy) = {
             let lock = self.runtime.read();
-            (lock.block_address.clone(), lock.rehash_node_names, lock.legacy)
+            (
+                lock.block_address.clone(),
+                lock.rehash_node_names,
+                lock.legacy,
+            )
         };
 
         if let Some(legacy) = legacy {
@@ -1454,24 +1478,20 @@ impl State {
                 // TODO(mjansson): To support huge trees we might want to selectively
                 // read the block addresses instead of all in one big buffer
                 lore_trace!("Deserialize block address list");
-                let address = Address::zero_context_hash(hash_node);
-                block_hash_bytes = immutable::read(
-                    repository.clone(),
-                    address,
-                    None, /* Read the full array of block hashes */
-                    immutable::read_options_from_repository(&repository)
-                        .with_cache()
-                        .with_priority(),
-                )
-                .await
-                .forward::<StateError>("Failed to deserialize node block list")?;
+                let (list, chunks) =
+                    read_block_list(&repository, hash_node, true)
+                        .await
+                        .forward::<StateError>("Failed to deserialize node block list")?;
+                block_hash_bytes = list;
                 if block_hash_bytes.count::<Hash>() < block_count {
                     block_hash_bytes = block_hash_bytes
                         .clone_and_resize_zeroed::<Hash>(block_count)
                         .freeze();
                 }
                 {
-                    self.runtime.write().block_address = block_hash_bytes.clone();
+                    let mut lock = self.runtime.write();
+                    lock.block_address = block_hash_bytes.clone();
+                    lock.block_address_chunks = chunks;
                 }
                 lore_trace!("Deserialized block address list");
             }
@@ -1669,9 +1689,9 @@ impl State {
                 lock.block_cache[cache_index % MAX_BLOCK_CACHE] = block;
             }
         }
-        lock.block[block_index].upgrade().ok_or_else(|| {
-            StateError::internal(format!("Node block {block_index} was not kept"))
-        })
+        lock.block[block_index]
+            .upgrade()
+            .ok_or_else(|| StateError::internal(format!("Node block {block_index} was not kept")))
     }
 
     /// Write every block of a tree of format 1 at the current size, so the tree
@@ -1691,8 +1711,28 @@ impl State {
         for block_index in 0..block_count {
             blocks.push(self.block(repository.clone(), block_index).await?);
         }
+        // The file metadata blocks stay as they are, but their list is stored
+        // whole in format 1 and in chunks in format 2, so it is read whole
+        // here and written in chunks by the serialize.
+        let tree = self.tree(repository.clone()).await?;
+        let metadata_count = NodeFileMetadataBlock::count_for_node_blocks(block_count);
+        let mut metadata_list = self.runtime.read().block_file_metadata_address.clone();
+        if metadata_list.count::<Hash>() < metadata_count {
+            if !tree.hash_file_metadata.is_zero() {
+                metadata_list = read_block_list(&repository, tree.hash_file_metadata, false)
+                    .await
+                    .forward::<StateError>("Failed to deserialize file metadata block list")?
+                    .0;
+            }
+            metadata_list = metadata_list
+                .clone_and_resize_zeroed::<Hash>(metadata_count)
+                .freeze();
+        }
         {
             let mut runtime = self.runtime.write();
+            runtime.block_file_metadata_address = metadata_list;
+            runtime.block_file_metadata_address_chunks = Bytes::default();
+            runtime.rewrite_file_metadata_list = true;
             let mut head = INVALID_BLOCK;
             for (block_index, block) in blocks.iter().enumerate().rev() {
                 let mut writer = block.write();
@@ -1707,6 +1747,7 @@ impl State {
             runtime.legacy = None;
             runtime.legacy_block_address = Bytes::default();
             runtime.block_address = Bytes::default();
+            runtime.block_address_chunks = Bytes::default();
             if let Some(tree) = runtime.tree.as_mut() {
                 tree.format = TreeFormat::SmallNodeBlocks as u32;
                 tree.block_unused_first = head;
@@ -1733,18 +1774,20 @@ impl State {
         Ok(self.runtime.read().legacy.is_some())
     }
 
-    /// The address of the node block list the stored tree holds: the list of
-    /// 512-node blocks for a tree of format 1 not yet converted.
-    async fn stored_node_block_list(
+    /// The node block list and the file metadata block list the stored tree
+    /// holds, and whether they are stored in chunks: the lists of a tree of
+    /// format 1 not yet converted are not, and its node block list is of
+    /// 512-node blocks.
+    async fn stored_block_lists(
         &self,
         repository: Arc<RepositoryContext>,
-    ) -> Result<Hash, StateError> {
+    ) -> Result<(Hash, Hash, bool), StateError> {
         let tree = self.tree(repository).await?;
-        Ok(self
-            .runtime
-            .read()
-            .legacy
-            .map_or(tree.hash_node, |legacy| legacy.hash_node))
+        let legacy = self.runtime.read().legacy;
+        Ok(match legacy {
+            Some(legacy) => (legacy.hash_node, tree.hash_file_metadata, false),
+            None => (tree.hash_node, tree.hash_file_metadata, true),
+        })
     }
 
     pub async fn block_with_nametable(
@@ -1764,14 +1807,18 @@ impl State {
         repository: Arc<RepositoryContext>,
         block_index: usize,
     ) -> Option<JoinHandle<()>> {
-        let (tree, mut block_hash_bytes) = {
+        let (tree, mut block_hash_bytes, chunked) = {
             let lock = self.runtime.read();
             if lock.block_file_metadata.len() > block_index
                 && lock.block_file_metadata[block_index].upgrade().is_some()
             {
                 return None;
             }
-            (lock.tree?, lock.block_file_metadata_address.clone())
+            (
+                lock.tree?,
+                lock.block_file_metadata_address.clone(),
+                lock.legacy.is_none(),
+            )
         };
 
         if block_index >= block_hash_bytes.count::<Hash>() {
@@ -1793,27 +1840,22 @@ impl State {
             if block_index >= block_hash_bytes.count::<Hash>() {
                 // TODO(mjansson): To support huge trees we might want to selectively
                 // read the block addresses instead of all in one big buffer
-                let address = Address::zero_context_hash(tree.hash_file_metadata);
-                let Ok(hash_bytes) = immutable::read(
-                    repository.clone(),
-                    address,
-                    None, /* Read the full array of block hashes */
-                    immutable::read_options_from_repository(&repository)
-                        .with_cache()
-                        .with_priority(),
-                )
-                .await
+                let Ok((hash_bytes, chunks)) =
+                    read_block_list(&repository, tree.hash_file_metadata, chunked).await
                 else {
                     return None;
                 };
                 block_hash_bytes = hash_bytes;
-                if block_hash_bytes.count::<Hash>() < NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
+                let count = NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize);
+                if block_hash_bytes.count::<Hash>() < count {
                     block_hash_bytes = block_hash_bytes
-                        .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize))
+                        .clone_and_resize_zeroed::<Hash>(count)
                         .freeze();
                 }
                 {
-                    self.runtime.write().block_file_metadata_address = block_hash_bytes.clone();
+                    let mut lock = self.runtime.write();
+                    lock.block_file_metadata_address = block_hash_bytes.clone();
+                    lock.block_file_metadata_address_chunks = chunks;
                 }
             }
         }
@@ -1940,8 +1982,10 @@ impl State {
         let mut block_hash_bytes = {
             let mut lock = self.runtime.write();
             if block_index >= lock.block_file_metadata.len() {
-                lock.block_file_metadata
-                    .resize(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize), Weak::default());
+                lock.block_file_metadata.resize(
+                    NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize),
+                    Weak::default(),
+                );
             }
 
             lock.block_file_metadata_address.clone()
@@ -1975,24 +2019,21 @@ impl State {
 
                 // TODO(mjansson): To support huge trees we might want to selectively
                 // read the block addresses instead of all in one big buffer
-                let address = Address::zero_context_hash(tree.hash_file_metadata);
-                block_hash_bytes = immutable::read(
-                    repository.clone(),
-                    address,
-                    None, /* Read the full array of block hashes */
-                    immutable::read_options_from_repository(&repository)
-                        .with_cache()
-                        .with_priority(),
-                )
-                .await
-                .forward::<StateError>("Failed to deserialize node block list")?;
-                if block_hash_bytes.count::<Hash>() < NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize) {
+                let chunked = self.runtime.read().legacy.is_none();
+                let (list, chunks) = read_block_list(&repository, tree.hash_file_metadata, chunked)
+                    .await
+                    .forward::<StateError>("Failed to deserialize file metadata block list")?;
+                block_hash_bytes = list;
+                let count = NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize);
+                if block_hash_bytes.count::<Hash>() < count {
                     block_hash_bytes = block_hash_bytes
-                        .clone_and_resize_zeroed::<Hash>(NodeFileMetadataBlock::count_for_node_blocks(tree.block_count as usize))
+                        .clone_and_resize_zeroed::<Hash>(count)
                         .freeze();
                 }
                 {
-                    self.runtime.write().block_file_metadata_address = block_hash_bytes.clone();
+                    let mut lock = self.runtime.write();
+                    lock.block_file_metadata_address = block_hash_bytes.clone();
+                    lock.block_file_metadata_address_chunks = chunks;
                 }
             }
         }
@@ -4214,7 +4255,7 @@ impl State {
         let mut address = Vec::with_capacity(5);
 
         address.push(Address::zero_context_hash(
-            self.stored_node_block_list(repository.clone()).await?,
+            self.stored_block_lists(repository.clone()).await?.0,
         ));
 
         {
@@ -5617,8 +5658,10 @@ pub enum TreeFormat {
     Initial = 1,
     /// Node blocks of [`BLOCK_NODE_COUNT`] nodes. A save stores each node block
     /// it changes whole, so smaller blocks keep less per save. File metadata
-    /// blocks keep 512 entries. A Lore that knows only format 1 refuses a tree
-    /// of this format rather than misread its blocks.
+    /// blocks keep 512 entries. Both block lists are stored in chunks of
+    /// [`BLOCK_LIST_CHUNK`] hashes under a list of the chunks' addresses. A
+    /// Lore that knows only format 1 refuses a tree of this format rather than
+    /// misread its blocks.
     SmallNodeBlocks = 2,
 }
 
@@ -7495,6 +7538,123 @@ async fn verify_node_name_case_impl(
     Ok(())
 }
 
+/// Block hashes per chunk of a node block list or a file metadata block list,
+/// in a tree of format 2.
+///
+/// The list grows with the tree, a hash per block, and a save writes it. Stored
+/// whole, it would grow each save by 32 bytes for every block in the tree; stored
+/// as chunks of this many hashes under a list of their addresses, a save writes
+/// the chunks that hold a changed block and the list of chunks.
+pub const BLOCK_LIST_CHUNK: usize = 64;
+
+/// Read the block list stored at `hash`: the block hashes in order, and the
+/// chunk addresses they were read from (empty when the list is not `chunked`).
+async fn read_block_list(
+    repository: &Arc<RepositoryContext>,
+    hash: Hash,
+    chunked: bool,
+) -> Result<(Bytes, Bytes), ImmutableError> {
+    let options = immutable::read_options_from_repository(repository)
+        .with_cache()
+        .with_priority();
+    let top = immutable::read(
+        repository.clone(),
+        Address::zero_context_hash(hash),
+        None, /* Read the full array of hashes */
+        options,
+    )
+    .await?;
+    if !chunked {
+        return Ok((top, Bytes::default()));
+    }
+    let chunk_size = BLOCK_LIST_CHUNK * size_of::<Hash>();
+    let chunk_hashes = top.as_type_slice::<Hash>();
+    let chunks = futures::future::try_join_all(chunk_hashes.iter().map(|chunk| {
+        let repository = repository.clone();
+        let chunk = *chunk;
+        async move {
+            if chunk.is_zero() {
+                return Ok(Bytes::default());
+            }
+            immutable::read(
+                repository,
+                Address::zero_context_hash(chunk),
+                None,
+                options.with_max_content_size(chunk_size as u64),
+            )
+            .await
+        }
+    }))
+    .await?;
+    let mut list = Vec::with_capacity(chunks.len() * chunk_size);
+    let last = chunks.len().saturating_sub(1);
+    for (index, chunk) in chunks.iter().enumerate() {
+        list.extend_from_slice(chunk);
+        // Only the last chunk may be short; a shorter one is padded, as a
+        // missing hash reads as a block never written.
+        if index != last {
+            list.resize((index + 1) * chunk_size, 0);
+        }
+    }
+    Ok((Bytes::from(list), top))
+}
+
+/// Write `list`, a block hash per block, in chunks of [`BLOCK_LIST_CHUNK`]
+/// hashes, and the list of their addresses; the address of that list, and the
+/// list itself. A chunk that holds what it held in `previous`, the list
+/// `previous_chunks` was written from, is not written again.
+async fn write_block_list(
+    repository: &Arc<RepositoryContext>,
+    list: &Bytes,
+    previous: &Bytes,
+    previous_chunks: &Bytes,
+) -> Result<(Hash, Bytes), ImmutableError> {
+    let hashes = list.as_type_slice::<Hash>();
+    let previous = previous.as_type_slice::<Hash>();
+    let previous_chunks = previous_chunks.as_type_slice::<Hash>();
+    let range = |index: usize, len: usize| {
+        index * BLOCK_LIST_CHUNK..((index + 1) * BLOCK_LIST_CHUNK).min(len)
+    };
+    let count = hashes.len().div_ceil(BLOCK_LIST_CHUNK);
+    let write_options = || {
+        immutable::write_options_from_repository(repository.clone())
+            .with_local_cache_priority()
+            .with_max_size_chunk()
+    };
+    let chunks = futures::future::try_join_all((0..count).map(|index| {
+        let chunk_range = range(index, hashes.len());
+        let unchanged = previous_chunks
+            .get(index)
+            .filter(|hash| !hash.is_zero())
+            .filter(|_| {
+                range(index, previous.len()) == chunk_range
+                    && previous[chunk_range.clone()] == hashes[chunk_range.clone()]
+            })
+            .copied();
+        let bytes = Bytes::copy_from_slice(hashes[chunk_range].as_bytes());
+        let repository = repository.clone();
+        let options = write_options();
+        async move {
+            match unchanged {
+                Some(hash) => Ok(hash),
+                None => immutable::write(repository, Context::default(), bytes, options)
+                    .await
+                    .map(|address| address.hash),
+            }
+        }
+    }))
+    .await?;
+    let chunks = Bytes::copy_from_slice(chunks.as_slice().as_bytes());
+    let address = immutable::write(
+        repository.clone(),
+        Context::default(),
+        chunks.clone(),
+        write_options(),
+    )
+    .await?;
+    Ok((address.hash, chunks))
+}
+
 async fn collect_state_fragments(
     repository: Arc<RepositoryContext>,
     state: Arc<State>,
@@ -7509,10 +7669,28 @@ async fn collect_state_fragments(
     }
 
     let tree = state.tree(repository.clone()).await?;
-    addresses.push(Address::zero_context_hash(
-        state.stored_node_block_list(repository.clone()).await?,
-    ));
-    addresses.push(Address::zero_context_hash(tree.hash_file_metadata));
+    let (hash_node, hash_file_metadata, chunked) =
+        state.stored_block_lists(repository.clone()).await?;
+    addresses.push(Address::zero_context_hash(hash_node));
+    addresses.push(Address::zero_context_hash(hash_file_metadata));
+    if chunked {
+        // The chunks the lists are stored in are fragments of the state too.
+        for list in [hash_node, hash_file_metadata] {
+            if list.is_zero() {
+                continue;
+            }
+            let (_, chunks) = read_block_list(&repository, list, true)
+                .await
+                .forward::<StateError>("Failed to deserialize block list")?;
+            addresses.extend(
+                chunks
+                    .as_type_slice::<Hash>()
+                    .iter()
+                    .filter(|hash| !hash.is_zero())
+                    .map(|hash| Address::zero_context_hash(*hash)),
+            );
+        }
+    }
     addresses.push(Address::zero_context_hash(tree.hash_delta));
 
     if !tree.hash_nametable_deprecated.is_zero() {
@@ -7530,19 +7708,11 @@ async fn collect_node_blocks(
 ) -> Result<Vec<Address>, StateError> {
     let mut addresses = Vec::with_capacity(32);
 
-    let hash_node = state.stored_node_block_list(repository.clone()).await?;
+    let (hash_node, _, chunked) = state.stored_block_lists(repository.clone()).await?;
     if !hash_node.is_zero() {
-        let block_address = Address::zero_context_hash(hash_node);
-        let buffer = immutable::read(
-            repository.clone(),
-            block_address,
-            None, /* Read the full array of block hashes */
-            immutable::read_options_from_repository(&repository)
-                .with_cache()
-                .with_priority(),
-        )
-        .await
-        .forward::<StateError>("Failed to deserialize node block list")?;
+        let (buffer, _) = read_block_list(&repository, hash_node, chunked)
+            .await
+            .forward::<StateError>("Failed to deserialize node block list")?;
 
         let hash_slice = buffer.as_type_slice::<Hash>();
         addresses.reserve(hash_slice.len());
@@ -7560,19 +7730,11 @@ async fn collect_file_metadata_blocks(
 ) -> Result<Vec<Address>, StateError> {
     let mut addresses = Vec::with_capacity(32);
 
-    let tree = state.tree(repository.clone()).await?;
-    if !tree.hash_file_metadata.is_zero() {
-        let block_address = Address::zero_context_hash(tree.hash_file_metadata);
-        let buffer = immutable::read(
-            repository.clone(),
-            block_address,
-            None, /* Read the full array of block hashes */
-            immutable::read_options_from_repository(&repository)
-                .with_cache()
-                .with_priority(),
-        )
-        .await
-        .forward::<StateError>("Failed to deserialize node block list")?;
+    let (_, hash_file_metadata, chunked) = state.stored_block_lists(repository.clone()).await?;
+    if !hash_file_metadata.is_zero() {
+        let (buffer, _) = read_block_list(&repository, hash_file_metadata, chunked)
+            .await
+            .forward::<StateError>("Failed to deserialize file metadata block list")?;
 
         let hash_slice = buffer.as_type_slice::<Hash>();
         addresses.reserve(hash_slice.len());

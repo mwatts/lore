@@ -337,7 +337,10 @@ mod tests {
             Some(&b"new a"[..])
         );
         assert_eq!(reopened.read(&fourth, &note_path(600)).await, None);
-        assert_eq!(reopened.read(&fourth, &note_path(2)).await, Some(note(2, 2)));
+        assert_eq!(
+            reopened.read(&fourth, &note_path(2)).await,
+            Some(note(2, 2))
+        );
         assert_eq!(reopened.read(&fifth, &note_path(2)).await, None);
         assert_eq!(reopened.read(&fifth, &note_path(1)).await, Some(note(1, 4)));
         for n in (0..NOTES).filter(|n| n % 7 == 3 && *n != 600 && *n != 2) {
