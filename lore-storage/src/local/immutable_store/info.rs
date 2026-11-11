@@ -23,7 +23,15 @@ enum ImmutableStoreInfoVersion {
     /// may live only there until a fold, so a reader must replay it. A binary that knows only
     /// `Initial` refuses the store instead of opening it without them.
     Journaled = 1,
+    /// The store may hold revision trees whose node blocks are smaller than 512 nodes
+    /// (`lore-revision`'s tree format 2). A binary that knows only `Journaled` refuses such a
+    /// tree when it reads it, but some of its callers report that refusal as a missing file;
+    /// refusing the store at open keeps it from reading a revision as empty.
+    SmallNodeBlocks = 2,
 }
+
+/// The version this binary stamps on a store it opens with a journal.
+const CURRENT_VERSION: u32 = ImmutableStoreInfoVersion::SmallNodeBlocks as u32;
 
 #[repr(C)]
 #[derive(Debug, IntoBytes, FromBytes, Immutable)]
@@ -42,15 +50,17 @@ pub struct ImmutableStoreInfo {
 }
 
 impl ImmutableStoreInfo {
-    /// Whether the store has kept a journal, so a reader must replay it.
+    /// Whether the store is stamped with this binary's version: it has kept a journal, so a
+    /// reader must replay it, and it may hold trees of small node blocks.
     pub fn journaled(&self) -> bool {
-        self.version == ImmutableStoreInfoVersion::Journaled as u32
+        self.version == CURRENT_VERSION
     }
 
-    /// Record that the store keeps a journal. Written before the journal takes a record, it
-    /// makes a binary that cannot replay the journal refuse the store.
+    /// Stamp the store with this binary's version. Written before the journal takes a record,
+    /// or a tree of small node blocks is stored, it makes a binary that cannot replay the
+    /// journal, or read such a tree, refuse the store.
     pub fn set_journaled(&mut self) {
-        self.version = ImmutableStoreInfoVersion::Journaled as u32;
+        self.version = CURRENT_VERSION;
     }
 }
 
@@ -100,15 +110,12 @@ pub async fn read_info_file(path: &Path) -> std::io::Result<Option<ImmutableStor
             ),
         ));
     }
-    if header.version != ImmutableStoreInfoVersion::Initial as u32
-        && header.version != ImmutableStoreInfoVersion::Journaled as u32
-    {
+    if header.version > CURRENT_VERSION {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidData,
             format!(
-                "Info file has unsupported version {}, expected at most {}",
+                "Info file has unsupported version {}, expected at most {CURRENT_VERSION}",
                 header.version,
-                ImmutableStoreInfoVersion::Journaled as u32
             ),
         ));
     }
@@ -247,7 +254,7 @@ mod tests {
         async fn an_unsupported_version_is_rejected() {
             let dir = crate::test_util::TempDir::new("is_info_version_");
             let path = info_path_for_store_root(dir.path());
-            let unsupported = ImmutableStoreInfoVersion::Journaled as u32 + 1;
+            let unsupported = CURRENT_VERSION + 1;
             let bytes =
                 corrupted_bytes(|bytes| bytes[4..8].copy_from_slice(&unsupported.to_ne_bytes()));
             std::fs::write(&path, bytes).expect("file writes");
