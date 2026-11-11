@@ -800,7 +800,11 @@ mod tests {
         )
         .await;
 
-        let (status, events) = run_modify(handle, vec![entry(10, 400)]).await;
+        let (status, events) = run_modify(
+            handle,
+            vec![entry(10, lore_revision::node::BLOCK_NODE_COUNT as u32 - 1)],
+        )
+        .await;
         assert_ne!(status, 0, "an unallocated slot must not be modifiable");
         let reason = rejection_reason(&events);
         assert!(

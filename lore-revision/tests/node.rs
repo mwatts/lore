@@ -341,11 +341,17 @@ mod tests {
                     .await
                     .expect("Failed to write V0 block to immutable store");
 
-                // Deserialize it back via NodeBlock::deserialize which should detect V0 and convert
+                // Deserialize it back, which should detect V0 and convert
                 let state = State::new();
-                let deserialized = NodeBlock::deserialize(repository.clone(), &state, address)
-                    .await
-                    .expect("Failed to deserialize V0 block");
+                // A V0 block is a 512-node block of a tree of format 1: it is read
+                // by splitting it into blocks of the current size.
+                let deserialized =
+                    NodeBlock::deserialize_legacy(repository.clone(), &state, address)
+                        .await
+                        .expect("Failed to deserialize V0 block")
+                        .into_iter()
+                        .next()
+                        .expect("the first part holds the block's first nodes");
 
                 // Verify node count
                 assert_eq!(deserialized.read().node_count(), 4);
@@ -611,11 +617,17 @@ mod tests {
                     .await
                     .expect("Failed to write V2 block to immutable store");
 
-                // Deserialize it back via NodeBlock::deserialize which should detect V2 and convert
+                // Deserialize it back, which should detect V2 and convert
                 let state = State::new();
-                let deserialized = NodeBlock::deserialize(repository.clone(), &state, address)
-                    .await
-                    .expect("Failed to deserialize V2 block");
+                // A V2 block is a 512-node block of a tree of format 1: it is read
+                // by splitting it into blocks of the current size.
+                let deserialized =
+                    NodeBlock::deserialize_legacy(repository.clone(), &state, address)
+                        .await
+                        .expect("Failed to deserialize V2 block")
+                        .into_iter()
+                        .next()
+                        .expect("the first part holds the block's first nodes");
 
                 // Verify node count
                 assert_eq!(deserialized.read().node_count(), 4);
