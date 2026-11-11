@@ -40,8 +40,8 @@ mod tests {
         // Create a node block data with some random data
         let mut block = NodeBlockData::new_from_heap_zeroed();
         block.flags = NodeBlockFlags::Dirty.as_u32();
-        block.node[100].flags = NodeFlags::Discarded.as_u32() as u16;
-        block.node_count = 150;
+        block.node[BLOCK_NODE_COUNT - 1].flags = NodeFlags::Discarded.as_u32() as u16;
+        block.node_count = BLOCK_NODE_COUNT as u32;
 
         // Clone it
         let cloned = block.clone_on_heap();
@@ -234,6 +234,114 @@ mod tests {
             }))
             .await
             .expect("Task failed");
+    }
+
+    /// A tree's block lists are stored in chunks under a list of the chunks'
+    /// addresses. A push sends what `collect_new_fragments` names, so it names the
+    /// chunks of a new state's lists along with the lists.
+    #[tokio::test]
+    async fn collect_new_fragments_names_the_block_list_chunks() {
+        let (_immutable_store, mutable_store, execution) =
+            test_store_create().await.expect("Failed to create stores");
+
+        #[allow(clippy::disallowed_methods)]
+        runtime()
+            .spawn(LORE_CONTEXT.scope(execution.clone(), async move {
+                use lore_base::types::TypedBytes;
+                let tempdir = generate_tempdir();
+                let path = tempdir.to_path_buf();
+                let immutable_store = LocalImmutableStore::new(
+                    None,
+                    lore_storage::local::immutable_store::ImmutableStoreSettings::default(),
+                )
+                .await
+                .expect("Failed to create store");
+                let write_token =
+                    lore_revision::repository::RepositoryWriteToken::acquire(path.as_path()).await;
+                let repository = Arc::new(
+                    RepositoryContext::new(
+                        default_repository_creation_args(immutable_store, mutable_store)
+                            .with_path(&path),
+                    )
+                    .with_write_token(write_token.share()),
+                );
+
+                let state_from = Arc::new(State::new());
+                let signature_from = state_from
+                    .serialize(repository.clone(), &write_token)
+                    .await
+                    .expect("Failed to serialize from state");
+                let state_to = State::deserialize(repository.clone(), signature_from)
+                    .await
+                    .expect("Failed to deserialize state");
+                // Enough nodes for the node block list to need more than one chunk.
+                let count = BLOCK_NODE_COUNT * (lore_revision::state::BLOCK_LIST_CHUNK + 1);
+                for index in 0..count {
+                    let name = format!("node-{index}");
+                    let node = Node {
+                        name_hash: hash_string(&name),
+                        ..Default::default()
+                    };
+                    state_to
+                        .node_add(repository.clone(), ROOT_NODE, node, &name)
+                        .await
+                        .expect("Failed to add node");
+                }
+                let metadata_node = node_to_file_metadata((count - 1) as NodeID);
+                let metadata_index = NodeFileMetadataBlock::index(metadata_node);
+                let metadata_block = state_to
+                    .block_file_metadata(repository.clone(), metadata_index)
+                    .await
+                    .expect("Failed to read the file metadata block");
+                {
+                    let mut writer = metadata_block.write();
+                    writer.node(NodeFileMetadata::index(metadata_node)).flags = [1, 0];
+                    writer.mark_dirty();
+                }
+                state_to.block_file_metadata_modified(metadata_block, metadata_index);
+                let signature_to = state_to
+                    .serialize(repository.clone(), &write_token)
+                    .await
+                    .expect("Failed to serialize to state");
+                let state_to = State::deserialize(repository.clone(), signature_to)
+                    .await
+                    .expect("Failed to deserialize state");
+
+                let fragments = collect_new_fragments(
+                    repository.clone(),
+                    state_from.clone(),
+                    state_to.clone(),
+                    false,
+                )
+                .await
+                .expect("Failed to collect fragments");
+
+                let tree = state_to
+                    .tree(repository.clone())
+                    .await
+                    .expect("Failed to load the tree");
+                for (list, chunks_expected) in [(tree.hash_node, 2), (tree.hash_file_metadata, 1)] {
+                    assert!(fragments.contains(&Address::zero_context_hash(list)));
+                    let chunks = lore_revision::immutable::read(
+                        repository.clone(),
+                        Address::zero_context_hash(list),
+                        None,
+                        lore_revision::immutable::read_options_from_repository(&repository),
+                    )
+                    .await
+                    .expect("Failed to read a block list");
+                    let chunks = chunks.as_type_slice::<lore_base::types::Hash>();
+                    assert_eq!(chunks.len(), chunks_expected);
+                    for chunk in chunks {
+                        assert!(
+                            fragments.contains(&Address::zero_context_hash(*chunk)),
+                            "the chunk {chunk} of the list {list} is collected"
+                        );
+                    }
+                }
+            }))
+            .await
+            .expect("Test task failed");
     }
 
     #[tokio::test]
@@ -2563,13 +2671,15 @@ mod block_single_flight {
         metadata_block: Address,
     }
 
-    /// Store address of block `block_index` in the address list rooted at `list`.
+    /// Store address of block `block_index` in the address list rooted at `list`,
+    /// which is stored in chunks of `BLOCK_LIST_CHUNK` hashes.
     async fn block_address(
         repository: &Arc<RepositoryContext>,
         list: Hash,
         block_index: usize,
     ) -> Address {
-        let bytes = immutable::read(
+        let chunk_size = lore_revision::state::BLOCK_LIST_CHUNK;
+        let chunks = immutable::read(
             repository.clone(),
             Address::zero_context_hash(list),
             None,
@@ -2577,7 +2687,16 @@ mod block_single_flight {
         )
         .await
         .expect("Failed to read a block address list");
-        Address::zero_context_hash(bytes.as_type_slice::<Hash>()[block_index])
+        let chunk = chunks.as_type_slice::<Hash>()[block_index / chunk_size];
+        let bytes = immutable::read(
+            repository.clone(),
+            Address::zero_context_hash(chunk),
+            None,
+            immutable::read_options_from_repository(repository),
+        )
+        .await
+        .expect("Failed to read a block address list chunk");
+        Address::zero_context_hash(bytes.as_type_slice::<Hash>()[block_index % chunk_size])
     }
 
     async fn seeded_repository(mutable_store: Arc<dyn MutableStore>) -> Seed {

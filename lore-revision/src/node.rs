@@ -68,11 +68,34 @@ impl NodeIDExt for NodeID {
 }
 
 /// Number of bits to shift a full index to get block index
-const BLOCK_NODE_SHIFT: u32 = 9;
+pub const BLOCK_NODE_SHIFT: u32 = 5;
 /// Number of nodes in a block
-pub const BLOCK_NODE_COUNT: usize = 512;
+pub const BLOCK_NODE_COUNT: usize = 1 << BLOCK_NODE_SHIFT;
 /// Bitmask for node index in a full index
 const NODE_INDEX_MASK: u32 = (1u32 << BLOCK_NODE_SHIFT) - 1;
+/// Number of bits to shift a full index to get the block index in a tree of
+/// format 1 ([`crate::state::TreeFormat::Initial`]), whose blocks hold 512
+/// nodes.
+///
+/// A node ID is the same in either format: it counts nodes, not blocks, so a
+/// 512-node block is the run of [`LEGACY_BLOCK_SPLIT`] blocks of the current
+/// size that hold the same IDs.
+pub const LEGACY_BLOCK_NODE_SHIFT: u32 = 9;
+/// Number of nodes in a block of a tree of format 1.
+pub const LEGACY_BLOCK_NODE_COUNT: usize = 1 << LEGACY_BLOCK_NODE_SHIFT;
+/// Bitmask for node index in a full index, in a tree of format 1.
+const LEGACY_NODE_INDEX_MASK: u32 = (1u32 << LEGACY_BLOCK_NODE_SHIFT) - 1;
+/// Number of blocks of the current size one 512-node block splits into.
+pub const LEGACY_BLOCK_SPLIT: usize = LEGACY_BLOCK_NODE_COUNT / BLOCK_NODE_COUNT;
+const _: () = assert!(BLOCK_NODE_SHIFT <= LEGACY_BLOCK_NODE_SHIFT);
+const _: () = assert!(BLOCK_NODE_SHIFT <= FILE_METADATA_BLOCK_SHIFT);
+/// Number of bits to shift a full index to get its file metadata block index.
+/// File metadata blocks keep 512 entries in every tree format: they compress
+/// to about a kilobyte, so splitting them would save little and lengthen
+/// their block list.
+const FILE_METADATA_BLOCK_SHIFT: u32 = 9;
+/// Bitmask for the file metadata index in a full index.
+const FILE_METADATA_INDEX_MASK: u32 = (1u32 << FILE_METADATA_BLOCK_SHIFT) - 1;
 /// Maximum size of the per-block node name buffer. Each [`NodeBlock`] holds up
 /// to [`BLOCK_NODE_COUNT`] nodes, and the total concatenated name data is
 /// capped at this size (4 MiB = ~8 KiB per node, far larger than any
@@ -826,7 +849,8 @@ macro_rules! block_payload_on_tree_heap {
     };
 }
 
-/// A block of nodes, 49280 bytes - 128 byte metadata, 512 nodes (96 bytes each)
+/// A block of nodes: 128 bytes of metadata and [`BLOCK_NODE_COUNT`] nodes of
+/// 96 bytes each. The block of a tree of format 2 and later.
 #[repr(C)]
 #[derive(Clone, IntoBytes, FromBytes, Immutable)]
 pub struct NodeBlockData {
@@ -855,6 +879,37 @@ pub struct NodeBlockData {
 impl ReadBoxFromImmutable for NodeBlockData {}
 block_payload_on_tree_heap!(NodeBlockData, ZeroHeapAlloc, CloneHeapAlloc);
 
+/// A block of nodes, 49280 bytes - 128 byte metadata, 512 nodes (96 bytes each).
+/// The block of a tree of format 1, read and split into blocks of the current
+/// size; never written.
+#[repr(C)]
+#[derive(Clone, IntoBytes, FromBytes, Immutable)]
+pub struct NodeBlockDataLegacy {
+    /// Block flags
+    pub flags: u32,
+    /// Number of initialized nodes
+    pub node_count: u32,
+    /// Number of unused nodes
+    pub node_unused_count: u32,
+    /// First unused node index
+    pub node_unused: u32,
+    /// Next block with unused slots
+    pub block_unused_next: u32,
+    /// Block data format version
+    pub version: u32,
+    /// Reserved for future extensions, must be zero
+    reserved: [u32; 2],
+    /// Name table address
+    pub name_table: Hash,
+    /// Reserved for future extensions, must be zero
+    reserved_hash: [Hash; 2],
+    /// Node data
+    pub node: [Node; LEGACY_BLOCK_NODE_COUNT],
+}
+
+impl ReadBoxFromImmutable for NodeBlockDataLegacy {}
+block_payload_on_tree_heap!(NodeBlockDataLegacy, ZeroHeapAlloc, CloneHeapAlloc);
+
 /// A block of nodes, 45184 bytes - 128 byte metadata, 512 nodes (96 bytes each)
 #[repr(C)]
 #[derive(Clone, IntoBytes, FromBytes, Immutable)]
@@ -878,7 +933,7 @@ pub struct NodeBlockDataV2 {
     /// Reserved for future extensions, must be zero
     reserved_hash: [Hash; 2],
     /// Node data
-    pub node: [NodeV2; BLOCK_NODE_COUNT],
+    pub node: [NodeV2; LEGACY_BLOCK_NODE_COUNT],
 }
 
 impl ReadBoxFromImmutable for NodeBlockDataV2 {}
@@ -1029,7 +1084,7 @@ impl NodeV0 {
     }
 
     const fn index_clamp(index: u32) -> u32 {
-        if index < BLOCK_NODE_COUNT as u32 {
+        if index < LEGACY_BLOCK_NODE_COUNT as u32 {
             index
         } else {
             0
@@ -1038,7 +1093,7 @@ impl NodeV0 {
 
     /// Get the node index from a full node ID
     pub fn index(node: NodeID) -> usize {
-        Self::index_clamp(node & NODE_INDEX_MASK) as usize
+        Self::index_clamp(node & LEGACY_NODE_INDEX_MASK) as usize
     }
 
     /// Get the first child node (only for directory nodes)
@@ -1396,14 +1451,45 @@ impl NodeBlock {
         lock.node_name_repack();
     }
 
+    /// Read a block of a tree of format 2 or later.
     pub async fn deserialize(
+        repository: Arc<RepositoryContext>,
+        address: Address,
+    ) -> Result<NodeBlock, StateError> {
+        let mut block_data =
+            NodeBlockData::read_box_from_immutable(repository.clone(), address, true)
+                .await
+                .forward::<StateError>("Deserialize node block failed")?;
+        if block_data.version > NodeBlockFormat::Nametable as u32 {
+            return Err(StateError::internal(format!(
+                "New revision state node block format encountered, please update your urc client: version {}",
+                block_data.version
+            )));
+        }
+        block_data.flags &= !NodeBlockFlags::DeferRepackNametable;
+        Ok(NodeBlock::new(block_data))
+    }
+
+    /// Read a 512-node block of a tree of format 1, in any of the block formats
+    /// such a tree holds, and split it into [`LEGACY_BLOCK_SPLIT`] blocks of the
+    /// current size, in node order.
+    pub async fn deserialize_legacy(
         repository: Arc<RepositoryContext>,
         state: &State,
         address: Address,
-    ) -> Result<NodeBlock, StateError> {
+    ) -> Result<Vec<NodeBlock>, StateError> {
+        let (block_data, name) = Self::deserialize_legacy_data(repository, state, address).await?;
+        Ok(Self::split_legacy(&block_data, name.as_ref()))
+    }
+
+    async fn deserialize_legacy_data(
+        repository: Arc<RepositoryContext>,
+        state: &State,
+        address: Address,
+    ) -> Result<(HeapBox<NodeBlockDataLegacy>, Option<HeapBuf>), StateError> {
         // Normal path, expect latest data format version
-        if let Ok(mut block_data) =
-            NodeBlockData::read_box_from_immutable(repository.clone(), address, true).await
+        if let Ok(block_data) =
+            NodeBlockDataLegacy::read_box_from_immutable(repository.clone(), address, true).await
         {
             if block_data.version > NodeBlockFormat::Nametable as u32 {
                 return Err(StateError::internal(format!(
@@ -1411,29 +1497,17 @@ impl NodeBlock {
                     block_data.version
                 )));
             }
-            block_data.flags &= !NodeBlockFlags::DeferRepackNametable;
-            Ok(NodeBlock::new(block_data))
-        } else {
-            Self::deserialize_other_version(repository, state, address).await
+            return Ok((block_data, None));
         }
-    }
 
-    pub async fn deserialize_other_version(
-        repository: Arc<RepositoryContext>,
-        state: &State,
-        address: Address,
-    ) -> Result<NodeBlock, StateError> {
         // Try load old data format
         if let Ok(block_data_v0) =
             NodeBlockDataV0::read_box_from_immutable(repository.clone(), address, true).await
         {
             lore_trace!("Converting v0 block data format when deserializing block");
-            let (mut block_data, name) =
+            let (block_data, name) =
                 Self::convert_block_v0(repository.clone(), state, block_data_v0).await?;
-
-            block_data.flags &= !NodeBlockFlags::DeferRepackNametable;
-
-            return Ok(NodeBlock::new_with_name(block_data, name));
+            return Ok((block_data, Some(name)));
         };
 
         let block_data_v2 =
@@ -1444,20 +1518,94 @@ impl NodeBlock {
             }?;
 
         lore_debug!("Converting v2 block data format when deserializing block");
-        let mut block_data = Self::convert_block_v2(repository.clone(), block_data_v2)?;
+        let block_data = Self::convert_block_v2(repository.clone(), block_data_v2)?;
+        Ok((block_data, None))
+    }
 
-        block_data.flags &= !NodeBlockFlags::DeferRepackNametable;
+    /// Split a 512-node block into [`LEGACY_BLOCK_SPLIT`] blocks of the current
+    /// size, in node order, so block `i` of the result holds the nodes the
+    /// 512-node block held at `i * BLOCK_NODE_COUNT` and up.
+    ///
+    /// Node IDs count nodes, so every parent, child, and sibling link stays as
+    /// it is. What a block keeps about itself is split: the count of
+    /// initialized nodes, and the chain of unused slots, which links slots by
+    /// their index within the block. Every part keeps the whole block's name
+    /// table, whose offsets its nodes already hold; it is the same fragment, so
+    /// writing it again stores nothing, and a part that later stores a name
+    /// repacks the table to its own names. `name` is the name table when it is
+    /// already in memory, as it is for a block converted from format 0.
+    ///
+    /// No part is linked into the tree's chain of blocks with unused slots:
+    /// that chain linked 512-node blocks, and the caller rebuilds it.
+    pub fn split_legacy(legacy: &NodeBlockDataLegacy, name: Option<&HeapBuf>) -> Vec<NodeBlock> {
+        // The unused chain, in chain order, bounded by its count as
+        // `is_node_in_use` bounds it, so a corrupt chain cannot loop.
+        let mut unused = Vec::with_capacity(legacy.node_unused_count as usize);
+        {
+            let mut remaining = legacy.node_unused_count;
+            let mut next = legacy.node_unused;
+            while next != INVALID_NODE && remaining > 0 {
+                let index = (next & LEGACY_NODE_INDEX_MASK) as usize;
+                if index >= legacy.node_count as usize {
+                    break;
+                }
+                unused.push(index);
+                next = legacy.node[index].sibling;
+                remaining -= 1;
+            }
+        }
 
-        Ok(NodeBlock::new(block_data))
+        let flags =
+            legacy.flags & !NodeBlockFlags::DeferRepackNametable & !NODE_BLOCK_RUNTIME_FLAGS;
+        (0..LEGACY_BLOCK_SPLIT)
+            .map(|part| {
+                let base = part * BLOCK_NODE_COUNT;
+                let mut data = NodeBlockData::new_from_heap_zeroed();
+                data.flags = flags;
+                data.version = NodeBlockFormat::Nametable as u32;
+                data.name_table = legacy.name_table;
+                data.block_unused_next = INVALID_BLOCK;
+                data.node_count = (legacy.node_count as usize)
+                    .saturating_sub(base)
+                    .min(BLOCK_NODE_COUNT) as u32;
+                data.node
+                    .copy_from_slice(&legacy.node[base..base + BLOCK_NODE_COUNT]);
+
+                // Relink this part's unused slots by their index in the part,
+                // keeping their order.
+                let mut tail: Option<usize> = None;
+                for &index in unused
+                    .iter()
+                    .filter(|index| (base..base + BLOCK_NODE_COUNT).contains(*index))
+                {
+                    let local = index - base;
+                    match tail {
+                        None => data.node_unused = local as u32,
+                        Some(previous) => data.node[previous].sibling = local as u32,
+                    }
+                    data.node[local].sibling = INVALID_NODE;
+                    data.node_unused_count += 1;
+                    tail = Some(local);
+                }
+
+                match name {
+                    Some(name) => NodeBlock::new_with_name(
+                        data,
+                        HeapBuf::from_slice_in(name, node_block_allocator()),
+                    ),
+                    None => NodeBlock::new(data),
+                }
+            })
+            .collect()
     }
 
     pub async fn convert_block_v0(
         repository: Arc<RepositoryContext>,
         state: &State,
         block_data_old: HeapBox<NodeBlockDataV0>,
-    ) -> Result<(HeapBox<NodeBlockData>, HeapBuf), StateError> {
+    ) -> Result<(HeapBox<NodeBlockDataLegacy>, HeapBuf), StateError> {
         const EXPECTED_NAME_LENGTH: usize = 16;
-        let mut block_data = NodeBlockData::new_from_heap_zeroed();
+        let mut block_data = NodeBlockDataLegacy::new_from_heap_zeroed();
         let mut name_buffer = HeapBuf::with_capacity_in(
             EXPECTED_NAME_LENGTH * node::BLOCK_V0_NODE_COUNT,
             node_block_allocator(),
@@ -1517,8 +1665,8 @@ impl NodeBlock {
     pub fn convert_block_v2(
         _repository: Arc<RepositoryContext>,
         block_data_v2: HeapBox<NodeBlockDataV2>,
-    ) -> Result<HeapBox<NodeBlockData>, StateError> {
-        let mut block_data = NodeBlockData::new_from_heap_zeroed();
+    ) -> Result<HeapBox<NodeBlockDataLegacy>, StateError> {
+        let mut block_data = NodeBlockDataLegacy::new_from_heap_zeroed();
 
         block_data.flags = block_data_v2.flags;
         block_data.node_count = block_data_v2.node_count;
@@ -1658,6 +1806,12 @@ impl NodeBlockWriter<'_> {
     /// registers nothing — so the edit is silently dropped from that serialize.
     pub fn clear_dirty(&mut self) {
         self.lock.dirty = false;
+    }
+
+    /// Forget that the block's first node was discarded, for a caller that has
+    /// linked the block into the tree's unused list itself.
+    pub fn clear_first_unused_node(&mut self) {
+        self.lock.first_unused_node = false;
     }
 
     pub fn discard_node(&mut self, block_index: usize, node_index: usize) {
@@ -1946,11 +2100,11 @@ impl NodeFileMetadata {
 
     /// Get the node index from a full node ID
     pub fn index(node: NodeID) -> usize {
-        Self::index_clamp(node & NODE_INDEX_MASK) as usize
+        Self::index_clamp(node & FILE_METADATA_INDEX_MASK) as usize
     }
 }
 
-pub const BLOCK_NODE_FILE_METADATA_COUNT: usize = BLOCK_NODE_COUNT;
+pub const BLOCK_NODE_FILE_METADATA_COUNT: usize = 1 << FILE_METADATA_BLOCK_SHIFT;
 
 /// Old block count before the metadata block was extended to 512 elements
 const BLOCK_NODE_FILE_METADATA_COUNT_V0: usize = 511;
@@ -2093,7 +2247,19 @@ impl NodeFileMetadataBlock {
 
     /// Get the block index from a full node ID
     pub fn index(node: NodeID) -> usize {
-        (node >> BLOCK_NODE_SHIFT) as usize
+        (node >> FILE_METADATA_BLOCK_SHIFT) as usize
+    }
+
+    /// The file metadata block that holds the entries of node block
+    /// `block_index`.
+    pub fn index_of_node_block(block_index: usize) -> usize {
+        block_index >> (FILE_METADATA_BLOCK_SHIFT - BLOCK_NODE_SHIFT)
+    }
+
+    /// The number of file metadata blocks a tree of `node_block_count` node
+    /// blocks has.
+    pub fn count_for_node_blocks(node_block_count: usize) -> usize {
+        node_block_count.div_ceil(1 << (FILE_METADATA_BLOCK_SHIFT - BLOCK_NODE_SHIFT))
     }
 
     pub fn read(&self) -> NodeFileMetadataBlockReader<'_> {
@@ -2116,7 +2282,7 @@ impl NodeFileMetadataBlock {
 impl NodeFileMetadataBlockReader<'_> {
     /// Get the node for the given node index
     pub fn node(&self, node_index: usize) -> &NodeFileMetadata {
-        debug_assert!(node_index < BLOCK_NODE_COUNT);
+        debug_assert!(node_index < BLOCK_NODE_FILE_METADATA_COUNT);
         &self.lock.data.node[node_index]
     }
 
@@ -2134,7 +2300,7 @@ impl NodeFileMetadataBlockReader<'_> {
 impl NodeFileMetadataBlockWriter<'_> {
     /// Get the node for the given node index
     pub fn node(&mut self, node_index: usize) -> &mut NodeFileMetadata {
-        debug_assert!(node_index < BLOCK_NODE_COUNT);
+        debug_assert!(node_index < BLOCK_NODE_FILE_METADATA_COUNT);
         &mut self.lock.data.node[node_index]
     }
 
@@ -2304,6 +2470,89 @@ mod tests {
         assert!(!node.is_dirty());
         assert!(!node.is_staged());
         assert_eq!(node.flags & NodeFlags::ActionBits.bits(), 0);
+    }
+
+    /// A 512-node block splits into blocks of the current size that hold the
+    /// same nodes, each with its own share of the initialized count and of the
+    /// unused chain, linked by index within the part, in the same order.
+    #[test]
+    fn a_legacy_block_splits_by_node_index() {
+        let mut legacy = NodeBlockDataLegacy::new_from_heap_zeroed();
+        let node_count = BLOCK_NODE_COUNT + BLOCK_NODE_COUNT / 2 + 3;
+        legacy.node_count = node_count as u32;
+        legacy.version = NodeBlockFormat::Nametable as u32;
+        legacy.name_table = Hash::from([7u8; 32]);
+        legacy.flags = NodeBlockFlags::DeferRepackNametable.bits();
+        for (index, node) in legacy.node[..node_count].iter_mut().enumerate() {
+            node.parent = 1000 + index as u32;
+            node.size = index as u64;
+            node.name_offset = index as u32 * 4;
+            node.name_length = 4;
+        }
+        // Unused slots in both parts, chained out of index order.
+        let unused = [BLOCK_NODE_COUNT + 2, 3, BLOCK_NODE_COUNT + 1, 0];
+        let mut next = INVALID_NODE;
+        for &index in unused.iter().rev() {
+            legacy.node[index].flags = NodeFlags::Discarded.bits();
+            legacy.node[index].sibling = next;
+            next = index as u32;
+        }
+        legacy.node_unused = next;
+        legacy.node_unused_count = unused.len() as u32;
+
+        let parts = NodeBlock::split_legacy(&legacy, None);
+        assert_eq!(parts.len(), LEGACY_BLOCK_SPLIT);
+        let chain = |part: &NodeBlock| {
+            let reader = part.read();
+            let data = reader.raw();
+            let mut chain = Vec::new();
+            let mut next = data.node_unused;
+            for _ in 0..data.node_unused_count {
+                chain.push(next as usize);
+                next = data.node[next as usize].sibling;
+            }
+            if !chain.is_empty() {
+                assert_eq!(next, INVALID_NODE, "the chain ends");
+            }
+            chain
+        };
+        for (index, part) in parts.iter().enumerate() {
+            let reader = part.read();
+            let data = reader.raw();
+            assert_eq!(data.name_table, legacy.name_table);
+            assert_eq!(data.block_unused_next, INVALID_BLOCK);
+            assert_eq!(data.flags & NodeBlockFlags::DeferRepackNametable.bits(), 0);
+            let expected_count = node_count
+                .saturating_sub(index * BLOCK_NODE_COUNT)
+                .min(BLOCK_NODE_COUNT);
+            assert_eq!(data.node_count as usize, expected_count, "part {index}");
+            for local in 0..expected_count {
+                let global = index * BLOCK_NODE_COUNT + local;
+                if unused.contains(&global) {
+                    continue;
+                }
+                assert_eq!(data.node[local].parent, 1000 + global as u32);
+                assert_eq!(data.node[local].size, global as u64);
+                assert_eq!(data.node[local].name_offset, global as u32 * 4);
+            }
+        }
+        assert_eq!(chain(&parts[0]), vec![3, 0]);
+        assert_eq!(chain(&parts[1]), vec![2, 1]);
+        if LEGACY_BLOCK_SPLIT > 2 {
+            assert!(chain(&parts[2]).is_empty());
+        }
+        assert!(!parts[0].read().is_node_in_use(3));
+        assert!(parts[0].read().is_node_in_use(1));
+        assert!(!parts[1].read().is_node_in_use(2));
+
+        // Grabbing takes the freed slots first, by their IDs in the whole tree.
+        let mut writer = parts[1].write();
+        assert_eq!(writer.grab_node_unused(9), (9 << BLOCK_NODE_SHIFT) | 2);
+        assert_eq!(writer.grab_node_unused(9), (9 << BLOCK_NODE_SHIFT) | 1);
+        assert_eq!(
+            writer.grab_node_unused(9),
+            (9 << BLOCK_NODE_SHIFT) | (BLOCK_NODE_COUNT as u32 / 2 + 3)
+        );
     }
 
     #[test]

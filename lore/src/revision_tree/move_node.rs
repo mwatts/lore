@@ -1347,7 +1347,7 @@ mod tests {
         assert_eq!(last.parent_id, destination, "including the last of them");
         assert_eq!(
             last.name.as_str(),
-            "moved-1535",
+            format!("moved-{:04}", BATCH - 1),
             "renamed into a name table that had to grow past the block it started in"
         );
         release(handle, store_handle_id);
@@ -2175,8 +2175,16 @@ mod tests {
         let node_id = seed(handle, ROOT_NODE, "data.bin", LoreNodeType::File).await;
         settle(handle, &[destination, node_id]).await;
 
-        let (status, events) =
-            run_move(handle, vec![entry(10, 400, destination, "data.bin")]).await;
+        let (status, events) = run_move(
+            handle,
+            vec![entry(
+                10,
+                lore_revision::node::BLOCK_NODE_COUNT as u32 - 1,
+                destination,
+                "data.bin",
+            )],
+        )
+        .await;
         assert_ne!(status, 0, "an unallocated slot must not be movable");
         let reason = rejection_reason(&events);
         assert!(
@@ -2184,7 +2192,16 @@ mod tests {
             "the node end must be refused as unnamed, got {reason:?}"
         );
 
-        let (status, events) = run_move(handle, vec![entry(11, node_id, 400, "data.bin")]).await;
+        let (status, events) = run_move(
+            handle,
+            vec![entry(
+                11,
+                node_id,
+                lore_revision::node::BLOCK_NODE_COUNT as u32 - 1,
+                "data.bin",
+            )],
+        )
+        .await;
         assert_ne!(status, 0, "an unallocated slot must not be a destination");
         let reason = rejection_reason(&events);
         assert!(
