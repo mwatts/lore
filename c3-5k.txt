@@ -1,0 +1,127 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+   Compiling lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+   Compiling lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+   Compiling cairn-lore v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore)
+   Compiling cairn-claims v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-claims)
+   Compiling cairn-member v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-member)
+   Compiling cairn-lore-store v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore-store)
+   Compiling cairn-grant v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-grant)
+   Compiling cairn-repl v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-repl)
+   Compiling cairn-host v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-host)
+   Compiling ashlar-cairn v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-cairn)
+warning: unused import: `NoObserver`
+ --> crates/ashlar-cairn/tests/trash.rs:8:34
+  |
+8 | use ashlar_app::reconciliation::{NoObserver, ReconciliationApp};
+  |                                  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/annotations.rs:10:28
+   |
+10 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/enrichment.rs:11:28
+   |
+11 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `ReplicaMerges`
+  --> crates/ashlar-cairn/tests/trash.rs:10:75
+   |
+10 | use ashlar_app::{AppError, Archive, CaptureInput, ContentCodec, NotesApp, ReplicaMerges};
+   |                                                                           ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/ashlar-cairn/tests/list_window.rs:253:9
+    |
+253 |     let mut run = |label: u64| {
+    |         ----^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `children` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:163:10
+    |
+163 | async fn children(replica: &Replica, root: &ObjectId) -> Vec<ObjectId> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `body_text` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:178:10
+    |
+178 | async fn body_text(replica: &Replica, block: &ObjectId) -> String {
+    |          ^^^^^^^^^
+
+warning: `ashlar-cairn` (test "cairn") generated 7 warnings (run `cargo fix --test "cairn" -p ashlar-cairn` to apply 2 suggestions)
+    Finished `release` profile [optimized] target(s) in 5m 19s
+     Running tests/main.rs (target/release/deps/cairn-4d4a2c384c9a9ed5)
+
+running 1 test
+seeded 4000/5000 in 30.5s: write_bytes 548.0 MB wchar 93.5 MB
+seeded 4990/5000 in 40.0s: write_bytes 674.3 MB wchar 121.6 MB
+seeded 4995/5000 in 40.4s: write_bytes 678.6 MB wchar 123.8 MB
+seeded 4999/5000 in 40.5s: write_bytes 681.1 MB wchar 124.5 MB
+seeded 5000/5000 in 40.6s: write_bytes 683.5 MB wchar 125.0 MB
+single creates: 20 in 8.2s, write_bytes 256.6 MB (12831130 B per commit), wchar 1492834 B per commit
+  single creates, thread cairn-surreal-c: 1429504 B per commit (live threads only)
+  single creates, thread lore-io: 11401626 B per commit (live threads only)
+  single creates on .cairn/projection/gen-2/db/manifest: grew 0 files by 0 B per commit; replaced 1 files holding 4 B per commit; new 0 files holding 0 B per commit
+  single creates on .cairn/projection/gen-2/db/sstables: grew 1 files by 268958 B per commit; replaced 0 files holding 0 B per commit; new 1 files holding 1055130 B per commit
+  single creates on .cairn/projection/gen-2/db/vlog: grew 1 files by 46402 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .cairn/projection/gen-2/db/wal: grew 1 files by 35340 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/immutable/index/xx: grew 0 files by 0 B per commit; replaced 166 files holding 18403 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/immutable/index/xx/pack: grew 166 files by 59888 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/mutable/index/xx: grew 0 files by 0 B per commit; replaced 4 files holding 20 B per commit; new 0 files holding 0 B per commit
+single edits: 20 in 10.4s, write_bytes 132.8 MB (6639616 B per commit), wchar 157916 B per commit
+  single edits, thread cairn-surreal-c: 130253 B per commit (live threads only)
+  single edits, thread lore-io: 6509363 B per commit (live threads only)
+  single edits on .cairn/projection/gen-2/db/manifest: grew 0 files by 0 B per commit; replaced 1 files holding 3 B per commit; new 0 files holding 0 B per commit
+  single edits on .cairn/projection/gen-2/db/sstables: grew 1 files by 61313 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .cairn/projection/gen-2/db/wal: grew 1 files by 38817 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/immutable/index/xx: grew 0 files by 0 B per commit; replaced 139 files holding 15996 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/immutable/index/xx/pack: grew 139 files by 32063 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/mutable/index/xx: grew 0 files by 0 B per commit; replaced 4 files holding 20 B per commit; new 0 files holding 0 B per commit
+test footprint::seeding_footprint_probe has been running for over 60 seconds
+R4 footprint at 5000 Records, seeded in 40.6s, 131 samples
+bytes written (write_bytes): open 23.7 MB, seed 683.5 MB (136695 B/rec), through close 1089.9 MB (217973 B/rec)
+write syscalls (wchar): 172.7 MB (34542 B/rec); cancelled_write_bytes 0.0 MB
+peak on disk: 78.0 MB (15597 B/rec) at 49.3s
+final on disk after close: 68.5 MB apparent (13692 B/rec), 70.6 MB allocated
+component                                               final         peak   at root peak    written>=    files
+.cairn/projection/gen-1/db/wal                         0.0 MB       1.5 MB         0.0 MB       1.5 MB        1  final 0 B/rec written 300 B/rec
+.cairn/projection/gen-2/db/sstables                   28.8 MB      45.7 MB        45.7 MB      52.1 MB        6  final 5759 B/rec written 10418 B/rec
+.cairn/projection/gen-2/db/vlog                       32.7 MB      32.7 MB        24.9 MB      32.7 MB        1  final 6540 B/rec written 6540 B/rec
+.cairn/projection/gen-2/db/wal                         0.0 MB      44.2 MB         1.1 MB      77.1 MB        5  final 0 B/rec written 15426 B/rec
+.lore/immutable/index/xx                               0.6 MB       0.6 MB         0.6 MB       2.7 MB     2098  final 115 B/rec written 540 B/rec
+.lore/immutable/index/xx/pack                          6.4 MB       6.4 MB         5.8 MB       6.4 MB      256  final 1277 B/rec written 1277 B/rec
+bytes written by thread (largest counters sampled; a thread that ended after its last sample is undercounted):
+  lore-io                          write_bytes     920.4 MB wchar       9.1 MB threads 16
+  cairn-surreal-c                  write_bytes     169.2 MB wchar     163.5 MB threads 4
+test footprint::seeding_footprint_probe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 67.89s
+

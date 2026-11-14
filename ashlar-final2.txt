@@ -1,0 +1,205 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+warning: unused import: `NoObserver`
+ --> crates/ashlar-cairn/tests/trash.rs:8:34
+  |
+8 | use ashlar_app::reconciliation::{NoObserver, ReconciliationApp};
+  |                                  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/annotations.rs:10:28
+   |
+10 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/enrichment.rs:11:28
+   |
+11 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `ReplicaMerges`
+  --> crates/ashlar-cairn/tests/trash.rs:10:75
+   |
+10 | use ashlar_app::{AppError, Archive, CaptureInput, ContentCodec, NotesApp, ReplicaMerges};
+   |                                                                           ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/ashlar-cairn/tests/list_window.rs:253:9
+    |
+253 |     let mut run = |label: u64| {
+    |         ----^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `children` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:163:10
+    |
+163 | async fn children(replica: &Replica, root: &ObjectId) -> Vec<ObjectId> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `body_text` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:178:10
+    |
+178 | async fn body_text(replica: &Replica, block: &ObjectId) -> String {
+    |          ^^^^^^^^^
+
+warning: `ashlar-cairn` (test "cairn") generated 7 warnings (run `cargo fix --test "cairn" -p ashlar-cairn` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running tests/main.rs (target/debug/deps/cairn-d77c986c25f8d51c)
+
+running 121 tests
+test footprint::seeding_footprint_probe ... ignored, scale: R4 measurement, run on request with R4_RECORDS
+test import_schema_upgrade::a_0_2_5_archive_upgrades_and_accepts_a_bible_verse_window ... ok
+test hosts_upgrade::a_0_2_4_archive_upgrades_and_accepts_a_hosts_embed ... ok
+test capture::real_root_bookmark_create_requires_url ... ok
+test indexing::q5_upgrade_probe ... ignored, probe: Q5 step 0, run on request with Q5_NOTES
+test capture::real_root_file_argument_does_not_create_an_object ... ok
+test capture::real_root_captures_note_bookmark_and_snippet ... ok
+test list_window::inbox_at_500k ... ignored, scale: 500,000 records, after a major change
+test list_window::inbox_count_at_20k ... ignored, release: scale diagnostic at 20,000 inbox rows
+test list_window::probe_inbox_query_cost ... ignored, probe: seeds 6,000 inbox notes and times page shapes
+test list_window::probe_query_cost_by_set_size ... ignored, probe: seeds 6,000 rows (about 5 minutes)
+test capture::real_root_duplicate_url_focuses_existing_id ... ok
+test history::a_child_only_edit_is_a_tip_that_opens_as_it_was ... ok
+test list_window::window_at_500k ... ignored, scale: 500,000 rows, after a major change
+test annotations::a_comment_and_its_reply_attach_to_one_passage ... ok
+test enrichment::a_run_enriches_the_armed_records_it_selects ... ok
+test annotations::passages_first_commented_in_one_second_keep_their_order ... ok
+test binary_property::a_binary_property_is_stored_as_a_blob ... ok
+test inbox_union::single_inbox_query_matches_the_batch ... ok
+test live_bytes::a_field_read_does_not_read_the_page_under_it ... ok
+test live_bytes::a_save_between_a_record_and_its_field_leaves_the_field_readable ... ok
+test indexing::a_dropped_archive_lets_go_of_its_lock_while_its_rebuild_runs ... ok
+test live_bytes::a_save_after_the_page_read_leaves_its_bodies_readable ... ok
+test list_window::the_inbox_reads_oldest_first_when_asked ... ok
+test live_bytes::a_save_during_a_reconcile_conflicts_again ... ok
+test live_bytes::an_earlier_body_or_cover_keeps_its_bytes ... ok
+test list_window::the_inbox_union_merges_types_by_created_desc ... ok
+test list_window::windows_jump_by_checkpoint_and_a_write_invalidates_them ... ok
+test indexing::writes_answer_indexing_at_once_while_the_projection_rebuilds ... ok
+test live_bytes::an_export_racing_a_save_carries_each_named_body ... ok
+test live_bytes::page_opens_behind_the_lore_tip_load_one_table ... ok
+test local_notes::active_extractor_upgrade_backfills_without_an_authored_content_change ... ok
+test local_notes::backfill_candidate_rejects_metadata_and_body_edits ... ok
+test local_notes::refuse_legacy_writable_open_until_migration_gate ... ok
+test local_notes::body_term_finds_repeated_child_and_save_drops_old_hit ... ok
+test local_notes::failed_upgrade_extraction_keeps_the_archive_open_and_retries ... ok
+test local_notes::extractor_upgrade_backfill_without_content_revision_and_stale_job_fails ... ok
+test local_notes::open_new_root_approves_bundled_schema_and_settings ... ok
+test local_notes::missing_extracts_leave_coverage_incomplete_without_search_reads ... ok
+test local_notes::read_composition_lists_child_occurrences_cached_residency_and_cycle_bounds ... ok
+test local_notes::real_root_conditional_saves_extracts_and_title_queries ... ok
+test meeting_capture::meeting_capture_commits_once ... ok
+test meeting_worker::worker_writes_supported_claims ... ok
+test meeting_worker::worker_fails_on_a_change_and_a_retry_extracts ... ok
+test page_scale::large_page_stays_within_budget ... ignored, release: release-mode page budget; cargo test --release
+test local_notes::racing_backfill_and_interrupted_publication_never_expose_stale_text ... ok
+test indexing::reads_answer_behind_while_the_projection_rebuilds ... ok
+test indexing::an_upgrade_open_answers_while_its_rebuild_runs ... ok
+test member_sync::an_older_peer_is_served_no_restored_link_and_named_for_update ... ok
+test query_advisor::q3_probe ... ignored, probe: Q3's numbers, run on request with Q3_SEED_DIR and Q3_MODE
+test query_advisor::saved_query_moves_onto_its_index ... ignored, release: 100,000 Records, about 5 minutes, one with Q3_SEED_DIR
+test query_advisor::saved_query_moves_onto_its_index_held ... ignored, release: 100,000 Records, about 5 minutes, one with Q3_SEED_DIR
+test organization::release_organization_views ... ok
+test passages_gate::capture_across_blocks_then_reorder_and_remove_a_placement ... ok
+test planner_close::close_stores_the_planner_record ... ok
+test member_sync::an_older_peer_learns_of_the_delete_of_a_restored_link ... ok
+test member_sync::concurrent_note_edits_settle_on_one_version ... ok
+test planner_close::an_upgrade_opens_when_the_planner_record_cannot_be_stored ... ok
+test query_advisor::a_saved_query_runs_on_the_index_its_first_run_asked_for ... ok
+test member_sync::paired_replicas_transfer_native_notes_both_ways_and_reopen ... ok
+test member_sync::ui_archive_read_does_not_wait_for_the_whole_import_batch ... ok
+test member_sync::staged_merge_lets_a_local_read_run_between_files ... ok
+test member_checkpoint::negotiated_checkpoints_transfer_edits_and_keep_idle_rounds_small ... ok
+test schema_0_2_10::a_0_2_9_archive_upgrades_to_0_2_10 ... ok
+test reconciliation::imports_wait_for_the_capability_check ... ok
+test schema_0_2_8::a_0_2_7_archive_upgrades_to_0_2_8 ... ok
+test reconciliation::a_file_edited_on_top_of_a_save_elsewhere_reaches_this_replica ... ok
+test reconciliation::concurrent_body_edits_converge_through_the_codec_and_acknowledge ... ok
+test reconciliation::kit_bodies_sync_merge_and_converge_to_identical_bytes ... ok
+test reconciliation::imported_cycle_keeps_both_links_and_reads_stay_bounded ... ok
+test reconciliation::an_edit_from_a_device_whose_clock_is_behind_still_wins ... ok
+test reconciliation::pasted_image_reaches_a_sparse_replica_and_hydrates_without_a_save ... ok
+test schema_gate::approve_place_edit_restart_and_reject_malformed_schema ... ok
+test reconciliation::concurrent_inserts_moves_and_unlink_converge_in_one_order ... ok
+test sets::malformed_query_and_reserved_name_leave_the_saved_set ... ok
+test reconciliation::unsupported_kind_bytes_are_preserved_through_sync_and_conflict ... ok
+test reconciliation::kit_image_block_hydrates_on_a_sparse_replica ... ok
+test reconciliation::trashing_a_file_elsewhere_keeps_a_concurrent_save ... ok
+test tags::an_empty_member_list_keeps_unfinished_imports ... ok
+test tags::every_pair_of_merge_scripts_keeps_every_tag ... ignored, slow: every pair of scripts
+test tags::an_import_that_lands_documents_after_the_hold_starts_it_again ... ok
+test tags::a_day_old_unfinished_import_stops_holding_the_tag_pass ... ok
+test tags::a_removed_tag_added_back_reaches_the_other_device ... ok
+test tags::a_saved_set_lists_items_on_either_twin ... ok
+test tags::a_merge_imported_during_a_rebuild_settles_after_it ... ok
+test tags::a_partly_imported_undo_is_not_merged_again ... ok
+test tags::an_unreadable_import_marker_holds ... ok
+test tags::devices_name_an_unfinished_import_before_any_tag_pass ... ok
+test tags::a_merge_of_paged_tags_undoes_and_redoes ... ok
+test tags::a_stub_settles_when_its_kept_tag_arrives_in_a_later_import ... ok
+test tags::a_merge_survives_sync_and_undo ... ok
+test tags::only_a_relink_over_an_unlink_carries_a_restore_token ... ok
+test timeline_backfill::an_upgraded_archive_backfills_across_a_kill ... ok
+test timeline_capture::each_writer_commits_its_placement_with_the_object ... ok
+test timeline_schema::a_pasted_overlap_document_binds_and_answers_with_its_bindings ... ok
+test timeline_schema::a_placement_is_not_a_generic_link ... ok
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_a_sends_first has been running for over 60 seconds
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_b_sends_first has been running for over 60 seconds
+test trash::a_lost_precondition_conflicts_and_writes_nothing ... ok
+test timeline_schema::upgrade_adds_life_and_no_links ... ok
+test tags::merges_both_ways_converge_on_one_kept_tag has been running for over 60 seconds
+test trash::a_new_archive_reads_the_default_retention ... ok
+test timeline_schema::cairn_and_memory_read_the_same_overlap ... ok
+test trash::a_stale_purge_plan_conflicts_and_deletes_nothing ... ok
+test trash::purge_tombstones_the_object_its_blocks_and_relations ... ok
+test trashable_upgrade::a_0_2_3_archive_upgrades_and_every_record_and_set_is_untrashed ... ok
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_a_sends_first ... ok
+test trash::trash_then_restore_round_trips_and_hides_from_lists ... ok
+test tags::merges_both_ways_converge_on_one_kept_tag ... ok
+test trash::search_hides_a_trashed_note_and_its_blocks ... ok
+test types::ir_catalog_flattens_record_fields ... ok
+test trash::purge_beats_a_concurrent_edit_in_both_sync_orders has been running for over 60 seconds
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_b_sends_first ... ok
+test trash::purge_beats_a_concurrent_restore_in_both_sync_orders has been running for over 60 seconds
+test trash::trash_and_a_concurrent_edit_both_survive_in_both_sync_orders has been running for over 60 seconds
+test types::real_root_creates_each_record_type_and_rejects_missing_required ... ok
+test trashable_upgrade::every_built_in_list_query_drops_a_trashed_row has been running for over 60 seconds
+test types::tag_is_filed_and_absent_from_inbox_projection ... ok
+test trashable_upgrade::every_built_in_list_query_drops_a_trashed_row ... ok
+test types::real_root_metadata_patch_preserves_omitted_record_fields ... ok
+test types::saved_projection_keeps_nested_slots_without_binary_fetches ... ok
+test uniqueness::allocated_daily_notes_form_a_group_the_owner_resolves has been running for over 60 seconds
+test uniqueness::same_day_and_same_url_converge_a_first has been running for over 60 seconds
+test uniqueness::same_day_and_same_url_converge_b_first has been running for over 60 seconds
+test views::view_definition_saves_lists_opens_and_revises_on_cairn ... ok
+test uniqueness::allocated_daily_notes_form_a_group_the_owner_resolves ... ok
+test uniqueness::same_day_and_same_url_converge_a_first ... ok
+test uniqueness::same_day_and_same_url_converge_b_first ... ok
+test trash::trash_and_a_concurrent_edit_both_survive_in_both_sync_orders ... ok
+test trash::purge_beats_a_concurrent_edit_in_both_sync_orders ... ok
+test trash::purge_beats_a_concurrent_restore_in_both_sync_orders ... ok
+
+test result: ok. 109 passed; 0 failed; 12 ignored; 0 measured; 0 filtered out; finished in 360.98s
+

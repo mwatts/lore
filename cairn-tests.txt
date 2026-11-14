@@ -1,0 +1,84 @@
+     Running unittests src/lib.rs (target/debug/deps/cairn_host-821f6293e3979056)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/open.rs (target/debug/deps/open-e09fd431a0f78b8b)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.58s
+     Running tests/planner.rs (target/debug/deps/planner-54995aba3acb7658)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.31s
+     Running unittests src/lib.rs (target/debug/deps/cairn_lore-11270f7e03cb839c)
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+     Running tests/atomic_checkout_write.rs (target/debug/deps/atomic_checkout_write-a7fef83892a35b79)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.58s
+     Running tests/crash_reopen.rs (target/debug/deps/crash_reopen-346adc70cb041bde)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.21s
+     Running tests/revision_reads.rs (target/debug/deps/revision_reads-70870e18313bf874)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+     Running tests/store_release.rs (target/debug/deps/store_release-07cc7ff51077a6b2)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s
+     Running unittests src/lib.rs (target/debug/deps/cairn_repl-180b12ccb65b949c)
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+     Running tests/binary_knowledge.rs (target/debug/deps/binary_knowledge-b4edf54e4188db47)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+     Running tests/blob_sweep.rs (target/debug/deps/blob_sweep-dd6fdfdbf19de40a)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.88s
+     Running tests/client_api_hides_engine.rs (target/debug/deps/client_api_hides_engine-84208c46b313992a)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/concurrent_settle.rs (target/debug/deps/concurrent_settle-dd6522d40fa11b87)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.56s
+     Running tests/content_candidates.rs (target/debug/deps/content_candidates-becec440f2f6a110)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.03s
+     Running tests/durable_replica.rs (target/debug/deps/durable_replica-441ac84c3201b424)
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.45s
+     Running tests/extract_coverage.rs (target/debug/deps/extract_coverage-e4cca85a3a7d262d)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+     Running tests/harness.rs (target/debug/deps/harness-c160eb3bae8cab9b)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/indexer.rs (target/debug/deps/indexer-a1cd2c9f226fbb9d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.63s
+     Running tests/iroh_integration.rs (target/debug/deps/iroh_integration-ff49b28af8fa6e18)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/iroh_large_archive.rs (target/debug/deps/iroh_large_archive-70bf09620de68506)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/iroh_membership.rs (target/debug/deps/iroh_membership-474bab66db830f48)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/iroh_storage_batching.rs (target/debug/deps/iroh_storage_batching-b2cd27500f828d9d)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/knowledge_tip.rs (target/debug/deps/knowledge_tip-2d23d866b859801a)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+     Running tests/lore_authority.rs (target/debug/deps/lore_authority-fcf4253da77fb36d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+     Running tests/member_commits_keep_index.rs (target/debug/deps/member_commits_keep_index-520e636d559b5b72)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+     Running tests/membership_gate.rs (target/debug/deps/membership_gate-d536b8a889462da5)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+     Running tests/nowt_content.rs (target/debug/deps/nowt_content-c5634f2c1e74a97d)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+     Running tests/open_marker.rs (target/debug/deps/open_marker-ac9f780b282adb41)
+test unchanged_reopen_reads_no_metadata_and_is_ten_times_faster ... FAILED
+panic: panicked at crates/cairn-repl/tests/open_marker.rs:236:5:
+test result: FAILED. 5 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.10s
+error: test failed, to rerun pass `-p cairn-repl --test open_marker`
+     Running tests/owner_process.rs (target/debug/deps/owner_process-8a2c936820c45075)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/phase12_livein.rs (target/debug/deps/phase12_livein-9aaf544180c33b0b)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.25s
+     Running tests/phase5_scenarios.rs (target/debug/deps/phase5_scenarios-e1f831862b53b143)
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.17s
+     Running tests/phase7_grants.rs (target/debug/deps/phase7_grants-36de487b459c5ed4)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.20s
+     Running tests/restore_tombstone.rs (target/debug/deps/restore_tombstone-88f3cd6130c38be2)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+     Running tests/retained_session.rs (target/debug/deps/retained_session-e45e2db5508033d5)
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.97s
+     Running tests/sim_diff.rs (target/debug/deps/sim_diff-150c96997fd140bf)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+     Running tests/smoke.rs (target/debug/deps/smoke-44f340f8191a88bd)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+     Running tests/unique_collisions.rs (target/debug/deps/unique_collisions-1c232b9939e366a4)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.57s
+     Running tests/writer_queue.rs (target/debug/deps/writer_queue-4ba5f65848b02751)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+error: 1 target failed:
+done

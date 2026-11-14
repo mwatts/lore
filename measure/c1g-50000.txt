@@ -1,0 +1,49 @@
+
+running 1 test
+seeded 20000/50000 in 30.7s: write_bytes 1835.9 MB wchar 778.0 MB
+test footprint::seeding_footprint_probe has been running for over 60 seconds
+seeded 40000/50000 in 72.9s: write_bytes 4462.7 MB wchar 2115.6 MB
+seeded 49900/50000 in 94.9s: write_bytes 6365.8 MB wchar 3328.5 MB
+seeded 49950/50000 in 95.5s: write_bytes 6471.7 MB wchar 3433.1 MB
+seeded 49990/50000 in 95.9s: write_bytes 6472.6 MB wchar 3433.7 MB
+seeded 50000/50000 in 96.3s: write_bytes 6473.1 MB wchar 3434.0 MB
+  after a reopen: Lore packfiles 43869929 B, journals 0 B; the close and reopen wrote 44.3 MB
+single creates: 20 in 11.5s, write_bytes 4.0 MB (200704 B per commit), wchar 106823 B per commit
+  single creates, thread cairn-surreal-c: 40141 B per commit (live threads only)
+  single creates, thread lore-io: 160563 B per commit (live threads only)
+  single creates on .cairn/projection/gen-2/db/wal: grew 1 files by 40383 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/immutable: grew 1 files by 64187 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/mutable: grew 1 files by 416 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  after a reopen: Lore packfiles 45112069 B, journals 0 B; the close and reopen wrote 35.1 MB
+single creates: kept 62107 B per commit in Lore's packfiles
+  after a reopen: Lore packfiles 45150703 B, journals 0 B; the close and reopen wrote 17.3 MB
+single edits: 20 in 13.0s, write_bytes 3.5 MB (172851 B per commit), wchar 75347 B per commit
+  single edits, thread cairn-surreal-c: 34406 B per commit (live threads only)
+  single edits, thread lore-io: 138445 B per commit (live threads only)
+  single edits on .cairn/projection/gen-2/db/wal: grew 1 files by 33979 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/immutable: grew 1 files by 38974 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/mutable: grew 1 files by 416 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  after a reopen: Lore packfiles 45898189 B, journals 0 B; the close and reopen wrote 28.7 MB
+single edits: kept 37374 B per commit in Lore's packfiles
+R4 footprint at 50000 Records, seeded in 96.3s, 261 samples
+bytes written (write_bytes): open 7.0 MB, seed 6473.1 MB (129461 B/rec), through close 6606.6 MB (132131 B/rec)
+write syscalls (wchar): 3474.3 MB (69485 B/rec); cancelled_write_bytes 0.0 MB
+peak on disk: 842.0 MB (16841 B/rec) at 95.0s
+final on disk after close: 652.5 MB apparent (13049 B/rec), 793.2 MB allocated
+component                                               final         peak   at root peak    written>=    files
+.cairn-private                                         1.9 MB       1.9 MB         0.0 MB       7.4 MB        7  final 37 B/rec written 148 B/rec
+.cairn/projection/gen-1/db/wal                         0.0 MB       1.5 MB         0.0 MB       1.5 MB        1  final 0 B/rec written 29 B/rec
+.cairn/projection/gen-2/db/sstables                  281.2 MB     487.5 MB       482.7 MB    2277.5 MB       64  final 5623 B/rec written 45550 B/rec
+.cairn/projection/gen-2/db/vlog                      317.8 MB     317.8 MB       309.9 MB     317.8 MB        2  final 6357 B/rec written 6357 B/rec
+.cairn/projection/gen-2/db/wal                         0.0 MB      16.0 MB         0.2 MB     235.6 MB       54  final 0 B/rec written 4712 B/rec
+.lore/immutable                                        0.0 MB      17.4 MB         0.0 MB      17.4 MB        3  final 0 B/rec written 349 B/rec
+.lore/immutable/index/xx                               5.7 MB       5.7 MB         5.7 MB       8.0 MB    51104  final 114 B/rec written 159 B/rec
+.lore/immutable/index/xx/pack                         45.9 MB      45.9 MB        43.5 MB      45.9 MB      256  final 918 B/rec written 918 B/rec
+bytes written by thread (largest counters sampled; a thread that ended after its last sample is undercounted):
+  cairn-surreal-c                  write_bytes    3410.9 MB wchar    3358.5 MB threads 8
+  lore-io                          write_bytes    3187.1 MB wchar     108.0 MB threads 16
+  footprint::seed                  write_bytes       8.3 MB wchar       7.4 MB threads 2
+test footprint::seeding_footprint_probe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 143.84s
+

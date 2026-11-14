@@ -1,0 +1,81 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+   Compiling lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+   Compiling lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+   Compiling cairn-lore v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore)
+   Compiling cairn-claims v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-claims)
+   Compiling cairn-lore-store v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore-store)
+   Compiling cairn-member v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-member)
+   Compiling cairn-grant v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-grant)
+   Compiling cairn-repl v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-repl)
+   Compiling cairn-host v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-host)
+   Compiling ashlar-cairn v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-cairn)
+warning: unused import: `NoObserver`
+ --> crates/ashlar-cairn/tests/trash.rs:8:34
+  |
+8 | use ashlar_app::reconciliation::{NoObserver, ReconciliationApp};
+  |                                  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/annotations.rs:10:28
+   |
+10 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/enrichment.rs:11:28
+   |
+11 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `ReplicaMerges`
+  --> crates/ashlar-cairn/tests/trash.rs:10:75
+   |
+10 | use ashlar_app::{AppError, Archive, CaptureInput, ContentCodec, NotesApp, ReplicaMerges};
+   |                                                                           ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/ashlar-cairn/tests/list_window.rs:253:9
+    |
+253 |     let mut run = |label: u64| {
+    |         ----^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `children` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:163:10
+    |
+163 | async fn children(replica: &Replica, root: &ObjectId) -> Vec<ObjectId> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `body_text` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:178:10
+    |
+178 | async fn body_text(replica: &Replica, block: &ObjectId) -> String {
+    |          ^^^^^^^^^
+
+warning: `ashlar-cairn` (test "cairn") generated 7 warnings (run `cargo fix --test "cairn" -p ashlar-cairn` to apply 2 suggestions)
+    Finished `release` profile [optimized] target(s) in 29m 59s
+  Executable tests/main.rs (target/release/deps/cairn-4d4a2c384c9a9ed5)

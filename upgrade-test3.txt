@@ -1,0 +1,77 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling ashlar-cairn v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-cairn)
+warning: unused import: `NoObserver`
+ --> crates/ashlar-cairn/tests/trash.rs:8:34
+  |
+8 | use ashlar_app::reconciliation::{NoObserver, ReconciliationApp};
+  |                                  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/annotations.rs:10:28
+   |
+10 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/enrichment.rs:11:28
+   |
+11 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `ReplicaMerges`
+  --> crates/ashlar-cairn/tests/trash.rs:10:75
+   |
+10 | use ashlar_app::{AppError, Archive, CaptureInput, ContentCodec, NotesApp, ReplicaMerges};
+   |                                                                           ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/ashlar-cairn/tests/list_window.rs:253:9
+    |
+253 |     let mut run = |label: u64| {
+    |         ----^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `children` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:163:10
+    |
+163 | async fn children(replica: &Replica, root: &ObjectId) -> Vec<ObjectId> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `body_text` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:178:10
+    |
+178 | async fn body_text(replica: &Replica, block: &ObjectId) -> String {
+    |          ^^^^^^^^^
+
+warning: `ashlar-cairn` (test "cairn") generated 7 warnings (run `cargo fix --test "cairn" -p ashlar-cairn` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.89s
+     Running tests/main.rs (target/debug/deps/cairn-d77c986c25f8d51c)
+
+running 1 test
+upgrade open with a held rebuild: 3.22716396s
+test indexing::an_upgrade_open_answers_while_its_rebuild_runs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 18.63s
+

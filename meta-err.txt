@@ -1,0 +1,24 @@
+    Updating crates.io index
+     Locking 13 packages to highest compatible versions
+      Adding lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+      Adding lore-base v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-base)
+      Adding lore-credential v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-credential)
+      Adding lore-error-set v0.1.0 (/home/mwatts/code/github/mwatts/lore/lore-error-set)
+      Adding lore-error-set-macro v0.1.0 (/home/mwatts/code/github/mwatts/lore/lore-error-set-macro)
+      Adding lore-io v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-io)
+      Adding lore-macro v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-macro)
+      Adding lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+      Adding lore-proto v0.1.62 (/home/mwatts/code/github/mwatts/lore/lore-proto)
+      Adding lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+      Adding lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+      Adding lore-telemetry v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-telemetry)
+      Adding lore-transport v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-transport)
+ Downloading crates ...
+  Downloaded generator v0.8.9
+  Downloaded libredox v0.1.24
+  Downloaded spki v0.8.0
+  Downloaded rustls-platform-verifier-android v0.1.1
+  Downloaded lru v0.18.4
+  Downloaded iroh-metrics v1.0.1
+  Downloaded rustls-platform-verifier v0.7.0
+  Downloaded objc2 v0.6.4

@@ -1,0 +1,33 @@
+include!("common_inc.rs");
+
+#[tokio::test]
+async fn write_journaled_and_leave() {
+    let Some(root) = std::env::var_os("LORE_DOWNGRADE_DIR") else { return };
+    let root = std::path::PathBuf::from(root);
+    let immutable = LocalImmutableStore::new(
+        Some(root.clone()),
+        ImmutableStoreSettings { journal: true, ..Default::default() },
+    )
+    .await
+    .expect("the immutable store opens");
+    let dyn_immutable: Arc<dyn ImmutableStore> = immutable.clone();
+    let mutable = Arc::new(
+        LocalMutableStore::new(Some(&root), MutableStoreSettings { journal: true, ..Default::default() }, dyn_immutable)
+            .await
+            .expect("the mutable store opens"),
+    );
+    for n in 0..COUNT {
+        let payload = payload(n);
+        let fragment = Fragment { flags: 0, size_payload: payload.len() as u32, size_content: payload.len() as u64 };
+        immutable.clone().put(partition(), address(n), fragment, Some(payload), false).await.expect("put");
+    }
+    mutable.clone().store(partition(), key(), value(), KeyType::Untyped).await.expect("store");
+    immutable.clone().flush(true).await.expect("flush");
+    mutable.clone().flush(true).await.expect("flush");
+    for name in ["immutable/journal", "mutable/journal"] {
+        let len = std::fs::metadata(root.join(name)).map(|m| m.len()).unwrap_or(0);
+        println!("WRITER {name}: {len} bytes left unfolded");
+    }
+    let info = std::fs::read(root.join("immutable/info")).unwrap_or_default();
+    println!("WRITER immutable/info: {:?}", &info[..info.len().min(8)]);
+}

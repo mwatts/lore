@@ -1,0 +1,440 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+   Compiling lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+   Compiling lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+   Compiling cairn-lore v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-lore)
+   Compiling cairn-claims v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-claims)
+   Compiling cairn-lore-store v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-lore-store)
+   Compiling cairn-member v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-member)
+   Compiling cairn-grant v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-grant)
+   Compiling cairn-repl v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-repl)
+   Compiling cairn-host v0.0.0 (/home/mwatts/code/github/mwatts/ashlar/vendor/cairn/.claude/worktrees/agent-a73219e9c3799f25c/crates/cairn-host)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31m 44s
+     Running unittests src/lib.rs (target/debug/deps/cairn_host-821f6293e3979056)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/open.rs (target/debug/deps/open-e09fd431a0f78b8b)
+
+running 5 tests
+test a_root_without_lore_is_an_error_not_busy ... ok
+test a_second_open_of_the_root_is_busy_until_the_first_closes ... ok
+test the_legacy_index_goes_once_a_generation_is_active ... ok
+test a_reopen_keeps_the_published_generation ... ok
+test settle_builds_a_generation_in_an_empty_projection_directory ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+     Running tests/planner.rs (target/debug/deps/planner-54995aba3acb7658)
+
+running 2 tests
+test a_replica_reports_its_planner_to_the_root_event_log ... ok
+test a_replica_open_reconciles_the_planner_record ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.71s
+
+     Running unittests src/lib.rs (target/debug/deps/cairn_lore-11270f7e03cb839c)
+
+running 23 tests
+test batch::tests::file_import_rejects_an_occupied_stage ... ok
+test batch::tests::batch_rejects_stale_tip_without_staging ... ok
+test tests::lore_pin_reports_nonempty_version ... ok
+test batch::committed_read_tests::staged_edit_does_not_change_committed_reads_or_listing ... ok
+test batch::tests::removal_leaves_the_tip_and_earlier_revisions_keep_it ... ok
+test tests::prop_view_rules_roundtrip ... ok
+test batch::tests::committed_content_hash_is_the_raw_hash_for_a_fragmented_file ... ok
+test batch::tests::failed_removal_keeps_the_path_at_the_tip ... ok
+test batch::tests::failed_batch_cannot_leak_into_later_commit ... ok
+test tests::committed_opaque_bytes_survive_working_tree_delete ... ok
+test tests::content_path_resident_uses_working_tree_then_file_info ... ok
+test view::tests::exclude_single_path ... ok
+test batch::tests::file_import_replaces_committed_content_and_replays_idempotently ... ok
+test batch::tests::file_import_rejects_a_stale_tip_before_installing ... ok
+test tests::put_commit_get_roundtrip_offline ... ok
+test tests::reopen_preserves_tip_and_bytes ... ok
+test tests::reopen_without_working_tree_reads_committed_bytes ... ok
+test tests::tip_after_commit_same_instance ... ok
+test tests::branch_fork_merge_smoke ... ok
+test tests::crash_reopen_agrees_with_model ... ok
+test tests::sparse_view_omits_path_on_materialize ... ok
+test tests::private_stores_same_content_hashes ... ok
+test tests::prop_put_get_roundtrip ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+     Running tests/atomic_checkout_write.rs (target/debug/deps/atomic_checkout_write-a7fef83892a35b79)
+
+running 1 test
+test checkout_file_is_never_empty_or_partial_during_rewrites ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.10s
+
+     Running tests/crash_reopen.rs (target/debug/deps/crash_reopen-346adc70cb041bde)
+
+running 1 test
+test a_killed_writer_reopens_at_a_committed_revision ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.78s
+
+     Running tests/revision_reads.rs (target/debug/deps/revision_reads-70870e18313bf874)
+
+running 4 tests
+test empty_revision_has_an_empty_catalog ... ok
+test fixed_revision_keeps_bytes_and_catalog_while_tip_changes ... ok
+test revision_reads_preserve_view_exclusions_and_reject_non_hash_names ... ok
+test historical_metadata_reads_survive_reopen_without_checkout ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/store_release.rs (target/debug/deps/store_release-07cc7ff51077a6b2)
+
+running 1 test
+test dropping_an_instance_on_an_ending_runtime_releases_the_store_lock ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s
+
+     Running unittests src/lib.rs (target/debug/deps/cairn_repl-180b12ccb65b949c)
+
+running 26 tests
+test hash_seq::tests::hash_seq_rejects_truncated ... ok
+test hash::tests::prepare_iroh_blob_hashes_payload ... ok
+test hash::tests::tip_cas_no_format_tag ... ok
+test hash::tests::identity_roundtrip ... ok
+test hash::tests::range_fetch_rejected ... ok
+test hash::tests::eligible_classes_only ... ok
+test provider::tests::local_beats_lan_beats_fat_beats_other ... ok
+test hash_seq::tests::hash_seq_roundtrip ... ok
+test transport::tests::range_fetch_refused_on_sim ... ok
+test transport::tests::sim_file_import_rejects_large_files_before_reading ... ok
+test want::tests::missing_referenced_binaries_are_wanted_until_present ... ok
+test state::tests::an_older_build_copy_is_stored_as_hex_and_read_in_either_form ... ok
+test transport::membership::tests::fixture_names_are_never_members ... ok
+test transport::membership::tests::hello_round_trips_canonically ... ok
+test transport::membership::tests::self_revoke_closes_every_connection_and_stops_blobs ... ok
+test transport::membership::tests::hello_admits_only_matching_active_profiles ... ok
+test want::tests::prop_want_knowledge_hash_mismatch_is_wanted ... ok
+test hash::tests::prop_prepare_matches_hash ... ok
+test want::tests::prop_want_content_excludes_present ... ok
+test want::tests::prop_want_planes_disjoint ... ok
+test hash::tests::prop_hash_verify_identity ... ok
+test want::tests::prop_want_knowledge_excludes_present ... ok
+test replica::cow_reads_tests::replica_reads_skip_the_legacy_index_catch_up_and_notify_subscribers ... ok
+test session::tests::fetch_prefers_fat_role_over_other_unadvertised_provider ... ok
+test session::tests::fetch_keeps_unknown_providers_for_deduplicated_failover ... ok
+test session::tests::fetch_prefers_advertised_provider_over_input_order ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/binary_knowledge.rs (target/debug/deps/binary_knowledge-b4edf54e4188db47)
+
+running 4 tests
+test tessera_bound_query_language_has_no_fts_leaf ... ok
+test one_batch_stores_a_blob_shared_by_two_objects_once ... ok
+test knowledge_sync_moves_binary_metadata_as_knowledge ... ok
+test knowledge_replica_keeps_typed_reference_without_binary_bytes ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+
+     Running tests/blob_sweep.rs (target/debug/deps/blob_sweep-dd6fdfdbf19de40a)
+
+running 5 tests
+test a_read_at_an_older_tip_returns_its_own_bytes ... ok
+test naming_a_removed_body_brings_its_bytes_back ... ok
+test dropped_bytes_that_cannot_be_read_refuse_the_commit ... ok
+test pending_candidates_keep_their_bytes ... ok
+test tip_keeps_only_live_bytes ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 45.57s
+
+     Running tests/client_api_hides_engine.rs (target/debug/deps/client_api_hides_engine-84208c46b313992a)
+
+running 2 tests
+test the_check_catches_a_leaking_signature ... ok
+test public_items_name_no_engine_type ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/concurrent_settle.rs (target/debug/deps/concurrent_settle-dd6522d40fa11b87)
+
+running 4 tests
+test own_earlier_versions_never_return ... ok
+test peer_edit_after_merge_keeps_local_change ... ok
+test edit_on_an_older_version_still_settles ... ok
+test concurrent_edits_settle_on_one_version ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.85s
+
+     Running tests/content_candidates.rs (target/debug/deps/content_candidates-becec440f2f6a110)
+
+running 7 tests
+test newest_write_takes_an_edit_on_top_of_this_replicas_own_edit ... ok
+test newest_write_converges_concurrent_edits_on_the_later_one ... ok
+test sequential_edit_fast_forwards_without_a_group ... ok
+test missing_remote_bytes_stay_pending_until_delivered ... ok
+test open_object_keeps_writing_and_accumulates_candidates ... ok
+test concurrent_blob_edits_keep_local_live_and_retain_groups_in_both_orders ... ok
+test successful_write_acknowledges_only_consumed_tokens_and_failure_publishes_nothing ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.64s
+
+     Running tests/durable_replica.rs (target/debug/deps/durable_replica-441ac84c3201b424)
+
+running 15 tests
+test migration_refuses_a_knowledge_id_without_committed_meta_bytes ... ok
+test knowledge_sync_rejects_incompatible_schema_before_committing_metadata ... ok
+test incoming_content_cannot_overwrite_another_objects_file ... ok
+test custom_schema_and_generic_meta_path_migrate_and_reopen ... ok
+test file_export_skips_bad_candidates_and_preserves_destination_on_failure ... ok
+test open_recovers_inventory_from_committed_meta_and_content_without_control_file ... ok
+test incoming_metadata_cannot_move_an_existing_id_to_another_type ... ok
+test migration_requires_referenced_content_even_without_source_inventory ... ok
+test changed_content_pointer_cannot_reuse_old_bytes_or_residency ... ok
+test reopen_loads_persisted_config_and_content_inventory ... ok
+test knowledge_sparse_reopen_reads_committed_meta_without_content_or_checkout ... ok
+test incoming_content_pointer_cannot_overwrite_schema_authority ... ok
+test revoked_exclusion_survives_reindex_and_restart ... ok
+test migration_failure_preserves_role_then_resumes_and_is_idempotent ... ok
+test residency_flags_do_not_export_to_hash_missing_content ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.49s
+
+     Running tests/extract_coverage.rs (target/debug/deps/extract_coverage-e4cca85a3a7d262d)
+
+running 2 tests
+test replica_reports_extract_coverage_without_starting_extraction ... ok
+test extract_bytes_that_come_and_go_reproject_the_object_citing_them ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.15s
+
+     Running tests/harness.rs (target/debug/deps/harness-c160eb3bae8cab9b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/indexer.rs (target/debug/deps/indexer-a1cd2c9f226fbb9d)
+
+running 1 test
+test a_refused_write_settles_in_the_background ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.20s
+
+     Running tests/iroh_integration.rs (target/debug/deps/iroh_integration-ff49b28af8fa6e18)
+
+running 1 test
+test iroh_real_feature_disabled_by_default ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/iroh_large_archive.rs (target/debug/deps/iroh_large_archive-70bf09620de68506)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/iroh_membership.rs (target/debug/deps/iroh_membership-474bab66db830f48)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/iroh_storage_batching.rs (target/debug/deps/iroh_storage_batching-b2cd27500f828d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/knowledge_tip.rs (target/debug/deps/knowledge_tip-2d23d866b859801a)
+
+running 1 test
+test claim_and_grant_commits_leave_the_projection_current ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/lore_authority.rs (target/debug/deps/lore_authority-fcf4253da77fb36d)
+
+running 1 test
+test lore_authority_reads_at_revisions ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+
+     Running tests/member_commits_keep_index.rs (target/debug/deps/member_commits_keep_index-520e636d559b5b72)
+
+running 3 tests
+test commits_that_touch_metadata_or_bytes_still_mark_the_index_stale ... ok
+test a_statement_received_through_the_exchange_leaves_the_index_queryable ... ok
+test local_statement_commits_leave_the_index_queryable ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.12s
+
+     Running tests/membership_gate.rs (target/debug/deps/membership_gate-d536b8a889462da5)
+
+running 6 tests
+test fatrole_migrate_refuses_membership_roots_before_opening ... ok
+test fixture_root_keeps_caller_peer_id_and_operator_nodes ... ok
+test membership_root_without_device_key_is_refused ... ok
+test membership_root_keeps_foreign_fat_role ... ok
+test node_a_is_denied_on_a_membership_root ... ok
+test membership_root_derives_peer_id_from_device_key ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/nowt_content.rs (target/debug/deps/nowt_content-c5634f2c1e74a97d)
+
+running 1 test
+test replica_resident_content_from_lore_without_working_tree ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+     Running tests/open_marker.rs (target/debug/deps/open_marker-ac9f780b282adb41)
+
+running 6 tests
+test schema_approval_invalidates_the_marker ... ok
+test corrupt_marker_falls_back_to_full_walks ... ok
+test repair_deletes_the_marker ... ok
+test moved_tip_walks_only_changed_paths_and_still_rejects_invalid_metadata ... ok
+test migration_deletes_the_destination_marker ... ok
+test unchanged_reopen_reads_no_metadata_and_is_ten_times_faster ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.61s
+
+     Running tests/owner_process.rs (target/debug/deps/owner_process-8a2c936820c45075)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/phase12_livein.rs (target/debug/deps/phase12_livein-9aaf544180c33b0b)
+
+running 2 tests
+test phone_shaped_lists_knowledge_offline ... ok
+test chaos_mid_migrate_knowledge_survives ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.74s
+
+     Running tests/phase5_scenarios.rs (target/debug/deps/phase5_scenarios-e1f831862b53b143)
+
+running 17 tests
+test offline_list_during_failed_dial ... ok
+test s4_knowledge_without_content_indexes_unavailable ... ok
+test s0_seed_a_to_b_partial_knowledge ... ok
+test s1_seed_b_to_c_without_a ... ok
+test s4_c_receives_beta1_from_a_while_b_offline ... ok
+test s10_same_meta_conflict_merges ... ok
+test prop_s5_s6_synced_implies_not_equal_files ... ok
+test s3_b_pushes_then_goes_offline ... ok
+test s2_concurrent_local_edits_offline ... ok
+test s5_delta_on_c_does_not_enter_b ... ok
+test s12_failover_when_fat_role_down ... ok
+test s13_fat_role_migrate ... ok
+test s5_s6_synchronized_not_equal_file_sets ... ok
+test want_knowledge_content_disjoint ... ok
+test s6_resync_with_a_views_stay_different ... ok
+test s7_unpublished_b_commit_invisible_to_c_via_a ... ok
+test s8_overlapping_views_disjoint_files ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.21s
+
+     Running tests/phase7_grants.rs (target/debug/deps/phase7_grants-36de487b459c5ed4)
+
+running 3 tests
+test outsider_denied_without_grant ... ok
+test grant_allows_outsider_fetch ... ok
+test s9_grant_revoke_unindexes_and_denies_fetch ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.75s
+
+     Running tests/restore_tombstone.rs (target/debug/deps/restore_tombstone-88f3cd6130c38be2)
+
+running 5 tests
+test a_delete_then_a_restore_of_a_live_object_in_one_batch_keeps_it_live ... ok
+test a_replica_skips_the_echo_of_its_own_older_build_copy ... ok
+test a_restore_wins_over_a_concurrent_delete ... ok
+test a_restored_identity_reaches_a_replica_that_saw_the_delete ... ok
+test a_restore_keeps_its_fields_over_the_copy_another_replica_served_an_older_build ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.65s
+
+     Running tests/retained_session.rs (target/debug/deps/retained_session-e45e2db5508033d5)
+
+running 4 tests
+test bench_meta_read ... ignored, benchmark; prints p50 timings
+test a_thousand_reads_create_no_directory_and_connect_at_most_once ... ok
+test a_replication_import_is_visible_to_the_next_read ... ok
+test a_commit_is_visible_to_the_next_read_and_an_old_table_still_reads_the_old_bytes ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.22s
+
+     Running tests/sim_diff.rs (target/debug/deps/sim_diff-150c96997fd140bf)
+
+running 3 tests
+test knowledge_sync_without_content_plane ... ok
+test sim_drop_reorder_still_converges_knowledge ... ok
+test sim_fat_role_migrate_under_faults ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.90s
+
+     Running tests/smoke.rs (target/debug/deps/smoke-44f340f8191a88bd)
+
+running 1 test
+test smoke_knowledge_sync_one_object ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.15s
+
+     Running tests/unique_collisions.rs (target/debug/deps/unique_collisions-1c232b9939e366a4)
+
+running 7 tests
+test clearing_the_slot_holders_value_hands_the_slot_over ... ok
+test tombstoning_the_slot_holder_hands_the_slot_over ... ok
+test a_imports_first_then_restart ... ok
+test local_writes_cannot_add_a_duplicate_but_can_remove_one ... ok
+test b_imports_first_then_restart ... ok
+test later_imports_of_a_holder_keep_then_clear_the_record ... ok
+test tip_diff_imports_in_both_orders ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.10s
+
+     Running tests/writer_queue.rs (target/debug/deps/writer_queue-4ba5f65848b02751)
+
+running 2 tests
+test a_held_write_turn_queues_writes_from_another_instance_of_the_root ... ok
+test statement_commits_and_replica_writes_overlap_without_writer_conflicts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s
+
+   Doc-tests cairn_host
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests cairn_lore
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests cairn_repl
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

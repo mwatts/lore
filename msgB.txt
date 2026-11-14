@@ -1,0 +1,23 @@
+lore-storage: Make a binary without the journal refuse a journaled store
+
+A Lore binary from before the store journal opens a journaled store,
+reads only its packfiles and buckets, and goes without whatever the
+journal holds: the revisions since the last fold, and the branch tips
+that name them. Its open reads the immutable store's info file and
+refuses any version but 0. A journaled open now writes version 1
+(Journaled) there, durably, before its journal takes a record, and this
+binary reads versions 0 and 1.
+
+The stamp stays once written, so even a folded store is refused by an
+older binary; a downgrade is not supported. Every repository opens its
+immutable store, so this covers the mutable store's journal too. A
+shared mutable store opened with another repository's immutable store is
+not covered.
+
+Proved with Lore 24545866: a store this binary wrote with unfolded
+journals opens there with "Info file has unsupported version 1, expected
+0". Written by `cbb2efc5`, without the stamp, the same store opened there and read
+back 0 of 16 fragments and no branch tip.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+

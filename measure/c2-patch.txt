@@ -1,0 +1,2 @@
+171:lore = { path = "/home/mwatts/code/github/mwatts/lore-c2/lore" }
+172:lore-base = { path = "/home/mwatts/code/github/mwatts/lore-c2/lore-base" }

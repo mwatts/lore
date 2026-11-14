@@ -1,0 +1,52 @@
+
+running 1 test
+seeded 1600/2000 in 2.1s: write_bytes 32.5 MB wchar 27.8 MB
+seeded 1996/2000 in 2.6s: write_bytes 60.3 MB wchar 54.5 MB
+seeded 1998/2000 in 2.7s: write_bytes 60.5 MB wchar 54.6 MB
+seeded 1999/2000 in 2.7s: write_bytes 60.7 MB wchar 54.6 MB
+seeded 2000/2000 in 2.8s: write_bytes 60.9 MB wchar 54.7 MB
+R4SHIM seed total 53919744
+R4SHIM seed     29868032 B      975 calls  write .cairn/projection/gen-#/db/wal/#.wal
+R4SHIM seed      9977856 B     1605 calls  write .cairn/projection/gen-#/db/vlog/#.vlog
+R4SHIM seed      9846784 B      460 calls  write .cairn/projection/gen-#/db/sstables/#.sst
+R4SHIM seed      2260992 B        6 calls  pwrite .lore/immutable/journal
+R4SHIM seed       376832 B        6 calls  fdatasync .lore/immutable/journal
+R4SHIM seed       344064 B        6 calls  fdatasync .lore/mutable/journal
+R4SHIM seed       212992 B        1 calls  fsync .cairn/projection/gen-#/db/wal/#.wal
+R4SHIM seed       196608 B        1 calls  fsync .cairn/projection/gen-#/db/sstables/#.sst
+R4SHIM seed       131072 B        1 calls  fsync .cairn/projection/gen-#/db/vlog/#.vlog
+R4SHIM seed        98304 B        6 calls  pwrite .lore/mutable/journal
+R4SHIM seed        81920 B        1 calls  fsync .cairn/projection/gen-#/db/wal
+R4SHIM seed        65536 B        1 calls  fsync .cairn/projection/gen-#/db/manifest/.tmp_#_#
+R4SHIM seed        49152 B        1 calls  fsync .cairn/projection/gen-#/db/manifest
+R4SHIM seed        49152 B        2 calls  fsync .cairn/projection/gen-#/db/wal/#.wal (deleted)
+R4SHIM seed        49152 B        1 calls  rename .cairn/projection/gen-#/db/manifest/#.manifest
+R4SHIM seed        49152 B        1 calls  fsync .cairn/projection/gen-#/db/sstables
+R4SHIM seed        49152 B      304 calls  mkdir .lore/immutable/index/#/pack
+R4SHIM seed        32768 B      170 calls  open+creat 
+R4SHIM seed        32768 B        1 calls  unlink .cairn/projection/gen-#/db/wal/#.wal
+R4SHIM seed        32768 B        1 calls  unlink sstables
+R4SHIM seed        32768 B      152 calls  mkdir .lore/immutable/index/#
+R4SHIM seed        16384 B        1 calls  write .cairn/projection/gen-#/db/manifest/.tmp_#_#
+R4SHIM seed        16384 B       70 calls  write /home/mwatts/code/github/mwatts/r#-scratch/measure/fx-shimtest.txt
+R4SHIM seed        16384 B        1 calls  unlink manifest.json
+R4SHIM seed        16384 B        1 calls  fsync .cairn/projection/gen-#/db/manifest/#.manifest
+R4SHIM seed        16384 B        2 calls  mkdir .lore/immutable/index/da/pack
+R4 footprint at 2000 Records, seeded in 2.8s, 11 samples
+bytes written (write_bytes): open 7.0 MB, seed 60.9 MB (30458 B/rec), through close 66.9 MB (33448 B/rec)
+write syscalls (wchar): 60.0 MB (29992 B/rec); cancelled_write_bytes 0.0 MB
+peak on disk: 44.6 MB (22316 B/rec) at 2.5s
+final on disk after close: 27.3 MB apparent (13639 B/rec), 27.4 MB allocated
+component                                               final         peak   at root peak    written>=    files
+.cairn/projection/gen-1/db/wal                         0.0 MB       1.5 MB         0.0 MB       1.5 MB        1  final 0 B/rec written 744 B/rec
+.cairn/projection/gen-2/db/sstables                   12.4 MB      12.4 MB         1.7 MB      12.4 MB        2  final 6201 B/rec written 6201 B/rec
+.cairn/projection/gen-2/db/vlog                       12.7 MB      12.7 MB        10.0 MB      12.7 MB        1  final 6333 B/rec written 6333 B/rec
+.cairn/projection/gen-2/db/wal                         0.0 MB      30.9 MB        30.9 MB      30.9 MB        2  final 0 B/rec written 15447 B/rec
+.lore/immutable                                        2.2 MB       2.2 MB         2.1 MB       2.2 MB        3  final 1102 B/rec written 1102 B/rec
+bytes written by thread (largest counters sampled; a thread that ended after its last sample is undercounted):
+  cairn-surreal-c                  write_bytes      60.6 MB wchar      57.8 MB threads 4
+  lore-io                          write_bytes       5.7 MB wchar       2.2 MB threads 16
+test footprint::seeding_footprint_probe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 5.07s
+

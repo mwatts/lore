@@ -1,0 +1,21 @@
+lore-storage: Open a store with no bucket yet as a new store
+
+A journaled store writes buckets only in a fold, so a store closed before
+its first fold has group directories (the packstore makes them on first
+open) and no bucket file or level marker in any of them. The open read
+that as a store written before bucket levels existed: it kept the store at
+the pre-fan-out serialize version, every group started at 256 buckets, and
+no marker was ever written, so the store stayed that way. A Lore
+repository is created and closed before it takes a revision, so every
+journaled repository was laid out that way. Each fold then rewrote a
+bucket file per 256th of every group it touched: at 50,000 Ashlar Records
+a fold wrote about 15,000 bucket files, and a seed of 50,000 Records wrote
+2.8 GB on Lore's I/O threads, against 1.3 GB with neither journal.
+
+An index directory with no bucket and no marker in any group holds no
+index, so the open now treats it as a new store. Groups start at one
+bucket, record their level, and fan out as they grow. The same seed
+writes 0.3 GB on them (measured with the Ashlar probe).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+

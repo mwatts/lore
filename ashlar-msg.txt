@@ -1,0 +1,21 @@
+R4 Lore track: the fix round, measured
+
+The seed regression at 50,000 Records was a layout bug in the index
+journal: a Lore repository is created and closed before its first fold,
+and the next open read its bucket-less index as a pre-fan-out store, so
+every group sat at 256 buckets and each fold rewrote about 15,000 bucket
+files. Lore f62f840 opens such a store as new. The seed at 50,000 now
+writes 72.1 KB per Record (122.3 before the fix, 82.0 with change 2
+alone), and a create writes about 0.4 MB with its share of the folds
+(0.9 to 1.16 MB before). Lore 7b476ed stamps a journaled store's info
+file so Lore 24545866 refuses it instead of losing the journal; a
+scripted run with both binaries shows the refusal, and the silent loss
+without the stamp.
+
+The failed reopen after the change 2 seed was the projection's SurrealKV
+lock, not Lore. It did not recur in five runs at 50,000, one under heavy
+load; the doc gives the inferred cause in cairn-surreal's close bound.
+The probe now reopens at once, reports a failed attempt, times the close,
+and runs the optional write attributor over the seed too.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

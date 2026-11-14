@@ -1,0 +1,32 @@
+
+running 1 test
+seeded 20000/50000 in 32.7s: write_bytes 1124.7 MB wchar 795.8 MB
+test footprint::seeding_footprint_probe has been running for over 60 seconds
+seeded 40000/50000 in 70.6s: write_bytes 2801.9 MB wchar 2190.5 MB
+seeded 49900/50000 in 120.2s: write_bytes 3975.7 MB wchar 3057.7 MB
+seeded 49950/50000 in 123.1s: write_bytes 4066.3 MB wchar 3085.2 MB
+seeded 49990/50000 in 124.4s: write_bytes 4089.3 MB wchar 3097.2 MB
+seeded 50000/50000 in 125.8s: write_bytes 4099.8 MB wchar 3105.8 MB
+
+thread 'footprint::seeding_footprint_probe' (3267626) panicked at crates/ashlar-cairn/tests/footprint.rs:307:59:
+called `Result::unwrap()` on an `Err` value: Store("object store: projection: embedded engine failed to start: projection engine unavailable: There was a problem with the datastore: Other error: Database at /home/mwatts/code/github/mwatts/ashlar-r4-lore/.tmp/.tmpHacJFK/archive/.cairn/projection/gen-2/db/LOCK is already locked by another process")
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::result::unwrap_failed
+   3: cairn::footprint::folded::{closure#0}
+   4: cairn::footprint::seeding_footprint_probe::{closure#0}
+   5: tokio::runtime::context::runtime::enter_runtime::<<tokio::runtime::scheduler::multi_thread::MultiThread>::block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>::{closure#0}, ()>
+   6: <tokio::runtime::runtime::Runtime>::block_on::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+   7: cairn::footprint::seeding_footprint_probe
+   8: <cairn::footprint::seeding_footprint_probe::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+test footprint::seeding_footprint_probe ... FAILED
+
+failures:
+
+failures:
+    footprint::seeding_footprint_probe
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 120 filtered out; finished in 144.58s
+

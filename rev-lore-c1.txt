@@ -1,0 +1,2574 @@
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+   Compiling lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+   Compiling lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> lore-revision/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+   Compiling lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+warning: `lore-revision` (lib test) generated 1 warning (1 duplicate)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 03s
+     Running unittests src/lib.rs (target/debug/deps/lore-508694f0e1fee368)
+
+running 273 tests
+test branch::tests::cascade_scope_maps_each_field_combination ... ok
+test branch::tests::archive_args_old_payload_missing_cascade_fields_uses_defaults ... ok
+test auth::resolve_auth_endpoint_tests::missing_repository_is_repository_not_found ... ok
+test branch::tests::archive_args_layer_payload_missing_link_fields_uses_defaults ... ok
+test auth::resolve_auth_endpoint_tests::returns_explicit_endpoint_verbatim ... ok
+test branch::tests::cascade_scope_rejects_a_path_together_with_include_all ... ok
+test branch::tests::merge_start_args_old_payload_missing_inherit_metadata_uses_default ... ok
+test branch::tests::merge_into_args_old_payload_missing_inherit_metadata_uses_default ... ok
+test auth::resolve_auth_endpoint_tests::a_path_outside_a_repository_is_not_a_remote_less_repository ... ok
+test auth::resolve_auth_endpoint_tests::a_configured_remote_is_returned ... ok
+test auth::resolve_auth_endpoint_tests::repository_without_a_remote_is_no_remote ... ok
+test auth::resolve_auth_endpoint_tests::repository_with_no_remote_key_is_no_remote ... ok
+test call_delegation::tests::a_string_argument_that_is_utf8_reaches_the_handler ... ok
+test call_delegation::tests::a_text_array_element_that_is_not_utf8_is_rejected ... ok
+test call_delegation::tests::a_text_field_of_a_nested_argument_struct_that_is_not_utf8_is_rejected ... ok
+test call_delegation::tests::a_global_argument_that_is_not_utf8_is_rejected ... ok
+test call_delegation::tests::a_batch_entry_name_that_is_not_utf8_is_rejected ... ok
+test call_delegation::tests::a_string_argument_that_is_not_utf8_is_rejected_before_the_handler_runs ... ok
+test call::tests::missing_repository_completes_with_real_ffi_code ... ok
+test call::tests::failing_op_lets_consumer_read_trace_locations ... ok
+test call::tests::failing_op_completes_with_error_code_and_no_error_event ... ok
+test call::tests::succeeding_op_completes_with_status_zero_and_empty_detail ... ok
+test call_delegation::tests::conflicting_identity_arguments_are_rejected_before_the_handler_runs ... ok
+test call_delegation::tests::the_rejection_names_the_failing_field ... ok
+test log::tests::configure_accepts_a_configuration_with_no_file_logging ... ok
+test log::tests::configure_rejects_a_file_path_that_is_not_utf8 ... ok
+test call_delegation::tests::a_text_field_of_an_array_element_that_is_not_utf8_is_rejected ... ok
+test revision::tests::cherry_pick_args_old_payload_missing_inherit_metadata_uses_default ... ok
+test call_delegation::tests::async_failure_delivers_code_only_through_complete_status ... ok
+test repository::tests::migrated_terminal_arms_have_no_send_error_call ... ok
+test revision::tests::commit_args_new_payload_carries_layer_fields ... ok
+test revision::tests::commit_args_old_payload_missing_layer_fields_uses_defaults ... ok
+test call_delegation::tests::the_asynchronous_entry_point_rejects_text_that_is_not_utf8 ... ok
+test revision_tree::add::tests::add_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::add::tests::add_rejects_a_repeated_caller_id ... ok
+test revision_tree::add::tests::add_builds_a_subtree_from_entry_parent_references ... ok
+test revision_tree::add::tests::add_rejects_a_parent_that_has_been_deleted ... ok
+test revision_tree::add::tests::add_normalizes_fields_a_kind_does_not_carry ... ok
+test revision_tree::add::tests::add_rejects_a_name_already_in_the_tree ... ok
+test revision_tree::add::tests::add_rejects_the_whole_batch_and_creates_nothing ... ok
+test revision_tree::add::tests::add_generates_a_file_id_only_for_files_missing_one ... ok
+test revision_tree::add::tests::add_rejects_a_tree_collision_when_one_parent_takes_several_entries ... ok
+test revision_tree::call::tests::handle_miss_completes_with_error_code_and_no_error_event ... ok
+test revision_tree::add::tests::add_reports_the_batch_terminal_on_success_and_rejection ... ok
+test revision_tree::add::tests::add_single_entry_round_trips_through_node_info ... ok
+test revision_tree::close::tests::close_with_unknown_handle_returns_invalid_arguments ... ok
+test revision_tree::add::tests::add_with_no_entries_succeeds ... ok
+test revision_tree::add::tests::add_rejects_duplicate_names_within_one_batch ... ok
+test revision_tree::close::tests::close_with_unknown_handle_emits_close_complete_with_invalid_arguments_error_code ... ok
+test revision_tree::close::tests::close_waits_for_in_flight_to_drain ... ok
+test revision_tree::add::tests::add_accepts_repeated_zero_caller_ids ... ok
+test revision_tree::close::tests::open_load_close_storageclose_deregisters_both_handles ... ok
+test revision_tree::close::tests::concurrent_close_on_same_handle_one_wins ... ok
+test revision_tree::add::tests::add_rejects_bad_kinds_and_unknown_parents ... ok
+test revision_tree::add::tests::add_rejects_forward_and_non_directory_parent_references ... ok
+test revision_tree::commit::tests::commit_on_unknown_handle_emits_commit_complete_with_invalid_arguments ... ok
+test revision_tree::commit::tests::commit_emits_the_revision_commit_telemetry_in_order ... ok
+test revision_tree::close::tests::close_releases_handle_and_subsequent_close_returns_invalid_arguments ... ok
+test revision_tree::close::tests::revision_handle_survives_parent_storage_close ... ok
+test revision_tree::commit::tests::commit_empties_the_pending_metadata ... ok
+test revision_tree::call::tests::verb_error_completes_with_error_code_and_no_error_event ... ok
+test revision_tree::commit::tests::a_commit_the_rehash_refuses_restores_the_pre_commit_state ... ok
+test revision_tree::commit::tests::commit_without_a_branch_on_an_empty_handle_is_rejected ... ok
+test revision_tree::commit::tests::commit_reports_the_new_tip_when_the_branch_advanced ... ok
+test revision_tree::call::tests::happy_path_completes_with_status_zero_and_decrements_counter ... ok
+test revision_tree::commit::tests::commit_with_no_edits_leaves_the_handle_usable ... ok
+test revision_tree::delete::tests::a_target_discarded_after_validation_fails_only_its_own_entry ... ok
+test revision_tree::commit::tests::a_second_commit_chains_onto_the_first_without_restating_the_branch ... ok
+test revision_tree::commit::tests::remote_write_requests_the_upload_when_nothing_forbids_a_remote ... ok
+test revision_tree::delete::tests::add_rejects_a_parent_staged_for_deletion ... ok
+test revision_tree::commit::tests::commit_publishes_the_tree_and_reports_the_revision ... ok
+test revision_tree::delete::tests::add_restores_a_node_staged_for_deletion_of_the_same_kind ... ok
+test revision_tree::delete::tests::add_after_discarding_an_added_node_creates_a_fresh_node ... ok
+test revision_tree::commit::tests::commit_with_contradictory_flags_is_rejected_before_any_write ... ok
+test revision_tree::delete::tests::add_rejects_a_name_a_live_child_holds_beside_a_deleted_one ... ok
+test revision_tree::delete::tests::delete_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::delete::tests::add_stages_an_addition_and_marks_the_ancestors ... ok
+test revision_tree::delete::tests::delete_discards_a_node_that_was_added_then_modified ... ok
+test revision_tree::delete::tests::delete_rejects_a_node_already_staged_for_deletion ... ok
+test revision_tree::delete::tests::delete_discards_a_subtree_this_handle_added ... ok
+test revision_tree::delete::tests::delete_rejects_a_repeated_caller_id_but_accepts_repeated_zeros ... ok
+test revision_tree::commit::tests::remote_write_is_demoted_when_the_call_is_local_only ... ok
+test revision_tree::delete::tests::delete_discards_a_node_this_handle_added ... ok
+test revision_tree::delete::tests::delete_rejects_an_unknown_node ... ok
+test revision_tree::delete::tests::add_creates_a_new_node_when_the_deleted_namesake_is_another_kind ... ok
+test revision_tree::delete::tests::delete_rejects_an_entry_whose_ancestor_another_entry_deletes ... ok
+test revision_tree::delete::tests::delete_rejects_the_root ... ok
+test revision_tree::delete::tests::delete_rejects_two_entries_naming_one_node ... ok
+test revision_tree::delete::tests::add_takes_a_supplied_file_id_when_restoring ... ok
+test revision_tree::delete::tests::delete_replaces_a_modification_with_a_deletion ... ok
+test revision_tree::delete::tests::delete_rejects_a_node_id_on_an_unallocated_slot ... ok
+test revision_tree::delete::tests::delete_rejects_the_whole_batch_and_changes_nothing ... ok
+test revision_tree::delete::tests::delete_stages_a_subtree_and_counts_every_node ... ok
+test revision_tree::delete::tests::delete_with_no_entries_succeeds ... ok
+test revision_tree::delete::tests::delete_removes_a_link_without_descending_into_it ... ok
+test revision_tree::delete::tests::delete_reports_entries_then_the_batch_terminal_then_complete ... ok
+test revision_tree::delete::tests::delete_stages_a_node_that_was_restored_by_add ... ok
+test revision_tree::info::tests::info_on_unknown_handle_emits_terminal_with_invalid_arguments ... ok
+test revision_tree::delete::tests::modify_stages_a_modification_on_a_settled_node ... ok
+test revision_tree::delete::tests::modify_rejects_a_node_staged_for_deletion ... ok
+test revision_tree::commit::tests::a_commit_holds_the_handle_against_every_other_call ... ok
+test revision_tree::info::tests::info_returns_parents_timestamp_author_and_key_count ... ok
+test revision_tree::commit::tests::a_metadata_edit_cannot_land_inside_a_commit ... ok
+test revision_tree::delete::tests::delete_stages_more_nodes_than_one_block_holds ... ok
+test revision_tree::handle::synth_repository_context_tests::synth_repository_context_round_trips_empty_state_via_zero_hash_deserialize ... ok
+test revision_tree::info::tests::info_with_unreadable_metadata_returns_internal ... ok
+test revision_tree::info::tests::info_without_metadata_reports_zeroed_fields ... ok
+test revision_tree::list_children::tests::list_children_child_event_carries_node_metadata ... ok
+test revision_tree::list_children::tests::list_children_on_unknown_handle_emits_begin_with_invalid_arguments ... ok
+test revision_tree::list_children::tests::list_children_empty_directory_emits_begin_then_complete ... ok
+test revision_tree::delete::tests::modify_keeps_an_added_node_staged_as_an_addition ... ok
+test revision_tree::delete::tests::delete_stages_the_settled_nodes_of_a_subtree_and_discards_the_added_one ... ok
+test revision_tree::list_children::tests::list_children_reports_a_link_child_as_a_link ... ok
+test revision_tree::delete::tests::node_info_reports_a_node_staged_for_deletion ... ok
+test revision_tree::delete::tests::restoring_a_directory_leaves_its_children_staged_for_deletion ... ok
+test revision_tree::list_children::tests::list_children_through_a_dangling_link_returns_invalid_arguments ... ok
+test revision_tree::list_children::tests::list_children_leaf_node_returns_invalid_arguments ... ok
+test revision_tree::list_children::tests::list_children_unknown_node_returns_invalid_arguments ... ok
+test revision_tree::load::tests::load_with_unknown_store_handle_fails_with_invalid_arguments ... ok
+test revision_tree::list_children::tests::list_children_through_a_link_lists_the_target_children ... ok
+test revision_tree::list_children::tests::list_children_through_a_link_to_a_leaf_returns_invalid_arguments ... ok
+test revision_tree::load::tests::load_from_unknown_hash_fails_with_not_found ... ok
+test revision_tree::metadata_clear::tests::clear_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::metadata_clear::tests::a_batch_clears_every_key_it_names ... ok
+test revision_tree::list_children::tests::list_children_emits_one_event_per_child ... ok
+test revision_tree::metadata_clear::tests::a_rejected_clear_batch_removes_nothing ... ok
+test revision_tree::metadata_clear::tests::an_empty_clear_batch_reports_the_batch_terminal ... ok
+test revision_tree::metadata_clear::tests::a_repeated_key_clears_once_and_then_no_ops ... ok
+test revision_tree::metadata_clear::tests::clear_rejects_a_repeated_caller_id_but_accepts_repeated_zeros ... ok
+test revision_tree::metadata_clear::tests::clear_reports_entries_then_the_batch_terminal_then_complete ... ok
+test revision_tree::load::tests::load_captures_parent_storage_handle_id_for_close_cascade ... ok
+test revision_tree::metadata_clear::tests::clearing_an_absent_key_is_a_no_op_success ... ok
+test revision_tree::metadata_get::tests::a_key_in_neither_source_reports_nothing_either_way ... ok
+test revision_tree::load::tests::load_from_zero_hash_returns_empty_handle ... ok
+test revision_tree::metadata_get::tests::get_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::metadata_clear::tests::clearing_a_set_key_removes_it ... ok
+test revision_tree::metadata_clear::tests::clearing_cannot_touch_the_loaded_revision ... ok
+test revision_tree::load::tests::load_two_revision_trees_against_different_repositories_on_one_storage_handle ... ok
+test revision_tree::metadata_get::tests::an_empty_get_batch_reports_the_batch_terminal ... ok
+test revision_tree::metadata_get::tests::a_revision_with_no_metadata_answers_nothing ... ok
+test revision_tree::metadata_get::tests::a_pending_edit_shadows_the_frozen_value ... ok
+test revision_tree::metadata_get::tests::an_unreadable_metadata_fragment_fails_the_call ... ok
+test revision_tree::metadata_get::tests::get_rejects_bad_arguments_despite_tolerating_absent_keys ... ok
+test revision_tree::metadata_get::tests::get_reports_a_string_value_that_is_not_text ... ok
+test revision_tree::metadata_get::tests::get_reports_a_value_it_cannot_decode_rather_than_staying_silent ... ok
+test revision_tree::metadata_get::tests::get_reports_only_the_keys_that_resolve ... ok
+test revision_tree::metadata_get::tests::the_revision_is_read_only_when_asked_for_and_needed ... ok
+test revision_tree::metadata_set::tests::a_repeated_key_resolves_to_the_last_entry ... ok
+test revision_tree::metadata_set::tests::a_set_batch_reads_back_through_get ... ok
+test revision_tree::metadata_set::tests::set_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::metadata_set::tests::an_empty_set_batch_reports_the_batch_terminal ... ok
+test revision_tree::metadata_set::tests::every_metadata_type_round_trips ... ok
+test revision_tree::modify::tests::modify_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::metadata_set::tests::set_rejects_an_empty_key_and_a_repeated_caller_id ... ok
+test revision_tree::metadata_set::tests::set_rejects_an_entry_larger_than_the_metadata_cap ... ok
+test revision_tree::metadata_set::tests::set_reports_entries_then_the_batch_terminal_then_complete ... ok
+test revision_tree::modify::tests::a_target_deleted_after_validation_fails_the_batch_as_internal ... ok
+test revision_tree::metadata_get::tests::the_loaded_revision_is_not_read_unless_asked_for ... ok
+test revision_tree::metadata_set::tests::a_rejected_set_batch_records_nothing ... ok
+test revision_tree::list_children::tests::list_children_streams_every_child_of_a_large_directory ... ok
+test revision_tree::modify::tests::modify_rejects_a_directory_and_a_link ... ok
+test revision_tree::modify::tests::modify_rejects_a_repeated_node_id ... ok
+test revision_tree::modify::tests::modify_rejects_the_whole_batch_and_changes_nothing ... ok
+test revision_tree::modify::tests::modify_rewrites_a_file_and_keeps_its_file_id ... ok
+test revision_tree::modify::tests::modify_rejects_a_deleted_node ... ok
+test revision_tree::modify::tests::modify_rejects_a_node_id_on_an_unallocated_slot ... ok
+test revision_tree::modify::tests::modify_rejects_a_repeated_caller_id_but_accepts_repeated_zeros ... ok
+test revision_tree::metadata_get::tests::get_reads_a_value_frozen_in_the_loaded_revision ... ok
+test revision_tree::modify::tests::modify_takes_a_supplied_file_id ... ok
+test revision_tree::modify::tests::modify_with_no_entries_succeeds ... ok
+test revision_tree::metadata_set::tests::a_later_call_overwrites_an_earlier_value ... ok
+test revision_tree::modify::tests::modify_rejects_an_unknown_node ... ok
+test revision_tree::modify::tests::modify_reports_entries_then_the_batch_terminal_then_complete ... ok
+test revision_tree::move_node::tests::a_node_can_be_moved_again_from_where_the_first_move_left_it ... ok
+test revision_tree::move_node::tests::move_on_unknown_handle_reports_only_the_batch_terminal ... ok
+test revision_tree::move_node::tests::move_keeps_a_child_staged_for_deletion_deleted ... ok
+test revision_tree::move_node::tests::a_node_this_handle_added_stays_an_addition_when_moved ... ok
+test revision_tree::move_node::tests::an_entry_that_vanishes_after_validation_fails_the_batch_as_internal ... ok
+test revision_tree::move_node::tests::a_committed_move_is_recorded_as_a_move_in_the_revision_delta ... ok
+test revision_tree::move_node::tests::move_lands_a_settled_node_under_a_directory_this_handle_added ... ok
+test revision_tree::move_node::tests::an_addition_inside_a_moved_directory_stays_an_addition ... ok
+test revision_tree::modify::tests::modify_rewrites_many_files_in_one_call ... ok
+test revision_tree::move_node::tests::move_rejects_a_destination_inside_the_moved_subtree ... ok
+test revision_tree::move_node::tests::move_rejects_a_destination_staged_for_deletion ... ok
+test revision_tree::load::tests::a_load_withdraws_its_handle_when_the_parent_storage_handle_is_gone ... ok
+test revision_tree::move_node::tests::move_rejects_a_link_destination ... ok
+test revision_tree::move_node::tests::move_rejects_a_name_the_destination_already_holds ... ok
+test revision_tree::move_node::tests::move_rejects_a_node_already_where_it_is_asked_to_go ... ok
+test revision_tree::move_node::tests::move_moves_a_link_as_one_node ... ok
+test revision_tree::move_node::tests::move_rejects_a_name_the_name_table_would_refuse ... ok
+test revision_tree::move_node::tests::move_records_the_whole_subtree_as_moved ... ok
+test revision_tree::move_node::tests::move_rejects_a_batch_whose_entries_form_a_loop ... ok
+test revision_tree::move_node::tests::move_rejects_a_node_staged_for_deletion ... ok
+test revision_tree::move_node::tests::move_rejects_a_repeated_caller_id_but_accepts_repeated_zeros ... ok
+test revision_tree::move_node::tests::move_rejects_ids_on_an_unallocated_slot ... ok
+test revision_tree::move_node::tests::move_rejects_a_repeated_node_id ... ok
+test revision_tree::move_node::tests::move_rejects_an_unknown_node_and_an_unknown_destination ... ok
+test revision_tree::move_node::tests::move_rejects_a_taken_name_through_the_destination_snapshot ... ok
+test revision_tree::move_node::tests::move_renames_a_node_that_only_changes_case ... ok
+test revision_tree::move_node::tests::move_rejects_a_destination_that_is_not_a_directory ... ok
+test revision_tree::move_node::tests::move_rejects_the_root ... ok
+test revision_tree::move_node::tests::move_rejects_a_discarded_node ... ok
+test revision_tree::move_node::tests::move_rejects_a_name_a_child_holds_in_another_case ... ok
+test revision_tree::move_node::tests::move_reports_entries_then_the_batch_terminal_then_complete ... ok
+test revision_tree::move_node::tests::move_moves_more_nodes_than_one_block_holds ... ok
+test revision_tree::move_node::tests::snapshot_holders_finds_every_node_under_one_name ... ok
+test revision_tree::move_node::tests::move_rejects_the_whole_batch_and_changes_nothing ... ok
+test revision_tree::move_node::tests::move_swaps_two_nodes_between_directories ... ok
+test revision_tree::move_node::tests::move_rejects_two_entries_taking_one_name ... ok
+test revision_tree::move_node::tests::move_takes_a_directory_and_one_of_its_children_in_one_batch ... ok
+test revision_tree::node_info::tests::node_info_on_unknown_handle_emits_node_info_with_invalid_arguments ... ok
+test revision_tree::move_node::tests::move_takes_a_name_only_a_deleted_child_holds ... ok
+test revision_tree::node_info::tests::node_info_returns_full_record_for_internal_node ... ok
+test revision_tree::node_info::tests::node_info_returns_a_directory_record_for_a_subdirectory ... ok
+test revision_tree::node_info::tests::node_info_unallocated_node_returns_invalid_arguments ... ok
+test revision_tree::node_info::tests::node_info_nonexistent_node_returns_invalid_arguments ... ok
+test revision_tree::node_path::tests::node_path_on_unknown_handle_emits_terminal_with_invalid_arguments ... ok
+test revision_tree::node_path::tests::node_path_deep_path_walks_all_levels ... ok
+test revision_tree::move_node::tests::move_renames_a_node_where_it_is ... ok
+test revision_tree::node_path::tests::node_path_root_returns_empty ... ok
+test revision_tree::node_path::tests::node_path_single_component_under_root ... ok
+test revision_tree::move_node::tests::the_parent_a_node_left_is_rehashed_by_the_commit ... ok
+test revision_tree::node_path::tests::node_path_unknown_node_returns_invalid_arguments ... ok
+test revision_tree::node_path::tests::node_path_walks_parents_to_root ... ok
+test revision_tree::resolve_path::tests::resolve_path_on_unknown_handle_emits_resolve_complete_with_invalid_arguments ... ok
+test revision_tree::move_node::tests::move_reparents_a_node_and_keeps_its_file_id ... ok
+test revision_tree::move_node::tests::move_with_no_entries_succeeds ... ok
+test revision_tree::node_path::tests::node_path_nonexistent_node_returns_invalid_arguments ... ok
+test revision_tree::resolve_path::tests::resolve_empty_path_returns_root ... ok
+test revision_tree::resolve_path::tests::resolve_existing_path_returns_node_id ... ok
+test revision_tree::node_path::tests::node_path_unallocated_node_returns_invalid_arguments ... ok
+test revision_tree::node_info::tests::node_info_for_root_returns_a_uniform_directory_record ... ok
+test revision_tree::resolve_path::tests::resolve_missing_path_returns_invalid_arguments ... ok
+test revision_tree::node_info::tests::node_info_unknown_node_returns_invalid_arguments ... ok
+test revision_tree::resolve_path::tests::resolve_path_through_a_link_returns_the_target_repository_and_revision ... ok
+test revision_tree::tests::registry_invalid_sentinel_misses ... ok
+test revision_tree::resolve_path::tests::resolve_path_below_a_leaf_returns_invalid_arguments ... ok
+test revision_tree::tests::guard_enter_after_mark_invalid_returns_none ... ok
+test storage::call::tests::handle_miss_completes_with_error_code_and_no_error_event ... ok
+test revision_tree::resolve_path::tests::resolve_path_to_a_link_node_returns_the_link_node ... ok
+test revision_tree::tests::registry_register_lookup_unregister_round_trip ... ok
+test storage::call::tests::happy_path_completes_with_status_zero_and_decrements_counter ... ok
+test revision_tree::tests::drain_in_parallel_marks_each_handle_invalid ... ok
+test revision_tree::tests::drain_in_parallel_waits_for_an_in_flight_op ... ok
+test storage::handle::tests::invalid_handle_lookup_returns_none ... ok
+test storage::call::tests::op_error_completes_with_error_code_and_no_error_event ... ok
+test storage::close::tests::the_store_tears_down_only_once_the_last_revision_handle_closes ... ok
+test storage::handle::tests::stale_id_lookup_returns_none ... ok
+test storage::handle::tests::register_then_lookup_round_trip ... ok
+test storage::close::tests::close_waits_for_in_flight_counter_to_drain ... ok
+test storage::open::tests::below_floor_emits_warn ... ok
+test storage::open::tests::both_zero_targets_yield_no_evictor_or_compactor ... ok
+test storage::open::tests::explicit_targets_pass_through ... ok
+test storage::open::tests::one_zero_field_only_defaults_that_field ... ok
+test storage::handle::tests::unregister_returns_last_strong_ref ... ok
+test storage::store::tests::concurrent_ops_and_close_converge_cleanly ... ok
+test storage::handle::tests::two_registrations_produce_distinct_ids ... ok
+test revision_tree::tests::registry_two_registrations_produce_distinct_ids ... ok
+test storage::handle::tests::concurrent_registration_yields_unique_ids ... ok
+test storage::store::tests::mark_invalid_and_await_blocks_until_drained ... ok
+test revision_tree::tests::guard_enter_unregistered_handle_returns_none ... ok
+test storage::store::tests::mark_invalid_and_await_does_not_deadlock_on_already_invalid ... ok
+test storage::store::tests::op_enter_unregistered_handle_returns_none ... ok
+test revision_tree::tests::guard_increments_and_drops_decrement_in_flight_counter ... ok
+test revision_tree::tests::drain_for_storage_handle_takes_only_the_handles_loaded_on_it ... ok
+test revision_tree::tests::registry_double_unregister_returns_none ... ok
+test storage::tests::drain_in_parallel_marks_each_store_invalid ... ok
+test storage::tests::close_for_connection_closes_the_revision_handles_loaded_on_it ... ok
+test storage::store::tests::op_enter_after_mark_invalid_returns_none ... ok
+test storage::store::tests::op_guard_increments_and_decrements_counter ... ok
+test revision_tree::tests::a_teardown_cascade_gives_up_on_an_op_that_will_not_finish ... ok
+test storage::tests::drain_for_connection_filter_only_returns_matching_entries ... ok
+test remote::network::tests::test_both ... ok
+
+test result: ok. 273 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/calls_after_shutdown.rs (target/debug/deps/calls_after_shutdown-f4a5cbd7fbf3786d)
+
+running 1 test
+test calls_after_shutdown_fail_instead_of_hanging ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/events.rs (target/debug/deps/events-fd578c0677cdeb8b)
+
+running 4 tests
+test tests::repository_status_invalid_repository ... ok
+test tests::repository_basic_create ... ok
+test tests::repository_create_no_callback ... ok
+test tests::repo_create_c ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/ffi_error_events.rs (target/debug/deps/ffi_error_events-b301f2386e8f57fb)
+
+running 5 tests
+test tests::copied_detail_is_readable_after_callback_returns ... ok
+test tests::sync_entry_point_returns_zero_on_success ... ok
+test tests::failing_op_delivers_one_complete_with_reconstructable_trace ... ok
+test tests::failing_op_logs_error_message_with_trace ... ok
+test tests::async_entry_point_delivers_code_through_complete_status ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/file_write.rs (target/debug/deps/file_write-d1060205d56f2a53)
+
+running 2 tests
+test tests::write_to_outside_repo_destination ... ok
+test tests::write_to_inside_repo_destination ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/in_memory.rs (target/debug/deps/in_memory-ba4e4322a351f310)
+
+running 3 tests
+test tests::in_memory_data_persists_across_calls ... ok
+test tests::status_count_reports_staged_tree_totals ... ok
+test tests::release_clears_in_memory_data ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/metadata.rs (target/debug/deps/metadata-dfb7ddb4ff4a8881)
+
+running 2 tests
+test tests::metadata_revision ... ok
+test tests::metadata_file ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/no_remote.rs (target/debug/deps/no_remote-235e8f9122d27bdc)
+
+running 8 tests
+test tests::create_with_a_url_still_records_the_remote ... ok
+test tests::create_from_a_bare_name_records_no_remote ... ok
+test tests::a_slash_separated_name_is_a_name_not_a_host ... ok
+test tests::create_without_a_url_records_no_remote ... ok
+test tests::a_local_repository_has_to_be_asked_for ... ok
+test tests::local_user_info_without_a_remote_is_no_remote ... ok
+test tests::login_without_a_remote_is_no_remote ... ok
+test tests::repository_info_without_a_remote_is_no_remote ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/remote_message.rs (target/debug/deps/remote_message-8b3e88c7e040ef32)
+
+running 9 tests
+test header_to_and_from_bytes ... ok
+test message_to_server_to_and_from_bytes ... ok
+test a_metadata_event_carries_a_binary_value_to_a_client ... ok
+test revision_tree_commit_survives_the_wire ... ok
+test revision_tree_metadata_set_batch_survives_the_wire ... ok
+test revision_tree_delete_batch_survives_the_wire ... ok
+test a_command_carrying_an_address_survives_both_serializations ... ok
+test revision_tree_modify_batch_survives_the_wire ... ok
+test revision_tree_move_batch_survives_the_wire ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/revision_commit_contents.rs (target/debug/deps/revision_commit_contents-1236cd6fcf551725)
+
+running 5 tests
+test tests::a_staged_state_is_not_published_past ... ok
+test tests::unchanged_contents_commit_nothing ... ok
+test tests::a_write_under_a_file_publishes_nothing ... ok
+test tests::a_removal_leaves_the_tip_and_earlier_revisions_keep_it ... ok
+test tests::commits_files_without_touching_the_working_tree ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/shutdown.rs (target/debug/deps/shutdown-43827d5ca49e7400)
+
+running 1 test
+test shutdown_closes_outstanding_handles ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/test_util.rs (target/debug/deps/test_util-9ffe9136237e2ba1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/lore_revision-3ee4bd9e515ac222)
+
+running 457 tests
+test branch::push::tests::a_count_is_kept_only_where_something_reports_it ... ok
+test auth::userinfo::tests::strip_with_only_current_user_leaves_remaining_empty ... ok
+test auth::userinfo::tests::strip_reports_absent_current_user ... ok
+test auth::userinfo::tests::strip_pulls_current_user_out_and_preserves_other_order ... ok
+test auth::userinfo::tests::strip_removes_every_occurrence_of_current_user ... ok
+test branch::push::tests::a_fragment_the_peer_is_missing_keeps_its_address_on_the_way_out ... ok
+test branch::push::tests::classify::statuses_line_up_with_the_addresses_they_answer ... ok
+test branch::push::tests::classify::an_unknown_status_is_uploaded ... ok
+test branch::push::tests::classify::a_miss_is_uploaded ... ok
+test branch::push::tests::classify::a_partition_match_is_copied_rather_than_uploaded ... ok
+test branch::push::tests::classify::an_association_the_peer_holds_transfers_nothing_but_is_recorded ... ok
+test branch::push::tests::classify::a_batch_is_split_by_status_in_order ... ok
+test auth::userinfo::tests::supplied_token_describes_only_the_identity_the_call_acts_as ... ok
+test branch::tests::common_ancestor_is_absent_only_for_unshared_stacks ... ok
+test branch::tests::diff_change_carries_the_move_source_path ... ok
+test branch::tests::common_ancestor_of_equal_numbered_points_is_where_lines_meet ... ok
+test branch::tests::common_ancestor_is_where_rewritten_lines_meet ... ok
+test branch::tests::empty_stacks_are_unresolvable ... ok
+test branch::tests::diff_change_without_a_move_reports_no_source_path ... ok
+test branch::tests::diff_change_marks_a_moved_directory_on_both_paths ... ok
+test branch::push::tests::mark::a_present_address_becomes_durable ... ok
+test branch::push::tests::mark::a_batch_marks_what_it_can_and_skips_the_rest ... ok
+test branch::tests::extending_an_exhausted_line_reports_it_exhausted ... ok
+test branch::tests::history_line_diverges_from_a_line_sharing_no_revision ... ok
+test branch::tests::history_line_of_an_unknown_revision_is_empty ... ok
+test branch::tests::history_line_reaches_the_same_revision_on_both_sides ... ok
+test branch::tests::history_line_diverges_from_a_sibling_line ... ok
+test branch::tests::common_ancestor_falls_back_to_the_older_branch_point ... ok
+test branch::tests::nearest_shared_branch_is_matched_first ... ok
+test branch::tests::history_line_that_cannot_be_read_diverges ... ok
+test branch::tests::shared_branch_point_when_source_is_a_parent_of_target ... ok
+test branch::tests::shared_branch_point_when_target_is_a_parent_of_source ... ok
+test branch::tests::sibling_branches_of_the_root_branch_meet_at_their_branch_points ... ok
+test branch::tests::stacks_are_matched_on_branch_id_alone ... ok
+test branch::tests::history_lines_meet_at_the_newest_shared_revision ... ok
+test branch::tests::stacks_sharing_no_branch_are_unresolvable ... ok
+test change::tests::dirty_and_modify_combine ... ok
+test change::tests::dirty_flag_exists_and_is_independent ... ok
+test change::tests::is_dirty_method ... ok
+test commit::statistics_level_tests::a_count_is_kept_only_where_something_reports_it ... ok
+test commit::tests::commit_error_carries_not_a_layer ... ok
+test commit::tests::commit_options_new_has_empty_layer_defaults ... ok
+test dependency::tests::deserialize_accepts_legitimate_tag_counts ... ok
+test dependency::tests::deserialize_empty_blob_ok ... ok
+test dependency::tests::deserialize_rejects_bad_magic ... ok
+test branch::tests::history_lines_that_cannot_be_read_meet_nowhere ... ok
+test dependency::tests::deserialize_rejects_blob_shorter_than_header ... ok
+test dependency::tests::deserialize_rejects_entry_count_exceeding_buffer ... ok
+test dependency::tests::deserialize_rejects_tag_count_exceeding_remaining_buffer ... ok
+test dependency::tests::deserialize_rejects_u32_max_entry_count ... ok
+test dependency::tests::deserialize_rejects_unsupported_version ... ok
+test dependency::tests::deserialize_roundtrip ... ok
+test event::complete_event_tests::deserializes_old_payload_without_error_detail ... ok
+test event::complete_event_tests::legacy_status_field_keeps_its_name_position_and_type ... ok
+test event::complete_event_tests::serializes_error_detail_fields_in_camel_case ... ok
+test event::error_detail_tests::default_is_the_empty_success_detail ... ok
+test branch::tests::history_lines_that_share_no_revision_meet_nowhere ... ok
+test event::error_detail_tests::empty_trace_yields_empty_location_array ... ok
+test event::error_detail_tests::error_set_enum_exposes_trace_through_has_trace_bound ... ok
+test event::error_detail_tests::from_error_holds_code_message_and_one_location_per_trace_entry ... ok
+test event::error_detail_tests::message_with_trace_appends_one_indented_line_per_location ... ok
+test event::error_detail_tests::message_with_trace_is_just_the_message_when_no_trace ... ok
+test event::metadata_event_tests::a_string_value_that_is_not_text_fails_to_decode ... ok
+test event::trace_location_tests::builds_from_location_with_context ... ok
+test event::trace_location_tests::builds_from_location_without_context_yields_empty_context ... ok
+test event::trace_location_tests::clone_is_independent_deep_copy_and_both_drop_cleanly ... ok
+test event::trace_location_tests::displays_context_in_place_of_column_when_present ... ok
+test event::trace_location_tests::displays_file_line_column_without_context ... ok
+test event::wire_format_tests::variant_order_is_pinned_to_the_wire_format ... ok
+test file::diff::tests::context_lines_respected_with_flags ... ok
+test file::diff::tests::both_flags_combined_suppress_all_whitespace_only_diffs ... ok
+test file::diff::tests::diff_content_empty_constructor_is_text ... ok
+test file::diff::tests::ignore_eol_preserves_originals_in_real_change ... ok
+test file::diff::tests::ignore_eol_trailing_space_no_diff ... ok
+test file::diff::tests::ignore_inline_collapses_runs_no_diff ... ok
+test file::diff::tests::ignore_inline_does_not_invent_whitespace ... ok
+test file::diff::tests::make_diff_content_empty_is_text ... ok
+test file::diff::tests::make_diff_content_invalid_utf8_is_binary ... ok
+test file::diff::tests::make_diff_content_null_bytes_is_binary ... ok
+test file::diff::tests::make_diff_content_utf16_le_bom_is_text ... ok
+test file::diff::tests::make_diff_content_valid_utf8_is_text ... ok
+test file::diff::tests::missing_newline_marker_when_input_lacks_terminator ... ok
+test file::diff::tests::normalise_line_both_flags ... ok
+test file::diff::tests::normalise_line_collapses_runs ... ok
+test file::diff::tests::normalise_line_crlf_trailing_treated_as_whitespace ... ok
+test file::diff::tests::normalise_line_strips_trailing_whitespace ... ok
+test file::stage::classify_tests::disjoint_path_with_layers_is_disjoint ... ok
+test file::stage::classify_tests::empty_path_no_layers_is_disjoint ... ok
+test file::stage::classify_tests::empty_path_with_layers_is_ancestor_of_all ... ok
+test file::stage::classify_tests::exact_layer_match_is_inside_with_empty_remain ... ok
+test branch::tests::history_lines_meet_where_they_split ... ok
+test file::stage::classify_tests::path_ancestor_of_multiple_layers_lists_them_all ... ok
+test file::stage::classify_tests::path_ancestor_of_one_layer_is_ancestor_of_that_layer ... ok
+test file::stage::classify_tests::path_inside_layer_is_inside_with_remain ... ok
+test file::stage::classify_tests::prefix_string_match_without_separator_is_disjoint_not_inside ... ok
+test file::stage::mask_tests::ancestor_of_masked_path_is_not_masked ... ok
+test file::stage::mask_tests::disjoint_path_is_not_masked ... ok
+test file::stage::mask_tests::empty_mask_never_masks ... ok
+test file::stage::mask_tests::empty_path_with_mask_is_not_masked ... ok
+test file::stage::mask_tests::exact_mask_match_is_masked ... ok
+test file::stage::mask_tests::multiple_mask_entries_any_match_is_masked ... ok
+test file::stage::mask_tests::path_inside_masked_subtree_is_masked ... ok
+test file::stage::mask_tests::prefix_string_match_without_separator_is_not_masked ... ok
+test file::stage::shared_ancestor_tests::only_a_directory_two_targets_share_is_returned ... ok
+test file::stage::shared_ancestor_tests::one_depth_is_a_contiguous_range_shallowest_first ... ok
+test file::stage::shared_ancestor_tests::targets_on_one_case_variation_give_ancestors_on_one ... ok
+test file::stage::shared_ancestor_tests::it_agrees_with_counting_every_ancestor ... ok
+test file::stage::shared_ancestor_tests::the_result_is_prefix_closed ... ok
+test file::stage::walk_base_tests::longest_ancestor_takes_the_deepest_one_created ... ok
+test file::stage::walk_base_tests::walk_start_ignores_a_resolution_covering_only_part_of_the_prefix ... ok
+test file::stage::walk_base_tests::walk_start_leaves_the_remainder_lowercased_from_the_start_down ... ok
+test file::stage::walk_base_tests::walk_start_starts_at_that_ancestor_with_the_rest_below_it ... ok
+test file::stage::walk_base_tests::walk_start_takes_the_case_the_prefix_resolved_to ... ok
+test file::stage::walk_base_tests::walk_start_takes_the_whole_target_from_the_root_when_no_ancestor_was_created ... ok
+test file::write::tests::destination_inside_repo_without_token_is_write_required ... ok
+test file::write::tests::destination_outside_repo_without_token_is_ok ... ok
+test fs::filesystem_provider::tests::a_directory_info_is_an_existing_directory_with_no_content ... ok
+test fs::filesystem_provider::tests::a_directory_already_there_is_the_state_asked_for ... ok
+test fs::filesystem_provider::tests::a_file_standing_where_the_directory_belongs_is_reported ... ok
+test fs::filesystem_provider::tests::a_lookup_through_an_operation_is_counted ... ok
+test fs::filesystem_provider::tests::a_missing_directory_is_created_with_its_ancestors ... ok
+test branch::tests::common_ancestor_is_the_branch_point_still_on_the_line ... ok
+test fs::filesystem_provider::tests::a_failing_operation_is_still_finalized ... ok
+test fs::filesystem_provider::tests::file_information_answers_what_the_metadata_helpers_answer ... ok
+test fs::filesystem_provider::tests::a_failing_operation_is_still_finalized_where_one_was_needed ... ok
+test fs::filesystem_provider::tests::a_successful_operation_reports_its_value ... ok
+test fs::filesystem_provider::tests::finalizing_twice_is_refused ... ok
+test fs::filesystem_provider::tests::the_works_error_is_reported_ahead_of_a_finalize_failure ... ok
+test branch::tests::reaching_the_floor_needs_a_readable_line_below_it ... ok
+test branch::tests::history_line_reaches_the_older_revision ... ok
+test fs::filesystem_provider::tests::work_that_needs_an_operation_opens_one_and_finalizes_it ... ok
+test fs::filesystem_provider::tests::a_finalize_failure_is_reported_where_the_work_succeeded ... ok
+test fs::filesystem_provider::tests::work_that_needs_no_operation_opens_none ... ok
+test fs::filesystem_provider::tests::an_excluded_path_reaches_no_operation ... ok
+test fs::filesystem_provider::tests::one_operation_covers_every_repository_in_the_filesystem ... ok
+test fs::realize::tests::a_clean_file_is_overwritten ... ok
+test fs::realize::tests::a_change_starting_at_the_current_revision_is_measured_by_its_own_node ... ok
+test fs::realize::tests::a_move_of_unchanged_content_is_realized ... ok
+test fs::realize::tests::a_target_side_change_the_tree_already_holds_is_dropped ... ok
+test fs::realize::tests::a_scratch_path_inside_the_repository_is_refused ... ok
+test fs::realize::tests::a_path_the_current_revision_does_not_hold_is_realized ... ok
+test fs::swfs::file::tests::swfs_file_sizing ... ok
+test fs::realize::tests::a_locally_edited_file_is_refused ... ok
+test fs::realize::tests::a_file_already_holding_the_incoming_content_is_dropped ... ok
+test fs::realize::tests::a_file_holding_the_replaced_content_is_realized ... ok
+test immutable::session_tests::a_pooled_session_comes_from_the_pool_the_context_holds ... ok
+test immutable::session_tests::a_miss_on_an_offline_context_reports_the_address_not_found ... ok
+test immutable::session_tests::a_failed_connect_still_resolves_a_session ... ok
+test immutable::session_tests::a_resolved_session_does_not_keep_the_context_alive ... ok
+test infer::tests::a_missing_file_is_clean ... ok
+test infer::tests::a_line_that_is_not_utf8_ends_the_scan ... ok
+test infer::tests::empty_file_is_clean ... ok
+test infer::tests::marker_on_an_unterminated_final_line_is_conflicted ... ok
+test infer::tests::marker_split_across_a_window_boundary_is_conflicted ... ok
+test infer::tests::non_diffable_utf16_be_bom ... ok
+test infer::tests::marker_within_one_window_is_conflicted ... ok
+test infer::tests::non_diffable_utf16_le_bom ... ok
+test infer::tests::upackage_swapped_tag_is_detected ... ok
+test infer::tests::crlf_split_across_a_window_boundary_is_conflicted ... ok
+test infer::tests::upackage_tag_is_detected ... ok
+test instance::tests::anchor_keys_differ_for_current_vs_staged ... ok
+test infer::tests::is_utf8 ... ok
+test fs::realize::tests::an_unresolvable_chunking_is_refused_until_a_recorded_time_answers ... ok
+test fs::realize::tests::a_clean_file_addressed_as_a_list_is_overwritten ... ok
+test instance::tests::default_is_zero ... ok
+test instance::tests::display_is_hex ... ok
+test instance::tests::instance_key_differs_for_different_ids ... ok
+test instance::tests::generate_produces_nonzero_unique_values ... ok
+test instance::tests::roundtrip_bytes ... ok
+test instance::tests::instance_key_is_deterministic ... ok
+test interface::binary_tests::a_clone_outlives_the_value_it_came_from ... ok
+test infer::tests::unterminated_final_line_without_a_marker_is_clean ... ok
+test interface::binary_tests::an_empty_block_is_a_null_pointer_of_zero_length ... ok
+test interface::binary_tests::an_empty_block_survives_serialization ... ok
+test interface::binary_tests::a_binary_value_survives_serialization ... ok
+test interface::binary_tests::blocks_of_equal_length_compare_by_content ... ok
+test interface::event_interval_tests::an_explicit_interval_is_used_as_given ... ok
+test interface::event_interval_tests::an_unset_interval_takes_the_default ... ok
+test interface::binary_tests::json_text_that_is_not_base64_fails_to_read ... ok
+test interface::event_interval_tests::an_interval_below_the_floor_is_raised_to_it ... ok
+test interface::tests::a_deserialized_empty_array_holds_no_buffer ... ok
+test interface::metadata_repr_tests::a_non_zero_boolean_byte_normalizes_through_json ... ok
+test interface::metadata_repr_tests::json_keeps_the_adjacently_tagged_shape ... ok
+test interface::tests::a_token_that_is_not_utf8_is_reported_by_field ... ok
+test interface::tests::a_zero_sized_element_type_still_drops_every_element ... ok
+test interface::tests::a_zero_sized_element_type_keeps_its_count_without_allocating ... ok
+test interface::tests::access_token_naming_no_identity_is_rejected ... ok
+test interface::tests::access_token_alone_resolves_the_identity_it_names ... ok
+test interface::tests::an_empty_array_holds_no_buffer ... ok
+test interface::tests::identity_alone_is_valid_and_untouched ... ok
+test interface::tests::identity_and_access_token_are_mutually_exclusive ... ok
+test interface::tests::identity_and_identity_token_are_mutually_exclusive ... ok
+test interface::tests::identity_token_naming_no_identity_is_rejected ... ok
+test interface::tests::lore_string_clone_copies_bytes_that_are_not_utf8 ... ok
+test interface::tests::lore_string_equality_compares_bytes ... ok
+test interface::tests::both_tokens_take_the_identity_from_the_identity_token ... ok
+test interface::tests::lore_string_renders_invalid_utf8_as_replacement_characters ... ok
+test interface::tests::identity_token_resolves_the_identity_it_names ... ok
+test interface::tests::no_credential_arguments_is_valid ... ok
+test interface::tests::lore_string_serialization_rejects_invalid_utf8 ... ok
+test interface::tests::validate_text_accepts_valid_utf8_and_empty_strings ... ok
+test interface::tests::validate_text_names_the_array_element_that_failed ... ok
+test interface::tests::validate_text_passes_arguments_that_hold_no_text ... ok
+test interface::tests::validate_text_names_the_failing_field_of_the_global_arguments ... ok
+test interface::tests::validate_text_rejects_bytes_that_are_not_utf8 ... ok
+test immutable::session_tests::an_offline_context_resolves_no_session ... ok
+test lock::file::acquire::tests::batch_denial_reason_reaches_the_message ... ok
+test lock::util::tests::fold_batch_results_keeps_one_error_and_the_successful_items ... ok
+test lock::util::tests::fold_batch_results_reports_no_error_without_batches ... ok
+test lock::file::acquire::tests::batch_denial_reason_survives_the_fold ... ok
+test lock::util::tests::fold_batch_results_reserves_the_requested_capacity ... ok
+test metadata::tests::a_buffer_whose_entries_leave_it_is_refused ... ok
+test metadata::tests::a_tag_that_names_no_type_is_refused ... ok
+test metadata::tests::a_key_that_is_not_text_is_never_inherited ... ok
+test metadata::tests::an_unknown_tag_fails_differently_from_a_missing_key ... ok
+test metadata::tests::decode_to_value_binary ... ok
+test metadata::tests::decode_to_value_numeric ... ok
+test interface::metadata_repr_tests::every_variant_survives_the_compact_format ... ok
+test metadata::tests::decode_to_value_numeric_invalid ... ok
+test metadata::tests::decode_to_value_numeric_negative ... ok
+test interface::tests::a_long_array_renders_as_its_count ... ok
+test metadata::tests::decode_to_value_numeric_max ... ok
+test metadata::tests::decode_to_value_numeric_zero ... ok
+test metadata::tests::decode_to_value_string ... ok
+test lock::util::tests::fold_batch_results_collects_every_batch ... ok
+test metadata::tests::get_with_invalid_utf8_key ... ok
+test metadata::tests::only_the_named_keys_are_carried ... ok
+test metadata::tests::retain_entries_leaves_the_buffer_appendable ... ok
+test metadata::tests::decode_to_value_numeric_overflow ... ok
+test metadata::tests::retain_entries_on_a_buffer_with_no_entries ... ok
+test metadata::tests::retain_entries_leaves_what_writing_the_retained_entries_would ... ok
+test metadata::tests::retain_entries_stops_at_an_entry_that_leaves_the_buffer ... ok
+test metadata::tests::retain_inherited_drops_everything_not_named ... ok
+test metadata::tests::set_typed_overwrites_a_key_and_its_type ... ok
+test metadata::tests::set_typed_retypes_a_key_whose_value_is_the_same_length ... ok
+test metadata::tests::the_default_inherit_list_carries_nothing ... ok
+test metadata::tests::set_typed_round_trips_every_type_tag ... ok
+test metadata::tests::the_sentinel_selects_all_wherever_it_appears ... ok
+test metadata::tests::to_string_rejects_truncated_utf8 ... ok
+test metadata::tests::walk_passes_over_an_entry_it_cannot_type ... ok
+test metadata::tests::walk_with_invalid_utf8_key ... ok
+test node::cycle_tests::clean_chain_passes ... ok
+test node::cycle_tests::mid_chain_cycle_detected ... ok
+test node::cycle_tests::self_loop_at_head_detected ... ok
+test node::cycle_tests::three_cycle_detected ... ok
+test node::cycle_tests::two_cycle_detected ... ok
+test node::cycle_tests::worst_case_bound_holds_for_small_cycles ... ok
+test node::tests::action_bits_extraction ... ok
+test node::tests::clear_all_change_flags ... ok
+test node::tests::clear_dirty_flags_clears_action_when_no_staged ... ok
+test node::tests::clear_dirty_flags_preserves_staged ... ok
+test node::tests::clear_staged_flags_clears_action_when_no_dirty ... ok
+test node::tests::clear_staged_flags_preserves_dirty ... ok
+test node::tests::dirty_bits_mask ... ok
+test node::tests::dirty_compound_flags_v1 ... ok
+test node::tests::dirty_flag_bit_positions ... ok
+test metadata::tests::set_refuses_an_entry_larger_than_the_whole_cap ... ok
+test node::tests::node_has_any_change_flags ... ok
+test node::tests::action_bits_mask ... ok
+test node::tests::node_is_dirty_queries ... ok
+test relay::complete_outcome_tests::default_detail_completes_with_status_zero_and_empty_detail ... ok
+test relay::complete_outcome_tests::populated_detail_completes_with_its_code_and_carries_detail ... ok
+test repository::clone::tests::adversarial_concurrent_calls_same_parent ... ok
+test repository::clone::tests::adversarial_paths_without_a_usable_parent ... ok
+test repository::clone::tests::adversarial_dangling_symlink_parent ... ok
+test metadata::tests::retain_inherited_can_empty_the_buffer ... ok
+test repository::clone::tests::adversarial_parent_nested_under_a_file ... ok
+test repository::clone::tests::ensure_parent_dir_accepts_existing_parent ... ok
+test repository::clone::tests::adversarial_symlink_to_directory_parent ... ok
+test repository::clone::tests::ensure_parent_dir_caches_parent_once_per_path ... ok
+test repository::clone::tests::ensure_parent_dir_creates_missing_ancestors ... ok
+test repository::name_validation_tests::accepts_names_with_dots_inside_segments ... ok
+test repository::name_validation_tests::every_valid_name_survives_url_parsing ... ok
+test repository::clone::tests::ensure_parent_dir_rejects_parent_that_is_a_file ... ok
+test repository::name_validation_tests::rejected_names_are_the_ones_url_parsing_rewrites ... ok
+test repository::name_validation_tests::rejects_disallowed_characters_and_oversized_names ... ok
+test repository::name_validation_tests::rejects_dot_leading_segments ... ok
+test metadata::tests::retain_entries_judges_a_key_that_is_not_text ... ok
+test repository::clone::tests::ensure_parent_dir_rejects_uncreatable_parent ... ok
+test metadata::tests::no_inherit_list_can_carry_a_reserved_key ... ok
+test immutable::session_tests::a_write_on_an_offline_context_stores_locally ... ok
+test repository::name_validation_tests::rejects_empty_segments ... ok
+test repository::clone::tests::adversarial_symlink_to_file_parent ... ok
+test repository::name_validation_tests::rejects_dot_segments ... ok
+test repository::path_optional_tests::require_path_returns_invalid_arguments_when_path_is_none ... ok
+test infer::tests::utf16_larger_than_one_window_is_conflicted ... ok
+test repository::path_optional_tests::require_path_returns_path_when_set ... ok
+test repository::remote_state_tests::from_result_classifies_no_remote_as_offline ... ok
+test repository::remote_state_tests::from_result_classifies_other_errors_as_failed ... ok
+test repository::remote_state_tests::a_fresh_context_has_no_session_pool_to_reuse ... ok
+test repository::remote_state_tests::cancelled_awaiter_does_not_break_subsequent_callers ... ok
+test repository::remote_state_tests::a_held_state_lock_does_not_answer_offline ... ok
+test repository::remote_state_tests::pending_err_transitions_to_failed ... ok
+test repository::remote_state_tests::pending_no_remote_transitions_to_offline ... ok
+test repository::remote_state_tests::a_resolved_pool_is_reused_without_touching_the_remote ... ok
+test repository::remote_state_tests::a_pool_whose_pin_is_dropped_is_not_reused ... ok
+test repository::remote_state_tests::an_offline_context_resolves_no_session_pool ... ok
+test repository::remote_state_tests::concurrent_awaiters_converge_on_single_resolution ... ok
+test repository::remote_state_tests::only_a_context_without_a_remote_is_offline ... ok
+test repository::remote_state_tests::remote_returns_original_error_for_failed_state ... ok
+test repository::remote_state_tests::remote_status_reports_failed ... ok
+test repository::root_text_tests::a_root_that_is_not_text_is_refused ... ok
+test repository::root_text_tests::a_root_that_is_text_is_accepted ... ok
+test repository::remote_state_tests::remote_status_reports_offline ... ok
+test repository::status::remote_resolve_tests::failed_remote_resolves_to_unavailable ... ok
+test repository::status::remote_resolve_tests::offline_remote_resolves_to_unavailable ... ok
+test repository::status::tree_diff_operation_tests::a_dirty_check_opens_one_operation ... ok
+test repository::remote_state_tests::remote_status_reports_pending_without_driving_connect ... ok
+test repository::store_config_tests::client_default_yields_nonzero_gc_caps ... ok
+test repository::store_config_tests::no_gc_suppresses_incremental_gc ... ok
+test repository::store_config_tests::read_only_op_never_spawns_incremental_gc ... ok
+test repository::store_config_tests::write_op_spawns_incremental_gc_by_default ... ok
+test revision::diff::tests::any_matching_requested_path_puts_the_link_in_scope ... ok
+test revision::diff::tests::link_at_the_requested_path_is_in_scope ... ok
+test revision::diff::tests::link_below_the_requested_path_is_in_scope ... ok
+test revision::diff::tests::request_inside_a_link_excludes_the_link_itself ... ok
+test revision::diff::tests::sibling_prefix_does_not_put_a_link_in_scope ... ok
+test revision::diff::tests::unfiltered_diff_includes_every_link ... ok
+test revision::diff::tests::unrelated_requested_path_excludes_the_link ... ok
+test repository::remote_state_tests::remote_returns_no_remote_for_offline_state ... ok
+test revision::sync::tests::a_copy_is_looked_for_outside_the_tracked_tree ... ok
+test revision::sync::tests::a_copy_beside_a_nested_file_is_found_and_removed ... ok
+test revision::sync::tests::a_file_no_merge_left_copies_beside_reports_none ... ok
+test revision::sync::tests::a_copy_under_any_suffix_is_found ... ok
+test stage::directory_children_tests::a_claim_finds_the_child_with_that_name ... ok
+test revision::sync::tests::removing_takes_every_copy_and_leaves_the_file ... ok
+test stage::directory_children_tests::a_name_the_directory_does_not_hold_claims_nothing ... ok
+test repository::write_token_tests::no_store_context_with_client_token_grants_write_capability ... ok
+test stage::directory_children_tests::equal_hashes_are_claimed_in_sibling_order ... ok
+test stage::directory_children_tests::the_index_answers_exactly_as_a_scan_of_the_same_children_would ... ok
+test repository::status::tree_diff_operation_tests::a_staged_comparison_alone_reads_no_working_tree ... ok
+test stage::directory_children_tests::a_claimed_child_is_still_held ... ok
+test stage::directory_children_tests::the_index_leaves_no_ties_among_equal_hashes ... ok
+test stage::directory_children_tests::an_empty_directory_claims_nothing_and_deletes_nothing ... ok
+test stage::directory_children_tests::the_listing_head_is_the_first_child_in_sibling_order ... ok
+test stage::directory_children_tests::what_nothing_claimed_comes_back_in_sibling_order ... ok
+test repository::status::tree_diff_operation_tests::a_scan_opens_one_operation ... ok
+test repository::write_token_tests::no_token_means_no_write_capability ... ok
+test state::tests::a_directory_is_recorded_before_the_paths_under_it ... ok
+test state::tests::a_file_of_another_size_is_modified_unread ... ok
+test state::tests::a_directory_is_recorded_before_it_is_descended ... ok
+test state::tests::a_deleted_or_moved_directory_is_recorded_without_descending ... ok
+test state::tests::a_component_whose_fold_is_longer_is_popped_off_both_forms ... ok
+test repository::status::tree_diff_operation_tests::a_dirty_check_without_a_staged_comparison_reads_no_working_tree ... ok
+test state::tests::a_path_narrowed_to_a_suffix_keys_as_that_suffix ... ok
+test state::tests::a_filtered_path_is_recorded_only_under_force ... ok
+test state::tests::a_pushed_path_keys_the_same_as_the_whole_of_it ... ok
+test repository::status::tree_diff_operation_tests::a_dirty_check_and_a_scan_share_one_operation ... ok
+test state::tests::a_comparison_that_settles_nothing_reads_as_modified ... ok
+test state::tests::a_link_or_file_walk_root_is_not_descended ... ok
+test state::tests::a_file_removed_between_comparisons_reads_as_unreadable ... ok
+test state::tests::an_action_records_matching_dirty_and_staged_flags ... ok
+test state::tests::a_sibling_chain_spanning_node_blocks_is_walked_whole ... ok
+test state::tests::a_nested_dirty_file_carries_the_whole_prefix ... ok
+test state::tests::a_passed_over_child_does_not_end_its_sibling_chain ... ok
+test state::tests::an_empty_directory_name_leaves_its_parent_on_the_path ... ok
+test state::tests::an_excluded_directory_is_not_descended ... ok
+test state::tests::resolve_branch_returns_own_branch_when_non_zero ... ok
+test state::tests::resolve_branch_returns_parent_when_branch_is_zero ... ok
+test state::tests::reading_the_link_list_leaves_it_editable ... ok
+test state::tests::dirty_paths_are_recorded_depth_first_along_each_sibling_chain ... ok
+test state::tests::the_mtime_key_is_the_digest_over_the_paths_own_lowercase_form ... ok
+test state::tests::a_sibling_cycle_below_the_root_is_reported_against_its_own_parent ... ok
+test state::tests::siblings_after_a_filtered_node_keep_their_own_prefix ... ok
+test util::collect_stream::tests::drains_after_producer_finishes ... ok
+test util::collect_stream::tests::empty_producer_yields_empty_vec ... ok
+test util::collect_stream::tests::happy_path_emits_in_order ... ok
+test util::collect_stream::tests::item_error_short_circuits ... ok
+test util::collect_stream::tests::large_burst_exercises_channel_backpressure ... ok
+test util::collect_stream::tests::producer_error_after_dropping_tx_still_yields_error ... ok
+test util::collect_stream::tests::producer_error_after_items_still_yields_error ... ok
+test util::collect_stream::tests::producer_error_propagates ... ok
+test util::collect_stream::tests::with_summary_producer_error_propagates ... ok
+test util::collect_stream::tests::with_summary_returns_summary_and_items ... ok
+test util::config::tests::a_blocking_load_of_a_config_that_cannot_be_read_is_an_error ... ok
+test util::config::tests::a_blocking_load_of_an_absent_config_is_the_default ... ok
+test util::config::tests::a_config_round_trips ... ok
+test util::config::tests::a_config_that_cannot_be_read_is_an_error ... ok
+test util::config::tests::a_config_that_is_not_text_is_an_error ... ok
+test util::config::tests::a_config_that_is_not_toml_is_an_error ... ok
+test util::config::tests::a_failed_save_names_the_target_and_the_temporary ... ok
+test state::tests::walking_from_anything_but_a_directory_records_nothing ... ok
+test state::tests::sibling_subtrees_at_one_depth_are_named_against_their_parent ... ok
+test util::config::tests::a_save_that_fails_before_the_rename_keeps_the_previous_config ... ok
+test util::encoding::tests::decode_empty_input ... ok
+test util::config::tests::an_absent_config_is_the_default ... ok
+test util::encoding::tests::decode_utf16_be_with_bom ... ok
+test state::tests::an_empty_node_name_names_its_parent ... ok
+test util::encoding::tests::decode_utf16_le_with_crlf ... ok
+test util::encoding::tests::decode_utf8_with_bom ... ok
+test util::encoding::tests::decode_utf16_le_with_bom ... ok
+test util::config::tests::a_save_replaces_the_config_and_leaves_no_temporary_file ... ok
+test util::encoding::tests::decode_utf8_passthrough ... ok
+test util::encoding::tests::is_utf16_bom_detects_be ... ok
+test util::encoding::tests::is_utf16_bom_detects_le ... ok
+test util::encoding::tests::is_utf16_bom_rejects_short_or_other ... ok
+test util::fs::tests::a_held_path_is_looked_up_once_however_deep ... ok
+test util::fs::tests::a_path_that_is_not_there_stops_at_its_first_component ... ok
+test state::tests::a_staged_node_is_recorded_only_when_staged_nodes_are_wanted ... ok
+test util::fs::tests::a_listing_skips_a_link_to_a_file_it_would_otherwise_track ... ok
+test util::fs::tests::all_names_exist_is_true_for_no_names ... ok
+test util::fs::tests::all_names_exist_compares_exactly ... ok
+test util::fs::tests::an_observed_bit_replaces_the_stored_one ... ok
+test util::fs::tests::an_unobserved_bit_keeps_the_stored_one ... ok
+test util::fs::tests::all_names_exist_is_false_for_an_unreadable_directory ... ok
+test util::fs::tests::a_resolved_prefix_does_not_survive_the_directory_being_renamed ... ok
+test util::fs::tests::list_path_describes_a_file_by_its_own_name ... ok
+test util::fs::tests::all_names_exist_requires_every_name ... ok
+test state::tests::a_path_nested_deeper_than_the_walk_stack_is_recorded_in_full ... ok
+test util::fs::tests::name_matches_a_directory ... ok
+test util::fs::tests::list_path_yields_a_directory_listing ... ok
+test util::fs::tests::list_path_reports_a_missing_path ... ok
+test util::fs::tests::names_answers_with_the_case_variation_it_was_given ... ok
+test util::fs::tests::names_answers_with_the_stored_case_variation ... ok
+test util::fs::tests::only_a_file_carries_a_mode ... ok
+test util::fs::tests::name_matches_only_the_case_variation_on_disk ... ok
+test util::fs::tests::names_reports_a_name_that_is_not_there_in_any_case ... ok
+test util::fs::tests::names_does_not_answer_with_a_neighbouring_name ... ok
+test util::fs::tests::path_resolves_a_path_already_in_the_case_on_disk ... ok
+test util::fs::tests::path_below_a_base_does_not_resolve_the_base_itself ... ok
+test util::fs::tests::path_resolves_below_a_base_and_answers_relative_to_it ... ok
+test util::fs::tests::names_reports_every_case_variation_that_coexists ... ok
+test util::path::tests::a_component_beyond_ascii_lowercases_through_the_general_mapping ... ok
+test util::path::tests::a_component_turning_non_ascii_at_its_end_keeps_what_it_was_appended_to ... ok
+test util::path::tests::a_parent_path_narrows_both_views ... ok
+test util::path::tests::a_path_below_a_partial_name_match_is_nothing ... ok
+test util::path::tests::a_path_below_an_ancestor_is_the_names_between_them ... ok
+test util::path::tests::a_pushed_component_carries_into_the_lowercase_form ... ok
+test util::path::tests::an_initial_path_holds_the_canonical_separator ... ok
+test util::path::tests::clean_brings_a_path_onto_the_canonical_form ... ok
+test util::path::tests::clean_steps_up_for_a_parent_and_not_for_a_name ... ok
+test util::path::tests::every_append_route_lowercases_beyond_ascii ... ok
+test util::path::tests::from_str_carries_a_lowercase_form_of_its_own_length ... ok
+test util::fs::tests::a_resolved_prefix_answers_exactly_as_the_walk_would ... ok
+test util::path::tests::is_path_inside_repository::case_insensitive ... ok
+test util::path::tests::is_path_inside_repository::empty_candidate_is_inside ... ok
+test util::path::tests::is_path_inside_repository::child_at_root ... ok
+test util::path::tests::is_path_inside_repository::nested_child ... ok
+test util::path::tests::is_path_inside_repository::sibling_directory_is_outside ... ok
+test util::path::tests::is_path_inside_repository::traversal_escaping_is_outside ... ok
+test util::path::tests::is_path_inside_repository::repo_equals_candidate ... ok
+test util::path::tests::is_path_inside_repository::traversal_returning_is_inside ... ok
+test util::path::tests::pop_root_repeat_leaves_a_view_of_what_is_below_them ... ok
+test util::path::tests::shared_component_depth_counts_whole_components ... ok
+test util::path::tests::test_clean_path_with_double_parent ... ok
+test util::path::tests::test_clean_path_with_leading_parent ... ok
+test util::path::tests::test_clean_path_with_parent_after_period ... ok
+test util::path::tests::the_lowercase_form_takes_the_fold_node_names_are_hashed_over ... ok
+test util::fs::tests::resolved_prefixes_leave_out_what_they_cannot_settle ... ok
+test util::fs::tests::resolved_prefixes_answer_for_the_paths_under_them ... ok
+test util::fs::tests::path_resolves_every_component_to_its_stored_case_variation ... ok
+test state::tests::an_unfragmented_file_is_decided_by_its_own_hash ... ok
+test state::tests::what_one_comparison_established_answers_the_next ... ok
+test branch::tests::common_ancestor_of_a_branch_that_never_merged_is_its_branch_point ... ok
+test branch::tests::common_ancestor_is_what_the_trunk_already_merged_of_the_branch ... ok
+test branch::tests::common_ancestor_finds_an_earlier_merge_beyond_the_search_depth ... ok
+test branch::tests::common_ancestor_finds_a_merge_the_source_took_far_below_the_target_tip ... ok
+
+test result: ok. 457 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/auth.rs (target/debug/deps/auth-a5ef1111827969cd)
+
+running 10 tests
+test tests::expiry_time_is_expired ... ok
+test tests::one_second_in_the_past_is_expired ... ok
+test tests::one_second_in_the_future_is_not_expired ... ok
+test tests::verify_jwt_usage_for_remote_tests::allows_exact_jwt_aud_use ... ok
+test tests::verify_jwt_usage_for_remote_tests::errors_on_domain_not_in_audience ... ok
+test tests::verify_jwt_usage_for_remote_tests::allows_jwt_aud_root_domain_matching_use ... ok
+test tests::verify_jwt_usage_for_remote_tests::leading_dot_aud_rejects_unrelated_domain ... ok
+test tests::verify_jwt_usage_for_remote_tests::acceptable_jwt_domains ... ok
+test tests::verify_jwt_usage_for_remote_tests::leading_dot_aud_matches_subdomains_and_apex ... ok
+test tests::verify_jwt_usage_for_remote_tests::naked_aud_rejects_mid_label_suffix_domain ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/auth_exchange.rs (target/debug/deps/auth_exchange-d225c1bf62e87568)
+
+running 8 tests
+test tests::get_user_id_returns_resolved_user ... ok
+test tests::test_auth_registration_and_lookup ... ok
+test tests::exchange_not_authenticated_is_matchable ... ok
+test tests::exchange_for_repository_success_returns_token ... ok
+test tests::get_user_info_returns_resolved_users ... ok
+test tests::not_supported_interactive_login ... ok
+test tests::exchange_for_custom_resource_success_returns_token ... ok
+test tests::exchange_not_authorized_is_matchable ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/branch_latest.rs (target/debug/deps/branch_latest-833f2d6ab74cd486)
+
+running 6 tests
+test tests::store_latest_rejects_a_zero_previous_when_the_branch_already_has_a_tip ... ok
+test tests::store_latest_creates_the_pointer_when_the_branch_has_no_tip ... ok
+test tests::store_latest_advances_the_tip_when_previous_matches ... ok
+test tests::store_latest_rejects_a_previous_that_is_not_the_stored_tip ... ok
+test tests::concurrent_store_latest_from_the_same_previous_publishes_one_tip ... ok
+test tests::store_latest_records_the_divergence_flag_and_the_history ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/change.rs (target/debug/deps/change-13f16e53975769b7)
+
+running 4 tests
+test tests::changes_empty ... ok
+test tests::a_change_stands_at_the_path_of_the_side_it_resolves_to ... ok
+test tests::changes_odd_three ... ok
+test tests::content_repository_id_resolves_link_nodes_to_their_target ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/clone.rs (target/debug/deps/clone-1fe29b254463949c)
+
+running 6 tests
+test tests::test_clone_stats_default_permits ... ok
+test tests::test_clone_execute_small_queue_does_not_reach_max ... ok
+test tests::test_clone_execute_creates_files ... ok
+test tests::test_clone_execute_raises_limit_on_discovery_complete ... ok
+test tests::test_clone_execute_recycles_permits ... ok
+test tests::test_clone_execute_ramps_permits_to_max_on_large_backlog ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests/commit.rs (target/debug/deps/commit-bbeca82b7bdc7b4b)
+
+running 5 tests
+test tests::commit_metadata ... ok
+test tests::commit_records_the_modified_time_of_what_it_committed ... ok
+test tests::a_dry_run_commit_records_no_modified_time ... ok
+test tests::commit_emits_revision_commit_event_on_success ... ok
+test tests::commit_without_staged_changes_emits_no_commit_event ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/commit_in_memory.rs (target/debug/deps/commit_in_memory-cb7c789ef30cb905)
+
+running 19 tests
+test tests::commit_in_memory_revision_rejects_a_state_with_no_edits ... ok
+test tests::commit_in_memory_revision_chains_the_parent_and_numbers_the_revision ... ok
+test tests::commit_in_memory_revision_drops_a_node_staged_for_deletion ... ok
+test tests::commit_in_memory_revision_keeps_the_timestamp_and_author_the_caller_set ... ok
+test tests::commit_in_memory_revision_publishes_the_tree_and_advances_the_tip ... ok
+test tests::commit_in_memory_revision_hands_back_a_snapshot_when_the_freeze_fails ... ok
+test tests::commit_in_memory_revision_returns_branch_advanced_when_the_tip_moved ... ok
+test tests::commit_in_memory_revision_keeps_an_author_the_caller_stored_as_another_kind ... ok
+test tests::commit_in_memory_revision_stamps_the_timestamp_and_author_when_unset ... ok
+test tests::resolve_commit_branch_accepts_a_branch_that_branches_from_this_revision ... ok
+test tests::commit_in_memory_revision_publishes_a_metadata_only_revision ... ok
+test tests::resolve_commit_branch_rejects_an_initial_revision_with_no_branch ... ok
+test tests::commit_in_memory_revision_snapshots_a_state_that_already_committed ... ok
+test tests::commit_in_memory_revision_leaves_the_state_on_the_new_revision ... ok
+test tests::commit_in_memory_revision_keeps_a_link_pointing_at_its_target ... ok
+test tests::resolve_commit_branch_rejects_a_branch_that_does_not_branch_from_this_revision ... ok
+test tests::resolve_commit_branch_takes_the_parent_branch_when_the_key_is_unset ... ok
+test tests::resolve_commit_branch_rejects_a_parent_that_records_no_branch ... ok
+test tests::commit_in_memory_revision_publishes_more_nodes_than_one_block_holds ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/composite_store.rs (target/debug/deps/composite_store-0ee7fb76cdee0a0f)
+
+running 51 tests
+test tests::get_metadata_consults_replica_when_local_misses ... ok
+test tests::get_metadata_falls_back_to_durable_when_local_misses ... ok
+test tests::get_metadata_local_hit_short_circuits ... ok
+test tests::durable_delay::get_durable_not_delayed_when_no_replicas ... ok
+test tests::a_foreign_partition_survives_the_merge_to_the_caller ... ok
+test tests::durable_delay::resolve_durable_not_delayed_when_no_replicas ... ok
+test tests::durable_delay::resolve_durable_not_called_when_replica_responds_within_delay ... ok
+test tests::durable_delay::get_durable_not_called_when_replica_responds_within_delay ... ok
+test tests::put_duplicates_a_durable_association::a_copied_put_honours_do_not_replicate ... ok
+test tests::put_duplicates_a_durable_association::a_copied_put_still_reaches_the_write_replicas ... ok
+test tests::put_duplicates_a_durable_association::a_copied_put_without_replicas_sends_nothing_further ... ok
+test tests::put_duplicates_a_durable_association::a_durable_only_composite_copies_from_its_own_match ... ok
+test tests::put_duplicates_a_durable_association::a_durable_hash_match_is_copied_not_stored ... ok
+test tests::put_duplicates_a_durable_association::a_forced_put_is_stored_not_copied ... ok
+test tests::put_duplicates_a_durable_association::a_refused_copy_fails_the_put_without_storing_the_payload ... ok
+test tests::durable_store_get_results_are_cached_locally ... ok
+test tests::local_metadata_only_strips_payload_on_put_cache ... ok
+test tests::put_duplicates_a_durable_association::a_durable_partition_match_is_copied_not_stored ... ok
+test tests::put_duplicates_a_durable_association::a_match_the_durable_store_lacks_is_stored_not_copied ... ok
+test tests::put_duplicates_a_durable_association::a_replica_refusing_the_copy_does_not_fail_the_put ... ok
+test tests::put_duplicates_a_durable_association::a_miss_is_stored_not_copied ... ok
+test tests::put_duplicates_a_durable_association::a_match_without_a_payload_is_stored_not_copied ... ok
+test tests::durable_query_match_full_results_are_cached_locally ... ok
+test tests::test_composite_store_builder ... ok
+test tests::test_composite_store_builder_no_durable_stores ... ok
+test tests::test_composite_store_builder_too_many_durable_stores ... ok
+test tests::test_composite_store_builder_too_many_local_stores ... ok
+test tests::resolve_merges_answers_from_every_store ... ok
+test tests::test_max_query_batch ... ok
+test tests::test_exist_batch_local_partial ... ok
+test tests::test_non_durable_read_short_circuits ... ok
+test tests::test_non_durable_read ... ok
+test tests::local_metadata_only_strips_payload_on_get_cache ... ok
+test tests::durable_store_get_metadata_results_are_cached_locally ... ok
+test tests::topology::can_do_noop_updates ... ok
+test tests::topology::can_remove_all_our_peers ... ok
+test tests::test_read_through_cache ... ok
+test tests::topology::can_incrementally_add_peers ... ok
+test tests::topology::can_partially_remove_peers ... ok
+test tests::topology::failed_read_replica_does_not_block_read ... ok
+test tests::topology::read_replica_fan_out_returns_results ... ok
+test tests::satisfies_the_immutable_store_contract ... ok
+test tests::topology::errors_with_peer_creation_are_swallowed ... ok
+test tests::put_with_do_not_replicate_skips_write_replicas ... ok
+test tests::put_without_do_not_replicate_sends_to_write_replicas ... ok
+test tests::inflight_dedup::success_propagated_to_listeners ... ok
+test tests::inflight_dedup::failure_propagated_to_listeners ... ok
+test tests::replicas_get_metadata_results_not_cached_locally ... ok
+test tests::replicas_get_results_not_cached_locally ... ok
+test tests::replica_query_match_full_results_not_cached_locally ... ok
+test tests::topology::can_update_through_subscription ... ok
+
+test result: ok. 51 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests/dependency.rs (target/debug/deps/dependency-4825c15675777626)
+
+running 48 tests
+test tests::contains_nonexistent ... ok
+test tests::contains_tag_nonexistent_node ... ok
+test tests::add_duplicate_node_merges_tags ... ok
+test tests::add_with_no_tags ... ok
+test tests::add_deduplicates_tags_within_single_call ... ok
+test tests::add_to_empty ... ok
+test tests::deserialize_invalid_utf8_tag ... ok
+test tests::deserialize_bad_version ... ok
+test tests::add_preserves_sorted_order ... ok
+test tests::deserialize_truncated_entry ... ok
+test tests::deserialize_truncated_tag ... ok
+test tests::deserialize_too_short ... ok
+test tests::deserialize_bad_magic ... ok
+test tests::get_nonexistent ... ok
+test tests::empty_serialize_produces_header_only ... ok
+test tests::metadata_remove_key_empty_metadata ... ok
+test tests::metadata_get_typed_returns_correct_types ... ok
+test tests::metadata_remove_key_then_re_add ... ok
+test tests::metadata_remove_key_last_key ... ok
+test tests::metadata_get_typed_not_found ... ok
+test tests::metadata_remove_key_existing ... ok
+test tests::metadata_remove_key_nonexistent ... ok
+test tests::remove_entire_entry ... ok
+test tests::remove_all_tags_removes_entry ... ok
+test tests::remove_nonexistent_entry ... ok
+test tests::remove_nonexistent_tag_no_effect ... ok
+test tests::remove_specific_tags ... ok
+test tests::round_trip_empty ... ok
+test tests::round_trip_multiple_entries ... ok
+test tests::round_trip_odd_length_tags ... ok
+test tests::round_trip_single_entry_no_tags ... ok
+test tests::round_trip_single_entry_with_tags ... ok
+test tests::serialized_size_predictable ... ok
+test tests::sorted_invariant_after_add_remove_sequence ... ok
+test tests::tags_are_lexicographically_sorted ... ok
+test tests::threshold_boundary_sizes ... ok
+test tests::store_and_load_inline ... ok
+test tests::cycle_detection_self_dependency ... ok
+test tests::resolve_nonexistent_path_returns_file_not_found ... ok
+test tests::load_empty_returns_empty_data ... ok
+test tests::cycle_detection_transitive ... ok
+test tests::store_forward_and_backward_independently ... ok
+test tests::store_and_load_indirect ... ok
+test tests::transitive_closure_with_tag_filter ... ok
+test tests::store_empty_removes_key ... ok
+test tests::transitive_closure_diamond ... ok
+test tests::transitive_closure_with_depth_limit ... ok
+test tests::inline_to_indirect_transition ... ok
+
+test result: ok. 48 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/diff3_streaming.rs (target/debug/deps/diff3_streaming-23df27109f77a313)
+
+running 10 tests
+test tests::include_same_dedup ... ok
+test tests::directory_delete_overlap_with_conflict ... ok
+test tests::target_only_change_dropped_by_source_path_filter ... ok
+test tests::source_cap_fires ... ok
+test tests::merge_under_view_filter_must_not_drop_out_of_view_changes ... ok
+test tests::merge_rename_from_out_of_view_to_in_view_realizes_the_file ... ok
+test tests::crossing_moves ... ok
+test tests::history_walk_resolves_conflict ... ok
+test tests::merge_adopts_added_and_deleted_paths_in_an_out_of_view_subtree ... ok
+test tests::merge_does_not_adopt_a_subtree_the_branch_changed ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/dirty.rs (target/debug/deps/dirty-c47392759225d00d)
+
+running 22 tests
+test tests::diff_reports_dirty_nodes_with_unchanged_content ... ok
+test tests::dirty_copy_creates_destination_node ... ok
+test tests::node_has_dirty_children_returns_false_when_clean ... ok
+test tests::node_mark_dirty_early_out_on_already_dirty_parent ... ok
+test tests::dirty_classify_modify_add_delete_ignore ... ok
+test tests::node_mark_dirty_propagates_to_parents ... ok
+test tests::reset_staged_file_refuses ... ignored
+test tests::dirty_and_staged_coexist_on_same_node ... ok
+test tests::commit_clears_dirty_on_committed_preserves_dirty_only ... ok
+test tests::dirty_move_relocates_node_and_propagates ... ok
+test tests::dirty_reverted_add_removes_node ... ok
+test tests::dirty_directory_recurse_marks_children ... ok
+test tests::commit_preserves_a_dirty_only_file_under_a_staged_directory ... ok
+test tests::node_mark_dirty_replaces_previous_action ... ok
+test tests::unstage_preserves_anchor_when_dirty_nodes_remain ... ok
+test tests::reset_dirty_only_clears_dirty_with_parent_cleanup ... ok
+test tests::unstage_clears_dirty_when_file_matches_revision ... ok
+test tests::reset_one_dirty_preserves_parent_dirty_for_other ... ok
+test tests::staging_dirty_file_preserves_dirty_flag ... ok
+test tests::rebase_staged_state_carries_dirty_paths_without_touching_anchor ... ok
+test tests::rebase_staged_state_returns_none_without_dirty_paths ... ok
+test tests::unstage_dirty_staged_preserves_dirty_when_file_differs ... ok
+
+test result: ok. 21 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/errors.rs (target/debug/deps/errors-0aad762888968ff1)
+
+running 10 tests
+test address_not_found_display ... ok
+test file_not_found_display ... ok
+test address_not_found_ffi_code ... ok
+test file_not_found_ffi_code ... ok
+test all_discrete_types_implement_std_error ... ok
+test invalid_arguments_ffi_code ... ok
+test invalid_arguments_display ... ok
+test payload_not_found_display ... ok
+test payload_not_found_ffi_code ... ok
+test slow_down_display_and_ffi_code ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/filesystem.rs (target/debug/deps/filesystem-740730737b47b90c)
+
+running 11 tests
+test tests::instance_operation_file_info_nonexistent ... ok
+test tests::instance_operation_file_info_directory ... ok
+test tests::instance_operation_file_info_file ... ok
+test tests::instance_operation_create_dir_all ... ok
+test tests::instance_operation_remove_empty_directory ... ok
+test tests::instance_operation_create_file ... ok
+test tests::instance_operation_remove_file ... ok
+test tests::instance_operation_remove_recursive ... ok
+test tests::instance_operation_copy_file ... ok
+test tests::filesystem_provider_begin_operation_finalize ... ok
+test tests::instance_operation_make_executable ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/filesystem_diff_stream.rs (target/debug/deps/filesystem_diff_stream-d6a6ed5bf722b10f)
+
+running 1 test
+test tests::collecting_and_reading_report_the_same_changes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/filter.rs (target/debug/deps/filter-28dea55265d5cb76)
+
+running 10 tests
+test tests::directory_but_not_files ... ok
+test tests::empty_filter ... ok
+test tests::directory_reinclusion ... ok
+test tests::files_and_directory ... ok
+test tests::directory_match ... ok
+test tests::glob_match ... ok
+test tests::root_file ... ok
+test tests::last_match_wins ... ok
+test tests::simple_match ... ok
+test tests::gitignore_example ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/filter_bench.rs (target/debug/deps/filter_bench-832ea9a6707c6f51)
+
+running 3 tests
+test excludes_subtree_throughput ... ignored, benchmark: run on demand with --ignored
+test excludes_throughput ... ignored, benchmark: run on demand with --ignored
+test targets_file_throughput ... ignored, benchmark: run on demand with --ignored
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/filter_descend_bench.rs (target/debug/deps/filter_descend_bench-0670603fc9097980)
+
+running 5 tests
+test descend_by_depth ... ignored, benchmark: run on demand with --ignored
+test descend_by_fanout ... ignored, benchmark: run on demand with --ignored
+test descend_deep_tree ... ignored, benchmark: run on demand with --ignored
+test descend_large_tree ... ignored, benchmark: run on demand with --ignored
+test descend_large_tree_in_parallel ... ignored, benchmark: run on demand with --ignored
+
+test result: ok. 0 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/filter_gitignore.rs (target/debug/deps/filter_gitignore-0d4573d081c8bbd5)
+
+running 19 tests
+test a_forced_step_excludes_nothing_and_carries_no_verdict ... ok
+test adding_rules_after_a_query_invalidates_the_memo ... ok
+test excluded_subtree_with_no_reinclusion_is_not_descended ... ok
+test doublestar_followed_by_a_wildcard_component_excludes ... ok
+test alternation_over_four_levels_with_directory_rules ... ok
+test matching_is_case_insensitive ... ok
+test reexcluded_level_is_reentered_by_a_deeper_reinclusion ... ok
+test alternation_over_four_levels ... ok
+test the_two_slots_are_independent_and_both_must_pass ... ok
+test the_walk_verdict_keeps_a_directory_it_must_descend_into ... ok
+test unanchored_multi_component_inclusion_is_refused ... ok
+test unanchored_rule_still_applies_inside_a_reincluded_subtree ... ok
+test saved_rules_reload_to_the_same_filter ... ok
+test gitignore_conformance ... ok
+test a_walk_seeded_partway_down_matches_one_from_the_root ... ok
+test folding_a_path_and_stepping_down_it_agree ... ok
+test the_ancestor_memo_changes_no_answer ... ok
+test the_whole_path_walk_reaches_the_same_files_as_the_stepped_walk ... ok
+test a_threaded_walk_agrees_with_a_whole_path_query_across_both_slots ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.30s
+
+     Running tests/filter_walk_bench.rs (target/debug/deps/filter_walk_bench-0ee4ac91808e0639)
+
+running 1 test
+test child_exclusion_state_throughput ... ignored, benchmark: run on demand with --ignored
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fragment.rs (target/debug/deps/fragment-ab420b93ba93fca3)
+
+running 4 tests
+test tests::compress_decompress_lz4 ... ok
+test tests::compress_decompress_into_zstd ... ok
+test tests::compress_decompress_into_lz4 ... ok
+test tests::compress_decompress_zstd ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/hash.rs (target/debug/deps/hash-7b05a92fce67b739)
+
+running 3 tests
+test tests::hash ... ok
+test tests::hash_uncompressed_fragment ... ok
+test tests::hash_compressed_fragment ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/helper.rs (target/debug/deps/helper-9b26745117cb4302)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/immutable.rs (target/debug/deps/immutable-85cf04b50e9b5165)
+
+running 14 tests
+test tests::test_read_zero_hash_returns_zero_initialized ... ok
+test tests::test_verify_fragment_match_repository ... ok
+test tests::test_verify_fragment ... ok
+test tests::test_verify_fragment_not_first_in_index ... ok
+test tests::test_verify_fragment_multiple_contexts ... ok
+test tests::test_verify_fragment_match_full_wrong_context ... ok
+test tests::test_verify_fragment_match_full ... ok
+test tests::test_verify_fragment_not_found ... ok
+test tests::test_verify_fragment_corrupted_heal ... ok
+test tests::test_verify_fragment_corrupted_no_heal ... ok
+test tests::read_into_file_single_level ... ok
+test tests::write_and_read_chunked ... ok
+test tests::read_stream_multilevel_fragmented ... ok
+test tests::read_into_file_multilevel_fragmented ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.83s
+
+     Running tests/immutablestore.rs (target/debug/deps/immutablestore-19e6a52e47bcb715)
+
+running 17 tests
+test tests::put_rejects_oversized_size_payload ... ok
+test tests::put_rejects_payload_length_mismatch ... ok
+test tests::put_rejects_oversized_payload ... ok
+test tests::store_load ... ok
+test tests::copy_fragment_between_repositories ... ok
+test tests::store_fragment_rejects_length_mismatch ... ok
+test tests::store_query ... ok
+test tests::store_single_item ... ok
+test tests::store_rejects_oversized_size_payload ... ok
+test tests::store_zero_size ... ok
+test tests::store_fragment_rejects_oversized ... ok
+test tests::store_new_payload ... ok
+test tests::copy_nonexistent_fragment_returns_not_found ... ok
+test tests::copy_wrong_source_repository_returns_not_found ... ok
+test tests::store_multiple_items ... ok
+test tests::store_and_update ... ok
+test tests::store_serialize_deserialize ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+     Running tests/in_memory_store.rs (target/debug/deps/in_memory_store-4cdfedcdc9dc358a)
+
+running 4 tests
+test tests::global_args_in_memory_flag ... ok
+test tests::repository_release_does_not_panic_on_uncached_path ... ok
+test tests::create_client_memory_stores_returns_functional_stores ... ok
+test tests::release_clears_cached_in_memory_store_data ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/inflight.rs (target/debug/deps/inflight-e329946d08d2ffe1)
+
+running 8 tests
+test test::drop_without_broadcast_removes_entry ... ok
+test test::broadcast_delivers_to_awaiter ... ok
+test test::concurrent_request_returns_result_awaiter ... ok
+test test::distinct_keys_are_independent ... ok
+test test::broadcast_removes_entry_so_next_request_is_maker ... ok
+test test::drop_without_broadcast_wakes_awaiter_with_error ... ok
+test test::first_request_returns_request_maker ... ok
+test test::sequential_request_after_broadcast_does_not_hang ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/instance.rs (target/debug/deps/instance-3bf09b28aef05abf)
+
+running 20 tests
+test tests::anchor_store_roundtrip ... ok
+test tests::load_current_anchor_returns_branch_with_zero_revision ... ok
+test tests::list_instances_for_all_repositories ... ok
+test tests::a_read_only_reader_retires_nothing ... ok
+test tests::load_current_anchor_not_found_when_no_branch_key ... ok
+test tests::instance_prune_removes_missing_superseded_and_checkoutless_registrations ... ok
+test tests::reading_the_list_retires_contradicted_registrations_only ... ok
+test tests::staleness_event_flags_are_stable ... ok
+test tests::list_instances_returns_registered_entries ... ok
+test tests::register_instance_matches_paths_after_normalization ... ok
+test tests::register_instance_retires_earlier_registration_at_same_path ... ok
+test tests::separate_instances_have_independent_anchors ... ok
+test tests::the_current_instance_registration_is_kept ... ok
+test tests::register_and_load_instance_metadata ... ok
+test tests::recover_instance_id_prefers_newest_registration_for_path ... ok
+test tests::instance_staleness_classifies_registrations ... FAILED
+test tests::duplicate_registration_is_retired_when_a_write_command_reads_the_list ... ok
+test tests::lost_instance_file_is_recovered_without_a_second_registration ... ok
+test tests::replaced_instance_file_registers_new_instance_and_retires_previous ... ok
+test tests::recreating_a_checkout_on_a_shared_store_leaves_one_registration ... ok
+
+failures:
+
+---- tests::instance_staleness_classifies_registrations stdout ----
+panic: panicked at lore-revision/tests/instance.rs:710:17:
+assertion `left == right` failed: an instance file that exists but cannot be read is not evidence of a removed checkout
+  left: CheckoutMissing
+ right: Active
+   0: std::backtrace_rs::backtrace::libunwind::trace
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/libunwind.rs:117:9
+   1: std::backtrace_rs::backtrace::trace_unsynchronized::<<std::backtrace::Backtrace>::create::{closure#0}>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/mod.rs:66:14
+   2: <std::backtrace::Backtrace>::create
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/backtrace.rs:331:13
+   3: lore_revision::interface::execution_initialize::{closure#0}::{closure#0}
+             at /src/lore-revision/src/interface.rs:1037:26
+   4: <alloc::boxed::Box<dyn for<'a, 'b> core::ops::function::Fn<(&'a std::panic::PanicHookInfo<'b>,), Output = ()> + core::marker::Send + core::marker::Sync> as core::ops::function::Fn<(&std::panic::PanicHookInfo,)>>::call
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2334:9
+   5: std::panicking::panic_with_hook
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:823:13
+   6: std::panicking::panic_handler::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:688:13
+   7: std::sys::backtrace::__rust_end_short_backtrace::<std::panicking::panic_handler::{closure#0}, !>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:182:18
+   8: __rustc::rust_begin_unwind
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:679:5
+   9: core::panicking::panic_fmt
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panicking.rs:80:14
+  10: core::panicking::assert_failed_inner
+  11: core::panicking::assert_failed::<lore_revision::instance::InstanceStaleness, lore_revision::instance::InstanceStaleness>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panicking.rs:407:5
+  12: {async_block#0}
+             at /src/lore-revision/tests/instance.rs:710:17
+  13: {closure#0}<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/task_local.rs:401:35
+  14: <tokio::task::task_local::LocalKey<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>>>::scope_inner::<<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}> as core::future::future::Future>::poll::{closure#0}, core::option::Option<core::task::poll::Poll<()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/task_local.rs:217:19
+  15: <tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}> as core::future::future::Future>::poll
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/task_local.rs:399:14
+  16: <tokio::runtime::task::core::Core<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>>::poll::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/core.rs:375:24
+  17: with_mut<tokio::runtime::task::core::Stage<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>>, core::task::poll::Poll<()>, tokio::runtime::task::core::{impl#6}::poll::{closure_env#0}<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/loom/std/unsafe_cell.rs:16:9
+  18: poll<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/core.rs:364:30
+  19: tokio::runtime::task::harness::poll_future::<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/harness.rs:535:30
+  20: <core::panic::unwind_safe::AssertUnwindSafe<tokio::runtime::task::harness::poll_future<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  21: do_call<core::panic::unwind_safe::AssertUnwindSafe<tokio::runtime::task::harness::poll_future::{closure_env#0}<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>>>, core::task::poll::Poll<()>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  22: __rust_try
+  23: catch_unwind<core::task::poll::Poll<()>, core::panic::unwind_safe::AssertUnwindSafe<tokio::runtime::task::harness::poll_future::{closure_env#0}<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>>>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  24: catch_unwind<core::panic::unwind_safe::AssertUnwindSafe<tokio::runtime::task::harness::poll_future::{closure_env#0}<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<(dyn core::any::Any + core::marker::Send + core::marker::Sync), alloc::alloc::Global>, instance::tests::instance_staleness_classifies_registrations::{async_block#0}::{async_block_env#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle, alloc::alloc::Global>>>, core::task::poll::Poll<()>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  25: tokio::runtime::task::harness::poll_future::<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/harness.rs:523:18
+  26: <tokio::runtime::task::harness::Harness<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>>::poll_inner
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/harness.rs:210:27
+  27: <tokio::runtime::task::harness::Harness<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>>::poll
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/harness.rs:155:20
+  28: tokio::runtime::task::raw::poll::<tokio::task::task_local::TaskLocalFuture<alloc::sync::Arc<dyn core::any::Any + core::marker::Send + core::marker::Sync>, instance::tests::instance_staleness_classifies_registrations::{closure#0}::{closure#0}>, alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/raw.rs:337:13
+  29: <tokio::runtime::task::raw::RawTask>::poll
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/raw.rs:267:18
+  30: <tokio::runtime::task::LocalNotified<alloc::sync::Arc<tokio::runtime::scheduler::current_thread::Handle>>>::run
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/task/mod.rs:510:13
+  31: <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on::<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}::{closure#1}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:825:30
+  32: with_budget<(), tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure#0}::{closure_env#1}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:167:5
+  33: budget<(), tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure#0}::{closure_env#1}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:133:5
+  34: {closure#0}<(), tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure#0}::{closure_env#1}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:373:43
+  35: <tokio::runtime::scheduler::current_thread::Context>::enter::<(), <tokio::runtime::scheduler::current_thread::Context>::run_task<(), <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}::{closure#1}>::{closure#0}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:451:19
+  36: <tokio::runtime::scheduler::current_thread::Context>::run_task::<(), <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}::{closure#1}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:373:28
+  37: {closure#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:821:43
+  38: <tokio::runtime::scheduler::current_thread::CoreGuard>::enter::<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:865:68
+  39: <tokio::runtime::context::scoped::Scoped<tokio::runtime::scheduler::Context>>::set::<<tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>)>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/scoped.rs:40:9
+  40: tokio::runtime::context::set_scheduler::<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context.rs:181:38
+  41: try_with<tokio::runtime::context::Context, tokio::runtime::context::set_scheduler::{closure_env#0}<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core, alloc::alloc::Global>, core::option::Option<()>), tokio::runtime::scheduler::current_thread::{impl#9}::enter::{closure_env#0}<tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure_env#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>, core::option::Option<()>>>, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core, alloc::alloc::Global>, core::option::Option<()>)>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/local.rs:463:12
+  42: <std::thread::local::LocalKey<tokio::runtime::context::Context>>::with::<tokio::runtime::context::set_scheduler<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>::{closure#0}, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>)>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/local.rs:427:20
+  43: tokio::runtime::context::set_scheduler::<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context.rs:181:17
+  44: <tokio::runtime::scheduler::current_thread::CoreGuard>::enter::<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:865:27
+  45: <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on::<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:765:24
+  46: {closure#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:205:33
+  47: tokio::runtime::context::runtime::enter_runtime::<<tokio::runtime::scheduler::current_thread::CurrentThread>::block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>::{closure#0}, ()>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/runtime.rs:65:16
+  48: <tokio::runtime::scheduler::current_thread::CurrentThread>::block_on::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:193:9
+  49: <tokio::runtime::runtime::Runtime>::block_on_inner::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:371:52
+  50: block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:345:18
+  51: instance_staleness_classifies_registrations
+             at /src/lore-revision/tests/instance.rs:728:35
+  52: instance::tests::instance_staleness_classifies_registrations::{closure#0}
+             at /src/lore-revision/tests/instance.rs:661:59
+  53: <instance::tests::instance_staleness_classifies_registrations::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  54: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  55: test::__rust_begin_short_backtrace::<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:733:18
+  56: test::run_test_in_process::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:74
+  57: <core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  58: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  59: std::panicking::catch_unwind::<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  60: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  61: test::run_test_in_process
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:27
+  62: test::run_test::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:677:43
+  63: test::run_test::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:707:41
+  64: std::sys::backtrace::__rust_begin_short_backtrace::<test::run_test::{closure#1}, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166:18
+  65: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70:13
+  66: <core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  67: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  68: std::panicking::catch_unwind::<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  69: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  70: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68:26
+  71: <std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  72: <alloc::boxed::Box<dyn core::ops::function::FnOnce<(), Output = ()> + core::marker::Send> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2320:9
+  73: <std::sys::thread::unix::Thread>::new::thread_start
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread/unix.rs:123:17
+  74: <unknown>
+  75: <unknown>
+
+panic: panicked at lore-revision/tests/instance.rs:728:14:
+Test failed: JoinError::Panic(Id(1), "assertion `left == right` failed: an instance file that exists but cannot be read is not evidence of a removed checkout\n  left: CheckoutMissing\n right: Active", ...)
+   0: std::backtrace_rs::backtrace::libunwind::trace
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/libunwind.rs:117:9
+   1: std::backtrace_rs::backtrace::trace_unsynchronized::<<std::backtrace::Backtrace>::create::{closure#0}>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/mod.rs:66:14
+   2: <std::backtrace::Backtrace>::create
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/backtrace.rs:331:13
+   3: lore_revision::interface::execution_initialize::{closure#0}::{closure#0}
+             at /src/lore-revision/src/interface.rs:1037:26
+   4: <alloc::boxed::Box<dyn for<'a, 'b> core::ops::function::Fn<(&'a std::panic::PanicHookInfo<'b>,), Output = ()> + core::marker::Send + core::marker::Sync> as core::ops::function::Fn<(&std::panic::PanicHookInfo,)>>::call
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2334:9
+   5: std::panicking::panic_with_hook
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:823:13
+   6: std::panicking::panic_handler::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:688:13
+   7: std::sys::backtrace::__rust_end_short_backtrace::<std::panicking::panic_handler::{closure#0}, !>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:182:18
+   8: __rustc::rust_begin_unwind
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:679:5
+   9: core::panicking::panic_fmt
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panicking.rs:80:14
+  10: core::result::unwrap_failed
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1871:5
+  11: <core::result::Result<(), tokio::runtime::task::error::JoinError>>::expect
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1184:23
+  12: {async_block#0}
+             at /src/lore-revision/tests/instance.rs:728:14
+  13: poll<&mut dyn core::future::future::Future<Output=()>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/future/future.rs:133:9
+  14: poll<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/future/future.rs:133:9
+  15: {closure#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:778:70
+  16: with_budget<core::task::poll::Poll<()>, tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure#0}::{closure#0}::{closure_env#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:167:5
+  17: budget<core::task::poll::Poll<()>, tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure#0}::{closure#0}::{closure_env#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/task/coop/mod.rs:133:5
+  18: {closure#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:778:25
+  19: <tokio::runtime::scheduler::current_thread::Context>::enter::<core::task::poll::Poll<()>, <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}::{closure#0}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:451:19
+  20: {closure#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:777:44
+  21: <tokio::runtime::scheduler::current_thread::CoreGuard>::enter::<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:865:68
+  22: <tokio::runtime::context::scoped::Scoped<tokio::runtime::scheduler::Context>>::set::<<tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>)>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/scoped.rs:40:9
+  23: tokio::runtime::context::set_scheduler::<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>::{closure#0}
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context.rs:181:38
+  24: try_with<tokio::runtime::context::Context, tokio::runtime::context::set_scheduler::{closure_env#0}<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core, alloc::alloc::Global>, core::option::Option<()>), tokio::runtime::scheduler::current_thread::{impl#9}::enter::{closure_env#0}<tokio::runtime::scheduler::current_thread::{impl#9}::block_on::{closure_env#0}<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>, core::option::Option<()>>>, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core, alloc::alloc::Global>, core::option::Option<()>)>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/local.rs:463:12
+  25: <std::thread::local::LocalKey<tokio::runtime::context::Context>>::with::<tokio::runtime::context::set_scheduler<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>::{closure#0}, (alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>)>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/local.rs:427:20
+  26: tokio::runtime::context::set_scheduler::<(alloc::boxed::Box<tokio::runtime::scheduler::current_thread::Core>, core::option::Option<()>), <tokio::runtime::scheduler::current_thread::CoreGuard>::enter<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>::{closure#0}>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context.rs:181:17
+  27: <tokio::runtime::scheduler::current_thread::CoreGuard>::enter::<<tokio::runtime::scheduler::current_thread::CoreGuard>::block_on<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>::{closure#0}, core::option::Option<()>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:865:27
+  28: <tokio::runtime::scheduler::current_thread::CoreGuard>::block_on::<core::pin::Pin<&mut core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:765:24
+  29: {closure#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:205:33
+  30: tokio::runtime::context::runtime::enter_runtime::<<tokio::runtime::scheduler::current_thread::CurrentThread>::block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>::{closure#0}, ()>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/context/runtime.rs:65:16
+  31: <tokio::runtime::scheduler::current_thread::CurrentThread>::block_on::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/scheduler/current_thread/mod.rs:193:9
+  32: <tokio::runtime::runtime::Runtime>::block_on_inner::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:371:52
+  33: block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.52.3/src/runtime/runtime.rs:345:18
+  34: instance_staleness_classifies_registrations
+             at /src/lore-revision/tests/instance.rs:728:35
+  35: instance::tests::instance_staleness_classifies_registrations::{closure#0}
+             at /src/lore-revision/tests/instance.rs:661:59
+  36: <instance::tests::instance_staleness_classifies_registrations::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  37: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  38: test::__rust_begin_short_backtrace::<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:733:18
+  39: test::run_test_in_process::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:74
+  40: <core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  41: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  42: std::panicking::catch_unwind::<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  43: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  44: test::run_test_in_process
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:27
+  45: test::run_test::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:677:43
+  46: test::run_test::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:707:41
+  47: std::sys::backtrace::__rust_begin_short_backtrace::<test::run_test::{closure#1}, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166:18
+  48: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70:13
+  49: <core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  50: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  51: std::panicking::catch_unwind::<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  52: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  53: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68:26
+  54: <std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  55: <alloc::boxed::Box<dyn core::ops::function::FnOnce<(), Output = ()> + core::marker::Send> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2320:9
+  56: <std::sys::thread::unix::Thread>::new::thread_start
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread/unix.rs:123:17
+  57: <unknown>
+  58: <unknown>
+
+
+
+failures:
+    tests::instance_staleness_classifies_registrations
+
+test result: FAILED. 19 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p lore-revision --test instance`
+     Running tests/interface.rs (target/debug/deps/interface-2241f30d0f5af581)
+
+running 1 test
+test lore_string_serde ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/lore.rs (target/debug/deps/lore-0040f9d679dff96e)
+
+running 1 test
+test tests::test_execution_context ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/merge.rs (target/debug/deps/merge-e54d5961d396d754)
+
+running 4 tests
+test tests::test_markers ... ok
+test tests::test_conflict_without_trailing_newlines ... ok
+test tests::test_merge ... ok
+test tests::test_conflict ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/merge_metadata_inherit.rs (target/debug/deps/merge_metadata_inherit-196ad31821c6a247)
+
+running 5 tests
+test tests::the_sentinel_carries_third_party_keys_but_never_attribution ... ok
+test tests::a_merge_carries_only_the_keys_the_caller_names ... ok
+test tests::an_inherited_created_by_survives_the_commit ... ok
+test tests::a_merge_does_not_inherit_the_source_revision_attribution ... ok
+test tests::a_cherry_pick_does_not_inherit_the_source_revision_attribution ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/metadata.rs (target/debug/deps/metadata-403c1d4c854b2b51)
+
+running 9 tests
+test tests::remove_key_nonexistent ... ok
+test tests::remove_key_then_re_add_different_type ... ok
+test tests::remove_key_existing ... ok
+test tests::remove_key_last_key ... ok
+test tests::remove_key_empty_metadata ... ok
+test tests::metadata_types ... ok
+test tests::serialize_rejects_oversize ... ok
+test tests::serialize_accepts_just_under_limit ... ok
+test tests::serialize_local_rejects_oversize ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/mutablestore.rs (target/debug/deps/mutablestore-e9df0743c7ce5936)
+
+running 1 test
+test tests::compare_and_swap ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/nested_repository.rs (target/debug/deps/nested_repository-f980c1da4cfa9074)
+
+running 5 tests
+test tests::nested_repository_is_not_indexed ... ok
+test tests::staging_a_nested_repository_by_name_is_refused ... ok
+test tests::staged_directory_becoming_nested_repository_is_discarded ... ok
+test tests::staging_a_committed_directory_turned_nested_by_name_is_allowed ... ok
+test tests::committed_directory_becoming_nested_repository_stays_tracked ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/node.rs (target/debug/deps/node-a5ef039aaf7c2250)
+
+running 14 tests
+test tests::node_name_store_validates_a_reused_slot ... ok
+test tests::node_name_store_accepts_small_names ... ok
+test tests::node_name_rejects_out_of_bounds ... ok
+test tests::node_name_store_slot_reuse_is_not_capped ... ok
+test tests::node_name_accepts_valid_names ... ok
+test tests::node_name_store_rejects_path_traversal ... ok
+test tests::size ... ok
+test tests::node_name_store_rejects_a_name_over_the_length_bound ... ok
+test tests::node_name_read_rejects_path_traversal_planted_in_the_name_table ... ok
+test tests::convert_version_v2_to_v1 ... ok
+test tests::roundtrip_serialize_node_block_data_v2 ... ok
+test tests::node_name_store_rejects_when_cap_exceeded ... ok
+test tests::roundtrip_serialize_node_block_data_v0 ... ok
+test tests::add_delete ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests/node_add.rs (target/debug/deps/node_add-9e7ece50e2609a0c)
+
+running 2 tests
+test tests::node_add_refuses_a_discarded_parent ... ok
+test tests::node_add_releases_the_slot_when_the_name_is_refused ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/node_add_parallel.rs (target/debug/deps/node_add_parallel-dcc636f9f090c29c)
+
+running 2 tests
+test tests::node_add_parallel_siblings_are_race_free ... ok
+test tests::concurrent_tree_installs_push_one_block_placeholder ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/node_delete.rs (target/debug/deps/node_delete-cb84ddb608efd5c5)
+
+running 8 tests
+test tests::node_undelete_drops_the_fields_a_directory_does_not_carry ... ok
+test tests::node_delete_stages_the_node_and_leaves_it_in_the_tree ... ok
+test tests::node_delete_refuses_a_discarded_slot ... ok
+test tests::node_delete_reports_a_node_it_had_already_staged ... ok
+test tests::node_mark_staged_records_the_pair_and_marks_the_ancestors ... ok
+test tests::node_undelete_refuses_a_node_that_is_not_staged_for_deletion ... ok
+test tests::node_undelete_returns_a_node_as_a_modification ... ok
+test tests::node_delete_refuses_an_id_that_names_no_deletable_node ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/node_modify.rs (target/debug/deps/node_modify-1ef63e0375f322a9)
+
+running 5 tests
+test tests::node_modify_rewrites_content_and_keeps_the_file_id ... ok
+test tests::node_modify_refuses_the_root_and_the_invalid_sentinel ... ok
+test tests::node_modify_refuses_a_deleted_node ... ok
+test tests::node_modify_refuses_a_directory_and_a_link ... ok
+test tests::node_modify_takes_a_supplied_file_id ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/packstore.rs (target/debug/deps/packstore-695ad7a023e06be1)
+
+running 2 tests
+test tests::memory_store_load_size ... ok
+test tests::file_store_load_size ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/parallel_reads.rs (target/debug/deps/parallel_reads-bc84c527e97b1cc0)
+
+running 3 tests
+test tests::desktop_client_burst_pattern ... ok
+test tests::parallel_reads_with_concurrent_writes ... ok
+test tests::status_scan_survives_concurrent_branch_switch_delete ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.09s
+
+     Running tests/path.rs (target/debug/deps/path-a254dc0f9c2db15a)
+
+running 92 tests
+test tests::append_and_freeze_with_separator ... ok
+test tests::append_into_buf_does_not_consume_original ... ok
+test tests::append_into_buf_basic ... ok
+test tests::append_empty_string_is_noop ... ok
+test tests::append_into_buf_empty_path ... ok
+test tests::append_into_buf_empty_suffix ... ok
+test tests::append_into_buf_preserves_case ... ok
+test tests::append_into_buf_with_offset ... ok
+test tests::append_into_buf_with_separator ... ok
+test tests::append_preserves_and_lowercases ... ok
+test tests::append_with_separator_in_suffix ... ok
+test tests::covers_ignore_case ... ok
+test tests::cow_clone_preserves_content ... ok
+test tests::cow_empty_path_clone ... ok
+test tests::cow_into_buf_preserves_content ... ok
+test tests::cow_into_buf_with_offset ... ok
+test tests::cow_join_creates_new_path ... ok
+test tests::cow_lowercase_independence ... ok
+test tests::cow_offset_independence_after_pop ... ok
+test tests::cow_offset_independence_after_pop_root ... ok
+test tests::cow_offset_independence_multiple_pops ... ok
+test tests::cow_relative_path_buf_operations ... ok
+test tests::cow_round_trip_conversion ... ok
+test tests::cow_round_trip_with_pop ... ok
+test tests::dedup_to_supersets ... ok
+test tests::empty_path ... ok
+test tests::dedup_to_supersets_unifies_the_case_of_a_shared_component ... ok
+test tests::join_with_separator_in_suffix ... ok
+test tests::lowercase_str_unicode ... ok
+test tests::name_empty_path ... ok
+test tests::name_lowercase_empty_path ... ok
+test tests::name_lowercase_mixed_case ... ok
+test tests::name_lowercase_single_component ... ok
+test tests::name_multi_component_path ... ok
+test tests::name_single_component_path ... ok
+test tests::new_from_clean_parts_both_empty ... ok
+test tests::new_from_clean_parts_both_non_empty ... ok
+test tests::new_from_clean_parts_empty_root ... ok
+test tests::new_from_clean_parts_empty_tail ... ok
+test tests::new_from_clean_parts_leading_slash_on_tail ... ok
+test tests::new_from_clean_parts_leading_slash_on_root_not_stripped ... ok
+test tests::new_from_clean_parts_preserves_case ... ok
+test tests::new_from_clean_parts_trailing_slash_on_root ... ok
+test tests::new_from_clean_parts_trailing_slash_on_tail_not_stripped ... ok
+test tests::new_from_initial_path_handles_empty_and_dot ... ok
+test tests::dedup_to_supersets_collapses_across_separator_sort_order ... ok
+test tests::new_from_initial_path_keeps_a_name_beginning_with_two_periods ... ok
+test tests::new_from_initial_path_leaves_no_step_up_in_the_path ... ok
+test tests::new_from_initial_path_normalizes_backslashes ... ok
+test tests::new_from_initial_path_rejects_a_step_up_below_the_front ... ok
+test tests::new_from_initial_path_rejects_dotdot ... ok
+test tests::new_from_initial_path_rejects_drive_letter ... ok
+test tests::new_from_initial_path_rejects_a_step_up_however_it_is_written ... ok
+test tests::new_from_initial_path_removes_double_slashes ... ok
+test tests::new_from_initial_path_removes_leading_dot_slash ... ok
+test tests::new_from_initial_path_tells_a_step_up_from_a_name_in_one_path ... ok
+test tests::new_from_initial_path_trims_leading_trailing_slashes ... ok
+test tests::new_from_user_path ... ok
+test tests::new_from_user_path_matches_a_repository_named_beyond_ascii ... ok
+test tests::new_from_user_path_matches_a_repository_whose_fold_changes_its_length ... ok
+test tests::new_from_user_path_rejects_a_path_outside_the_repository ... ok
+test tests::new_from_user_path_rejects_a_path_under_a_longer_name ... ok
+test tests::new_from_user_path_takes_the_repository_off_the_front ... ok
+test tests::parent_empty_path ... ok
+test tests::parent_multi_component_path ... ok
+test tests::parent_single_component_path ... ok
+test tests::parent_two_component_path ... ok
+test tests::pop_path ... ok
+test tests::pop_root ... ok
+test tests::overlaps ... ok
+test tests::push_and_freeze_with_separator ... ok
+test tests::push_and_pop_below_a_component_whose_fold_is_longer ... ok
+test tests::push_empty_string_is_noop ... ok
+test tests::push_into_buf_basic ... ok
+test tests::push_into_buf_does_not_consume_original ... ok
+test tests::push_into_buf_empty_path ... ok
+test tests::push_into_buf_empty_suffix ... ok
+test tests::push_into_buf_preserves_case ... ok
+test tests::push_path ... ok
+test tests::push_preserves_and_lowercases ... ok
+test tests::push_with_separator_in_suffix ... ok
+test tests::relative_path_buf_append_and_freeze ... ok
+test tests::relative_path_buf_new_from_user_path ... ok
+test tests::relative_path_buf_overlaps ... ok
+test tests::relative_path_buf_pop ... ok
+test tests::relative_path_buf_pop_preserves_lowercase ... ok
+test tests::relative_path_buf_push_and_freeze ... ok
+test tests::relative_path_buf_root ... ok
+test tests::root ... ok
+test tests::to_absolute_path_basic ... ok
+test tests::test_expand_path_ancestors ... ok
+test tests::to_absolute_path_empty ... ok
+
+test result: ok. 92 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/path_allocations.rs (target/debug/deps/path_allocations-351459854737f9d3)
+
+running 3 tests
+test tests::a_reset_of_a_deleted_tree_reports_its_allocations ... ignored, reports allocation counts; run deliberately with the interposer preloaded
+test tests::a_scan_of_an_unchanged_tree_reports_its_allocations ... ignored, reports allocation counts; run deliberately with the interposer preloaded
+test tests::a_scan_of_an_untracked_tree_reports_its_allocations ... ignored, reports allocation counts; run deliberately with the interposer preloaded
+
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/quic.rs (target/debug/deps/quic-ae890575d80a8f7b)
+
+running 15 tests
+test tests::test_futures_size ... ok
+test tests::v4::authorize_opcode_unchanged ... ok
+test tests::v4::v4_header_size ... ok
+test tests::v2::test_parse_command_header ... ok
+test tests::v2::test_parse_from_bytes ... ok
+test tests::v4::v4_error_response_preserves_session ... ok
+test tests::v4::v4_round_trip ... ok
+test tests::v4::v4_session_id_zero_for_authorize ... ok
+test tests::v4::v4_success_response_preserves_session ... ok
+test tests::v4::v4_from_bytes_reads_v2_prefix_correctly ... ok
+test tests::v4::v4_session_id_preserved ... ok
+test tests::v2::all_bits_set_parsed_correctly ... ok
+test tests::v2::no_bits_but_error_parsed_correctly ... ok
+test tests::v2::all_bits_but_no_error_bit_parsed_correctly ... ok
+test tests::v2::no_bits_set_parsed_correctly ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/repository_format.rs (target/debug/deps/repository_format-532cdc0de0dd3d51)
+
+running 6 tests
+test tests::hash_salt_divergence_between_formats ... ok
+test tests::discovery_finds_urc_directory ... ok
+test tests::discovery_finds_lore_directory ... ok
+test tests::load_filter_urc_format_falls_back_to_urcignore ... ok
+test tests::load_filter_lore_format_prefers_loreignore ... ok
+test tests::load_filter_lore_format_falls_back_to_urcignore ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/reset.rs (target/debug/deps/reset-f8048f474e9aaa0c)
+
+running 3 tests
+test tests::reset_staged_file ... ok
+test tests::reset_single_file_modified ... ok
+test tests::reset_all ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/reverted_directory.rs (target/debug/deps/reverted_directory-3098282c9fa396cf)
+
+running 1 test
+test tests::removed_uncommitted_directory_is_discarded_not_deleted ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/revision.rs (target/debug/deps/revision-78aa2f09103068f9)
+
+running 12 tests
+test tests::from_metadata_with_truncated_utf8_value ... ok
+test tests::resolve_partial_hash_signature_is_not_supported ... ok
+test tests::resolve_revision_number_zero_returns_revision_not_found ... ok
+test tests::resolve_reads_hash_length_digits_as_a_signature ... ok
+test tests::resolve_latest_local_only_returns_revision_not_found_without_remote ... ok
+test tests::diff_file_event_carries_move_from_path ... ok
+test tests::resolve_unknown_revision_number_on_unknown_uuid_returns_revision_not_found ... ok
+test tests::resolve_unresolvable_branch_specifier_returns_revision_not_found ... ok
+test tests::test_diff3 ... ok
+test tests::resolve_malformed_bare_signature_returns_revision_not_found ... ok
+test tests::resolve_partial_hash_signature_on_a_branch_is_not_supported ... ok
+test tests::diff_file_event_from_path_empty_without_move ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-13fe4ac1beb4a870)
+
+running 3 tests
+test test::test_spawn_drain ... ok
+test test::test_spawn_blocking ... ok
+test test::test_spawn ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/serde.rs (target/debug/deps/serde-fd70d1b8eb4c08b1)
+
+running 2 tests
+test tests::test_serde_json ... ok
+test tests::test_toml ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/shared_store.rs (target/debug/deps/shared_store-dc0d2b9adc506f4b)
+
+running 1 test
+test tests::test_shared_store_registry ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stage.rs (target/debug/deps/stage-8a59877686ae304e)
+
+running 17 tests
+test tests::stage_case_of_two_variations_in_one_directory ... ok
+test tests::stage_delete ... ok
+test tests::stage_case_of_two_variations_neither_already_in_the_tree ... ok
+test tests::stage_keep_case_of_a_directory_two_targets_share ... ok
+test tests::stage_error_case ... ok
+test tests::stage_dry_run_no_persist ... ok
+test tests::stage_keep_case_recursive ... ok
+test tests::stage_keep_case ... ok
+test tests::stage_non_exist ... ok
+test tests::staging_a_file_records_the_executable_bit_it_carries ... ok
+test tests::stage_rename_case ... ok
+test tests::stage_move ... ok
+test tests::stage_case_error_mode ... ok
+test tests::stage_case_rename_mode ... ok
+test tests::stage_case_keep_mode ... ok
+test tests::targets_staged_together_reach_the_same_tree_as_one_at_a_time ... ok
+test tests::stage_case_of_a_shared_directory ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/stage_intent.rs (target/debug/deps/stage_intent-23d372f60dc69c16)
+
+running 16 tests
+test tests::staging_a_file_a_scan_already_marked_records_the_staged_action ... ok
+test tests::a_marking_walk_records_no_staged_action ... ok
+test tests::a_staged_directory_replaced_by_a_file_settles_both ... ok
+test tests::a_staged_file_replaced_by_a_directory_settles_both ... ok
+test tests::a_staged_delete_settles_an_excluded_child ... ok
+test tests::a_staged_modification_records_what_the_file_carries ... ok
+test tests::force_stages_what_the_working_copy_already_matches ... ok
+test tests::a_marking_delete_leaves_an_excluded_child_alone ... ok
+test tests::a_staged_nested_path_settles_the_ancestors_it_creates ... ok
+test tests::a_staging_walk_records_an_add_with_its_identity ... ok
+test tests::force_reports_an_excluded_path_under_a_deleted_subtree ... ok
+test tests::a_staged_rename_of_unchanged_content_settles_the_move ... ok
+test tests::staging_a_tree_twice_settles_it_once ... ok
+test tests::staging_a_file_the_tree_holds_deleted_takes_the_delete_back ... ok
+test tests::staging_a_replacement_twice_replaces_it_once ... ok
+test tests::staging_leaves_a_merge_sibling_alone ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/state.rs (target/debug/deps/state-710a363d78240689)
+
+running 50 tests
+test single_file_compare_result_tests::changes_not_folded_into_a_move_keep_their_order ... ok
+test single_file_compare_result_tests::debug_format_displays_variant_names ... ok
+test single_file_compare_result_tests::empty_changes_remains_empty ... ok
+test single_file_compare_result_tests::a_coalesced_move_states_a_mode_change_as_a_modification ... ok
+test single_file_compare_result_tests::a_coalesced_move_states_whether_the_content_changed ... ok
+test single_file_compare_result_tests::matching_add_delete_coalesced_to_move ... ok
+test single_file_compare_result_tests::keep_changes_not_affected ... ok
+test single_file_compare_result_tests::from_state_copied_from_delete_to_move ... ok
+test single_file_compare_result_tests::mixed_changes_only_moves_coalesced ... ok
+test single_file_compare_result_tests::single_add_remains_unchanged ... ok
+test single_file_compare_result_tests::single_delete_remains_unchanged ... ok
+test single_file_compare_result_tests::mounts_of_one_repository_stay_separate_add_and_delete ... ok
+test single_file_compare_result_tests::multiple_independent_moves_coalesced ... ok
+test tests::a_nodes_flags_never_state_a_modification ... ok
+test is_file_modified_chunking_compat::a_modified_small_file_differs_through_the_stored_list ... ok
+test is_file_modified_chunking_compat::a_buffer_hash_miss_falls_through_to_the_stored_list ... ok
+test is_file_modified_chunking_compat::unmodified_128k_file_with_legacy_two_chunk_fragmentation ... ok
+test tests::a_search_since_a_head_crosses_blocks_before_it_reaches_the_head ... ok
+test single_file_compare_result_tests::unmatched_add_and_delete_remain_unchanged ... ok
+test tests::clone_block_data ... ok
+test tests::a_serialized_block_is_the_block_in_memory ... ok
+test tests::children_spanning_node_blocks_are_all_reported_with_their_hash ... ok
+test tests::combines_multiple_flags ... ok
+test single_file_compare_result_tests::zero_context_not_matched ... ok
+test tests::children_with_name_hash_report_the_hash_of_every_child_name ... ok
+test tests::deserialize_nonexistent_hash_returns_not_found ... ok
+test tests::move_node_rejects_a_node_the_revision_is_letting_go ... ok
+test tests::move_node_rejects_what_would_break_the_tree ... ok
+test tests::a_search_since_a_head_covers_what_was_linked_in_ahead_of_it ... ok
+test tests::move_node_renames_in_place_and_keeps_identity ... ok
+test tests::returns_none_for_a_node_carrying_no_flags ... ok
+test tests::move_node_that_cannot_unlink_writes_nothing ... ok
+test tests::sets_conflict_flag_when_node_is_merge_conflict ... ok
+test tests::sets_conflict_mine_flag_when_node_is_merge_mine ... ok
+test tests::sets_conflict_resolved_flag_when_node_is_merge_resolved ... ok
+test tests::sets_conflict_theirs_flag_when_node_is_merge_theirs ... ok
+test tests::move_node_unlinks_from_the_middle_of_a_sibling_chain ... ok
+test tests::sets_merge_flag_when_node_is_staged_merge ... ok
+test tests::size ... ok
+test tests::sets_staged_flag_when_node_is_staged ... ok
+test tests::collect_new_revision_metadata_fragments ... ok
+test tests::serialize_twice_writes_the_edits_made_between ... ok
+test tests::move_node_leaves_the_name_check_to_the_caller ... ok
+test tests::collect_new_name_fragments ... ok
+test is_file_modified_chunking_compat::a_modified_large_file_differs_against_the_stored_chunking ... ok
+test is_file_modified_chunking_compat::unmodified_640k_file_reuses_previous_chunk_fragmentation ... ok
+test is_file_modified_chunking_compat::a_modified_fragmented_file_is_reported_modified ... ok
+test is_file_modified_chunking_compat::a_large_file_is_recognised_with_nothing_in_the_store ... ok
+test block_single_flight::concurrent_readers_of_a_file_metadata_block_read_it_once ... ok
+test block_single_flight::concurrent_readers_of_a_node_block_read_it_once ... ok
+
+test result: ok. 50 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running tests/store_error.rs (target/debug/deps/store_error-e86d1dfce8f4e9bb)
+
+running 5 tests
+test store_error_ffi_codes ... ok
+test store_error_implements_std_error ... ok
+test store_error_exhaustive_match ... ok
+test store_error_internal_convenience ... ok
+test store_error_internal_with_context_convenience ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sync.rs (target/debug/deps/sync-812032a6a7aa8bf8)
+
+running 1 test
+test tests::sync_explicit_revision ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/task_queue.rs (target/debug/deps/task_queue-22ee689d82b33d25)
+
+running 3 tests
+test test::test_concurrency_limit_not_exceeded ... ok
+test test::test_concurrency_limit ... ok
+test test::test_throughput_limit ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.75s
+
+     Running tests/token_store.rs (target/debug/deps/token_store-af585ee23f1ad79a)
+
+running 8 tests
+test tests::can_filter_tokens_by_specific_domain ... ok
+test tests::load_identities ... ok
+test tests::can_upsert_identity ... ok
+test tests::a_supplied_identity_token_bypasses_the_stored_authorization_token ... ok
+test tests::can_get_tokens_regardless_of_domain ... ok
+test tests::access_token_alone_does_not_fall_back_to_the_store ... ok
+test tests::can_get_token_by_subdomain ... ok
+test tests::store_load_token ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/unstage.rs (target/debug/deps/unstage-49095d2ae10d4801)
+
+running 1 test
+test tests::unstage_all ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/verify.rs (target/debug/deps/verify-dc59e9f0274f091a)
+
+running 8 tests
+test tests::verify_state_for_commit_rejects_a_staged_name_a_settled_sibling_holds ... ok
+test tests::verify_state_for_commit_rejects_a_name_hash_that_does_not_match_the_name ... ok
+test tests::verify_state_for_commit_rejects_two_siblings_with_the_same_name ... ok
+test tests::verify_state_for_commit_allows_a_live_namesake_beside_one_staged_for_deletion ... ok
+test tests::verify_state_for_commit_rejects_a_duplicate_name_inside_a_subdirectory ... ok
+test tests::verify_state_for_commit_allows_two_settled_namesakes_in_a_staged_directory ... ok
+test tests::verify_state_for_commit_does_not_read_a_settled_subtree ... ok
+test tests::verify_state_for_commit_accepts_a_tree_with_distinct_names ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/lib.rs (target/debug/deps/lore_storage-fe8ae865c1bee0ba)
+
+running 394 tests
+test compress::tests::a_zstd_failure_is_not_inefficient_compression ... ok
+test compress::tests::contexts_past_the_pool_limit_are_usable ... ok
+test chunker::tests::a_failed_read_does_not_leave_the_chunker_usable ... ok
+test compress::tests::levels::a_level_below_every_range_still_selects ... ok
+test compress::tests::levels::a_level_the_environment_names_outranks_a_selection ... ok
+test chunker::tests::empty_file_yields_no_chunks ... ok
+test compress::tests::levels::a_selection_decides_where_the_environment_names_nothing ... ok
+test compress::tests::levels::a_selection_outside_the_range_is_clamped_into_it ... ok
+test compress::tests::levels::a_level_outside_the_range_is_not_taken_from_the_environment ... ok
+test compress::tests::levels::nothing_configured_leaves_the_codec_at_its_default ... ok
+test compress::tests::levels::the_default_level_selects_none ... ok
+test compress::tests::suggestions::a_mode_no_payload_can_be_written_under_is_refused ... ok
+test compress::tests::suggestions::a_suggestion_does_not_displace_a_selected_mode ... ok
+test compress::tests::suggestions::a_suggestion_is_taken_where_no_mode_is_selected ... ok
+test compress::tests::suggestions::every_mode_a_payload_can_be_written_under_is_named ... ok
+test compress::tests::suggestions::no_preference_is_not_a_suggestion ... ok
+test compress::tests::suggestions::only_the_first_suggestion_decides ... ok
+test compress::tests::the_decompress_workspace_estimate_builds_a_context ... ok
+test compress::tests::the_pool_claims_at_most_its_limit ... ok
+test compress::tests::zstd_decompresses_from_the_fragment_header_alone ... ok
+test compress::tests::zstd_refuses_content_it_cannot_shrink ... ok
+test chunker::tests::matches_reference_on_all_zero_data ... ok
+test concurrency::tests::a_multi_window_reservation_is_charged_in_full ... ok
+test concurrency::tests::a_queued_waiter_starves_try_acquire_of_released_permits ... ok
+test concurrency::tests::acquire_fragment_memory_permit_sizes_by_buffer ... ok
+test concurrency::tests::chunk_budget_falls_back_to_the_reservation_behind_a_waiter ... ok
+test concurrency::tests::chunk_budget_prefers_a_permit_when_the_budget_has_room ... ok
+test concurrency::tests::chunk_budget_waits_for_the_reservation_to_come_back ... ok
+test concurrency::tests::fragment_limiter_owned_shares_budget_with_borrowed ... ok
+test compress::tests::zstd_round_trips_every_fragment_size ... ok
+test concurrency::tests::fragment_permit_count_maximum ... ok
+test concurrency::tests::fragment_permit_count_mid_range ... ok
+test concurrency::tests::fragment_permit_count_minimum ... ok
+test concurrency::tests::the_reservation_is_held_past_the_task_that_acquired_it ... ok
+test concurrency::tests::fragment_memory_permit_saturation_does_not_deadlock ... ok
+test defragment::tests::defragment_integration::a_reservation_completing_after_its_queue_closed_yields_nothing ... ok
+test chunker::tests::matches_reference_on_highly_repetitive_data ... ok
+test compress::tests::the_workspace_bound_is_the_largest_over_every_fragment_size ... ok
+test defragment::tests::defragment_integration::a_stream_whose_consumer_stops_reading_is_not_a_failure ... ok
+test chunker::tests::a_file_shorter_than_its_measured_size_fails ... ok
+test defragment::tests::defragment_integration::an_abandoned_stream_stops_asking_for_leaves ... ok
+test defragment::tests::defragment_integration::accepts_a_two_level_tree_that_tiles ... ok
+test defragment::tests::defragment_integration::accepts_well_formed_fragment_list ... ok
+test defragment::tests::defragment_integration::an_abandoned_walk_loads_no_list_nodes ... ok
+test defragment::tests::defragment_integration::a_failed_write_reports_the_sinks_error_and_not_the_pools ... ok
+test defragment::tests::defragment_integration::a_walk_abandoned_part_way_stops_descending ... ok
+test defragment::tests::defragment_integration::rejects_a_sublist_that_expands_to_nothing ... ok
+test defragment::tests::defragment_integration::rejects_a_sublist_that_disagrees_with_its_parent_offset ... ok
+test defragment::tests::defragment_integration::rejects_a_zero_hash_among_intermediate_entries ... ok
+test defragment::tests::defragment_integration::rejects_a_zero_hash_inside_a_sublist ... ok
+test defragment::tests::defragment_integration::rejects_an_empty_sublist ... ok
+test chunker::tests::a_read_runs_while_chunks_are_handed_out ... ok
+test defragment::tests::defragment_integration::rejects_a_zero_hash_in_a_fragment_list ... ok
+test defragment::tests::defragment_integration::rejects_an_empty_root_list ... ok
+test defragment::tests::defragment_integration::rejects_leaf_with_content_size_below_offset_delta ... ok
+test defragment::tests::defragment_integration::rejects_sibling_sublists_that_leave_a_hole ... ok
+test defragment::tests::walk_leaf_level::a_window_inside_one_leaf_yields_only_that_leaf ... ok
+test defragment::tests::walk_leaf_level::a_window_on_an_interior_level_uses_absolute_offsets ... ok
+test defragment::tests::walk_leaf_level::a_window_past_the_level_yields_nothing ... ok
+test defragment::tests::walk_leaf_level::a_window_spanning_leaves_clips_only_the_ends ... ok
+test defragment::tests::walk_leaf_level::accepts_interior_list_with_nonzero_base_offset ... ok
+test defragment::tests::walk_leaf_level::accepts_single_ref_list ... ok
+test defragment::tests::walk_leaf_level::accepts_well_formed_list ... ok
+test defragment::tests::walk_leaf_level::rejects_base_plus_content_overflow ... ok
+test defragment::tests::walk_leaf_level::rejects_chunk_exceeding_threshold ... ok
+test defragment::tests::walk_leaf_level::rejects_decreasing_offsets ... ok
+test defragment::tests::walk_leaf_level::rejects_last_offset_at_or_past_content_end ... ok
+test defragment::tests::walk_leaf_level::rejects_non_increasing_offsets ... ok
+test defragment::tests::write_to_file::accepts_in_bounds_write ... ok
+test defragment::tests::write_to_file::rejects_arithmetic_overflow ... ok
+test defragment::tests::write_to_file::rejects_offset_at_exact_end_with_nonzero_length ... ok
+test defragment::tests::defragment_integration::rejects_intermediate_fragment_at_leaf_tier ... ok
+test defragment::tests::write_to_file::rejects_offset_plus_length_past_end ... ok
+test defragment::tests::write_to_file::rejects_payloads_that_do_not_cover_the_file ... ok
+test fragment_engine::tests::a_zero_fixed_chunk_request_means_content_defined ... ok
+test defragment::tests::defragment_integration::rejects_sublists_that_stop_short_of_the_parent ... ok
+test defragment::tests::defragment_integration::rejects_tree_exceeding_recursion_depth ... ok
+test fragment_engine::tests::a_file_holding_less_than_its_measured_size_is_rejected ... ok
+test fragment_engine::tests::fastcdc_batch_handles_empty_buffer ... ok
+test fragment_engine::tests::fastcdc_batch_handles_buffer_smaller_than_min_chunk ... ok
+test fragment_engine::tests::addressing_a_single_chunk_stores_nothing ... ok
+test fragment_engine::tests::fixed_size_chunking_handles_buffer_smaller_than_step ... ok
+test hash::tests::hash_fragment_compressed_invalid_data ... ok
+test fragment_engine::tests::fixed_size_chunking_covers_whole_buffer ... ok
+test hash::tests::hash_fragment_compressed_payload_size_mismatch ... ok
+test hash::tests::hash_fragment_different_data_different_hash ... ok
+test hash::tests::hash_fragment_empty_payload ... ok
+test hash::tests::hash_fragment_payload_size_mismatch ... ok
+test hash::tests::hash_fragment_uncompressed_deterministic ... ok
+test hash::tests::hash_fragment_uncompressed_ok ... ok
+test hash::tests::hash_function_arg_with_salt ... ok
+test defragment::tests::defragment_integration::an_abandoned_write_sink_stops_the_fetch_pool ... ok
+test hash::tests::hash_function_different_salts_produce_different_keys ... ok
+test hash::tests::hash_function_same_salt_is_deterministic ... ok
+test hash::tests::hash_string_digests_are_the_ones_already_stored ... ok
+test hash::tests::hash_string_agrees_across_the_stack_buffer_boundary ... ok
+test hash::tests::hash_string_matches_the_unicode_fold ... ok
+test hash::tests::hash_function_compressed_roundtrip ... ok
+test fragment_engine::tests::fastcdc_batch_handles_pathological_all_zero_buffer ... ok
+test immutable_store::tests::sanitise_behavior_flags::do_not_replicate::returns_false_when_flag_absent ... ok
+test immutable_store::tests::sanitise_behavior_flags::do_not_replicate::strips_and_returns_true ... ok
+test immutable_store::tests::sanitise_behavior_flags::preserves_other_flags ... ok
+test immutable_store::tests::validate_list::accepts_non_zero_first_offset ... ok
+test immutable_store::tests::validate_list::accepts_well_formed_list ... ok
+test immutable_store::tests::validate_list::rejects_content_end_overflow ... ok
+test immutable_store::tests::validate_list::rejects_equal_offsets ... ok
+test immutable_store::tests::validate_list::rejects_fewer_than_two_refs ... ok
+test immutable_store::tests::validate_list::rejects_last_offset_at_content_end ... ok
+test immutable_store::tests::validate_list::rejects_last_offset_beyond_content_end ... ok
+test immutable_store::tests::validate_list::rejects_non_increasing_offsets ... ok
+test immutable_store::tests::validate_list::rejects_non_multiple_of_ref_size ... ok
+test immutable_store::tests::validate_list::rejects_payload_length_mismatch ... ok
+test immutable_store::tests::validate_metadata::accepts_compressed_with_shrinking_content ... ok
+test immutable_store::tests::validate_metadata::accepts_fragmented_with_large_content ... ok
+test immutable_store::tests::validate_metadata::accepts_payload_stored_flags ... ok
+test immutable_store::tests::validate_metadata::accepts_local_cache_priority_on_ingress ... ok
+test immutable_store::tests::validate_metadata::accepts_uncompressed_unfragmented ... ok
+test immutable_store::tests::validate_metadata::rejects_compressed_and_fragmented_combo ... ok
+test immutable_store::tests::validate_metadata::rejects_compressed_with_oversize_content ... ok
+test immutable_store::tests::validate_metadata::rejects_do_not_replicate_flag_on_ingress ... ok
+test immutable_store::tests::validate_metadata::rejects_multiple_compression_flags ... ok
+test immutable_store::tests::validate_metadata::rejects_obliterated_flag_on_ingress ... ok
+test immutable_store::tests::validate_metadata::rejects_oversize_payload ... ok
+test immutable_store::tests::validate_metadata::rejects_reserved_compression_bit ... ok
+test immutable_store::tests::validate_metadata::rejects_size_payload_greater_than_size_content ... ok
+test immutable_store::tests::validate_metadata::rejects_uncompressed_unfragmented_size_mismatch ... ok
+test immutable_store::tests::validate_metadata::rejects_unknown_flag_bits ... ok
+test immutable_store::tests::validate_metadata::rejects_zero_size_payload ... ok
+test immutable_store::tests::validate_payload_accepts_matching ... ok
+test immutable_store::tests::validate_payload_rejects_length_mismatch ... ok
+test immutable_store::tests::validate_payload_rejects_oversize_before_mismatch ... ok
+test immutable_store::tests::validate_size_accepts_exact_threshold ... ok
+test immutable_store::tests::validate_size_accepts_zero ... ok
+test immutable_store::tests::validate_size_rejects_over_threshold ... ok
+test immutable_store::tests::validate_size_rejects_oversized_unfragmented_content ... ok
+test local::fan_out::tests::bucket_index_for_level_128_takes_top_7_bits ... ok
+test local::fan_out::tests::bucket_index_for_level_256_returns_full_byte ... ok
+test local::fan_out::tests::bucket_index_for_level_32_takes_top_5_bits ... ok
+test local::fan_out::tests::bucket_index_for_level_64_takes_top_6_bits ... ok
+test local::fan_out::tests::bucket_index_for_level_one_always_zero ... ok
+test local::fan_out::tests::bucket_new_path_appends_dot_new ... ok
+test local::fan_out::tests::bucket_path_lowercase_two_digit_hex ... ok
+test local::fan_out::tests::commit_if_initial_level_leaves_a_committed_group_alone ... ok
+test hash::tests::hash_string_matches_the_unicode_fold_across_ascii ... ok
+test local::fan_out::tests::commit_if_initial_level_leaves_a_group_at_the_maximum_alone ... ok
+test local::fan_out::tests::fan_out_level_max_matches_top_of_ladder ... ok
+test local::fan_out::tests::fan_out_threshold_default_is_one_thousand ... ok
+test local::fan_out::tests::delete_level_pending_is_idempotent ... ok
+test local::fan_out::tests::group_dir_path_lowercase_two_digit_hex ... ok
+test local::fan_out::tests::group_has_buckets_empty_directory_is_false ... ok
+test local::fan_out::tests::group_has_buckets_committed_bucket_is_true ... ok
+test local::fan_out::tests::every_path_formatter_agrees_with_hex_formatting ... ok
+test local::fan_out::tests::group_has_buckets_level_files_alone_are_false ... ok
+test local::fan_out::tests::level_for_1500_at_level_128_is_256 ... ok
+test local::fan_out::tests::group_has_buckets_missing_directory_is_false ... ok
+test local::fan_out::tests::level_for_1500_at_level_32_is_64 ... ok
+test local::fan_out::tests::level_for_5k_at_level_1_is_32 ... ok
+test local::fan_out::tests::level_for_below_threshold_is_current_level ... ok
+test local::fan_out::tests::level_for_caps_at_256 ... ok
+test local::fan_out::tests::level_for_uses_ceiling_division ... ok
+test local::fan_out::tests::level_ladder_is_powers_of_two_starting_at_one ... ok
+test local::fan_out::tests::group_has_buckets_uncommitted_new_twins_alone_are_false ... ok
+test local::fan_out::tests::commit_if_initial_level_records_the_level_below_the_maximum ... ok
+test local::fan_out::tests::marker_file_is_exactly_16_bytes ... ok
+test local::fan_out::tests::read_group_level_buckets_without_marker_are_pre_fan_out ... ok
+test local::fan_out::tests::read_group_level_marker_wins_over_bucket_files ... ok
+test local::fan_out::tests::read_group_level_empty_group_is_unwritten ... ok
+test local::fan_out::tests::read_group_level_propagates_a_corrupt_marker ... ok
+test local::fan_out::tests::read_level_marker_missing_returns_none ... ok
+test local::fan_out::tests::level_pending_round_trip_every_ladder_value ... ok
+test local::fan_out::tests::read_level_marker_truncated_errors ... ok
+test local::fan_out::tests::read_level_marker_unsupported_version_errors ... ok
+test local::fan_out::tests::read_level_marker_with_corrupt_magic_errors ... ok
+test local::fan_out::tests::read_level_pending_missing_returns_none ... ok
+test local::fan_out::tests::recover_level_transition_no_pending_is_noop ... ok
+test local::fan_out::tests::split_n_to_2n_preserves_bucket_membership_via_high_bit ... ok
+test local::fan_out::tests::unwritten_group_level_follows_the_initial_level_when_fan_out_aware ... ok
+test local::fan_out::tests::unwritten_group_level_is_max_without_fan_out_awareness ... ok
+test local::fan_out::tests::recover_level_transition_skips_already_renamed_buckets ... ok
+test local::fan_out::tests::recover_level_transition_is_idempotent ... ok
+test local::fan_out::tests::write_level_marker_overwrites_existing ... ok
+test local::immutable_store::info::tests::get_or_init_disk_info::a_corrupt_file_is_reported_rather_than_replaced ... ok
+test local::fan_out::tests::recover_level_transition_renames_all_new_files ... ok
+test local::immutable_store::info::tests::get_or_init_disk_info::a_seed_of_minus_one_leaves_nothing_to_migrate ... ok
+test local::immutable_store::info::tests::get_or_init_disk_info::an_existing_file_wins_over_the_seed ... ok
+test local::immutable_store::info::tests::get_or_init_disk_info::a_store_with_no_info_file_records_the_seed ... ok
+test local::immutable_store::info::tests::read_info_file::a_truncated_file_is_rejected ... ok
+test local::immutable_store::info::tests::read_info_file::a_foreign_magic_is_rejected ... ok
+test local::immutable_store::info::tests::read_info_file::an_absent_file_reads_as_no_info ... ok
+test local::immutable_store::info::tests::the_magic_leads_the_serialized_form ... ok
+test local::immutable_store::info::tests::read_info_file::an_unsupported_version_is_rejected ... ok
+test local::fan_out::tests::write_then_read_round_trip_every_ladder_value ... ok
+test local::immutable_store::info::tests::read_info_file::a_written_file_reads_back_unchanged ... ok
+test local::immutable_store::info::tests::write_info_file::a_rewrite_leaves_no_trailing_bytes_of_the_previous_file ... ok
+test chunker::tests::never_reads_past_the_opened_size ... ok
+test local::immutable_store::tests::a_resolve_records_nothing_without_atime ... ok
+test local::immutable_store::tests::a_small_move_advances_the_stamp_without_dirtying_the_bucket ... ok
+test chunker::tests::the_reservation_covers_every_window ... ok
+test chunker::tests::matches_reference_on_random_data ... ok
+test local::immutable_store::tests::a_stop_lifts_once_it_has_drained ... ok
+test local::immutable_store::tests::a_stop_stays_raised_while_another_is_outstanding ... ok
+test local::immutable_store::tests::a_stamp_reaches_the_bucket_file ... ok
+test local::immutable_store::tests::a_stale_stamp_dirties_the_bucket_holding_it ... ok
+test local::immutable_store::tests::an_isolating_store_reports_further_than_it_reads ... ok
+test local::immutable_store::tests::copy_same_partition_new_context_adopts_payload_without_transfer ... ok
+test local::immutable_store::tests::copy_adopts_source_payload_and_decompresses_through_target_partition ... ok
+test local::immutable_store::tests::copy_source::a_child_in_its_parent_bucket_does_not_deadlock_the_obliterate ... ok
+test local::immutable_store::tests::copy_source::a_partition_match_names_a_context_copy_resolves_exactly ... ok
+test local::immutable_store::tests::copy_source::a_zero_context_crosses_partitions ... ok
+test local::immutable_store::tests::copy_source::a_named_context_does_not_widen_to_a_sibling ... ok
+test local::immutable_store::tests::copy_source::a_zero_context_does_not_reach_another_partition ... ok
+test local::immutable_store::tests::copy_source::a_zero_context_falls_back_to_an_association_without_its_payload ... ok
+test local::immutable_store::tests::copy_source::a_zero_context_skips_an_obliterated_association ... ok
+test local::immutable_store::tests::copy_source::a_zero_context_takes_any_association_in_the_partition ... ok
+test local::immutable_store::tests::deserialize_accepts_last_access_in_entry_v4 ... ok
+test local::immutable_store::tests::deserialize_accepts_lazy_fan_out_v5 ... ok
+test local::immutable_store::tests::deserialize_recovers_from_bad_count_header ... ok
+test local::immutable_store::tests::deserialize_recovers_from_invalid_version ... ok
+test local::immutable_store::tests::deserialize_recovers_from_short_header ... ok
+test local::immutable_store::tests::deserialize_recovers_from_truncated_entries ... ok
+test local::immutable_store::tests::deserialize_rejects_unknown_future_version ... ok
+test local::immutable_store::tests::deserialize_scatters_a_bucket_larger_than_the_head_read ... ok
+test local::immutable_store::tests::format_bucket_path_is_index_group_bucket ... ok
+test local::immutable_store::tests::copy_source::an_obliterated_source_is_not_copied ... ok
+test local::immutable_store::tests::healing_a_corrupt_payload_drops_the_associations_that_named_it ... ok
+test fragment_engine::tests::an_oversized_fixed_chunk_request_is_bounded_on_both_paths ... ok
+test local::immutable_store::tests::immutable_store_settings_default_includes_fan_out_fields ... ok
+test local::immutable_store::tests::lazy_fan_out_version_is_five ... ok
+test local::immutable_store::tests::merge_from_copy_source_adopts_payload_and_encoding ... ok
+test local::immutable_store::tests::merge_from_copy_source_durable_only_from_caller ... ok
+test local::immutable_store::tests::merge_from_copy_source_preserves_target_durable ... ok
+test local::immutable_store::tests::group_compaction_reports_whether_it_finished ... ok
+test local::immutable_store::tests::oodle_migration_seed::a_store_with_no_written_group_has_nothing_to_migrate ... ok
+test chunker::tests::matches_reference_on_boundary_sizes ... ok
+test local::immutable_store::tests::store_initializes_group_bucket_count_from_settings_level_1 ... ok
+test local::immutable_store::tests::store_initializes_group_bucket_count_from_settings_level_256 ... ok
+test local::immutable_store::tests::healing_the_last_entry_in_a_bucket_survives_reopening_the_store ... ok
+test local::immutable_store::tests::satisfies_the_immutable_store_contract ... ok
+test local::immutable_store::tests::compaction_reports_one_end_for_every_begin ... ok
+test local::journal::tests::decode_reads_back_every_whole_record ... ok
+test local::journal::tests::decode_stops_at_a_torn_or_damaged_record ... ok
+test local::immutable_store::tests::verifying_an_obliterated_fragment_reports_nothing_and_heals_nothing ... ok
+test local::journal::tests::open_cuts_a_torn_tail_and_appends_after_the_whole_records ... ok
+test local::immutable_store::tests::store_recovers_from_corrupt_bucket_and_remains_usable ... ok
+test local::immutable_store::tests::oodle_migration_seed::a_binary_without_oodle_records_no_migration ... ok
+test local::mutable_store::tests::deserialize_accepts_lazy_fan_out_v3 ... ok
+test local::immutable_store::tests::verifying_an_entry_with_no_payload_reports_it_and_heals_the_wedge ... ok
+test local::mutable_store::tests::deserialize_accepts_typed_items_v2 ... ok
+test local::mutable_store::tests::deserialize_authoritative_errors_and_preserves_corrupt_bucket ... ok
+test local::mutable_store::tests::deserialize_recovers_zero_filled_bucket ... ok
+test local::mutable_store::tests::deserialize_rejects_unknown_future_version ... ok
+test local::mutable_store::tests::latest_version_constant_in_deserialize_path_matches_lazy_fan_out ... ok
+test local::mutable_store::tests::lazy_fan_out_version_is_three ... ok
+test local::mutable_store::tests::deserialize_scatters_a_bucket_larger_than_the_head_read ... ok
+test local::mutable_store::tests::level_1_store_and_load_round_trip ... ok
+test local::mutable_store::tests::local_mutable_store_satisfies_conformance_battery ... ok
+test local::mutable_store::tests::mutable_store_settings_default_is_client_friendly ... ok
+test defragment::tests::defragment_integration::payloads_stay_charged_to_the_budget_until_the_caller_takes_them ... ok
+test local::mutable_store::tests::store_initializes_group_bucket_count_from_settings_level_1 ... ok
+test local::mutable_store::tests::store_initializes_group_bucket_count_from_settings_level_256 ... ok
+test maintenance::tests::compact_bucket ... ok
+test maintenance::tests::compactor_exits_when_store_dropped ... ok
+test maintenance::tests::evict_bucket ... ok
+test maintenance::tests::evict_bucket_protects_non_durable ... ok
+test maintenance::tests::evict_bucket_unprotected_ignores_durable_flag ... ok
+test local::mutable_store::tests::store_recovers_from_zero_filled_bucket_and_remains_usable ... ok
+test maintenance::tests::evictor_exits_when_store_dropped ... ok
+test chunker::tests::matches_reference_on_fixed_size_chunking ... ok
+test local::mutable_store::tests::list_finds_typed_entries_at_each_fan_out_level ... ok
+test maintenance::tests::gc_runs_eviction_only ... ok
+test maintenance::tests::fragments_survive_a_stopped_gc_pass ... ok
+test maintenance::tests::gc_skips_compaction_when_max_size_zero ... ok
+test read::tests::a_buffer_shorter_than_expanded_content_is_refused ... ok
+test read::tests::a_buffer_shorter_than_assembled_content_is_refused ... ok
+test read::tests::a_buffer_shorter_than_the_content_is_refused ... ok
+test read::tests::a_compressed_read_expands_into_the_caller_buffer ... ok
+test read::tests::a_compressed_read_reads_its_payload_once ... ok
+test read::tests::a_cross_partition_read_is_refused_only_by_an_isolated_store ... ok
+test read::tests::a_failed_defragment_leaves_no_temporary_file ... ok
+test read::tests::a_fragmented_read_is_assembled_into_the_caller_buffer ... ok
+test read::tests::a_range_on_a_compressed_fragment_counts_content_bytes ... ok
+test read::tests::a_fragmented_read_places_every_payload ... ok
+test local::immutable_store::tests::a_marked_group_keeps_the_level_it_recorded ... ok
+test read::tests::a_ranged_compressed_read_delivers_only_the_range ... ok
+test read::tests::a_ranged_fragmented_read_places_a_whole_leaf ... ok
+test read::tests::a_ranged_fragmented_read_assembles_into_the_caller_buffer ... ok
+test local::immutable_store::tests::a_server_shaped_store_gains_no_level_markers ... ok
+test local::immutable_store::tests::a_pre_fan_out_store_gains_no_level_markers ... ok
+test read::tests::a_ranged_read_delivers_only_the_range ... ok
+test read::tests::a_ranged_read_into_file_writes_only_the_range_for_one_fragment ... ok
+test read::tests::a_ranged_read_never_walks_a_subtree_outside_the_range ... ok
+test read::tests::a_ranged_read_of_a_three_level_tree_touches_only_its_own_spine ... ok
+test read::tests::a_ranged_read_into_file_writes_only_the_range ... ok
+test read::tests::a_ranged_stream_clips_only_its_first_and_last_chunk ... ok
+test local::immutable_store::tests::a_group_the_delayed_flush_persisted_reopens_at_its_written_level ... ok
+test read::tests::a_ranged_stream_never_walks_a_subtree_outside_the_range ... ok
+test read::tests::a_ranged_stream_delivers_exactly_the_range ... ok
+test read::tests::a_resolved_read_lands_in_the_caller_buffer ... ok
+test read::tests::a_stream_starting_past_the_content_delivers_nothing ... ok
+test read::tests::a_whole_read_lands_in_the_caller_buffer ... ok
+test read::tests::an_unverified_fragmented_read_assembles_into_the_caller_buffer ... ok
+test read::tests::an_unverified_read_skips_the_hash_check ... ok
+test read::tests::a_whole_read_allocates_no_buffer_for_the_payload ... ok
+test read::tests::resolve_range::a_start_past_the_content_is_empty ... ok
+test read::tests::resolve_range::an_end_past_the_content_is_clamped ... ok
+test read::tests::resolve_range::an_inside_range_is_passed_through ... ok
+test read::tests::resolve_range::an_inverted_range_is_empty_rather_than_a_panic ... ok
+test read::tests::resolve_range::none_is_the_whole_content ... ok
+test write::established_decisions::above_the_minimum_cut_nothing_established_answers ... ok
+test write::established_decisions::an_address_of_nothing_differs ... ok
+test write::established_decisions::an_empty_file_is_settled_by_the_address_alone ... ok
+test write::established_decisions::an_unknown_stored_size_settles_nothing_by_size ... ok
+test write::established_decisions::another_size_differs_from_nothing_established ... ok
+test write::established_decisions::below_the_minimum_cut_the_whole_hash_answers_once_it_is_known ... ok
+test read::tests::an_unverified_compressed_read_expands_into_the_caller_buffer ... ok
+test maintenance::tests::gc_compaction_reduces_fragment_count ... ok
+test read::tests::read_into_single_fragment_respects_range ... ok
+test read::tests::read_reports_the_whole_size_alongside_a_ranged_buffer ... ok
+test local::mutable_store::tests::a_marked_group_keeps_the_level_it_recorded ... ok
+test maintenance::tests::gc_protects_non_durable_fragment ... ok
+test read::tests::load_fragment_returns_not_found_when_leader_drops_without_writing ... ok
+test write::tests::a_file_of_another_size_differs_before_the_store_is_touched ... ok
+test local::mutable_store::tests::a_flat_layout_store_gains_no_level_markers ... ok
+test write::tests::a_file_above_the_threshold_is_indeterminate_on_an_edit_without_its_list ... ok
+test read::tests::load_fragment_waits_for_in_flight_leader ... ok
+test write::tests::a_file_above_the_threshold_matches_by_rehashing_without_its_list ... ok
+test write::tests::a_resolved_write_refuses_to_only_address ... ok
+test write::tests::a_single_fragment_differs_from_an_edit_of_the_same_size ... ok
+test write::tests::a_list_stating_another_size_differs ... ok
+test local::mutable_store::tests::a_group_the_delayed_flush_persisted_reopens_at_its_written_level ... ok
+test write::tests::a_single_fragment_differs_from_an_edit_without_its_store ... ok
+test write::tests::a_single_fragment_matches_the_unchanged_file_from_its_own_hash ... ok
+test write::tests::a_file_above_the_threshold_matches_through_its_list ... ok
+test write::tests::a_list_that_does_not_ascend_differs_without_underflowing ... ok
+test write::tests::a_single_window_file_matches ... ok
+test write::tests::copy_source_selection::a_full_match_names_nothing ... ok
+test write::tests::copy_source_selection::a_hash_match_names_the_partition_it_was_found_in ... ok
+test write::tests::copy_source_selection::a_match_the_peer_never_received_names_nothing ... ok
+test write::tests::copy_source_selection::a_match_without_a_partition_names_nothing ... ok
+test write::tests::copy_source_selection::a_partition_match_names_what_the_resolution_found ... ok
+test write::tests::copy_source_selection::a_zero_destination_context_still_names_a_source ... ok
+test write::tests::copy_source_selection::an_unnamed_context_stays_unnamed ... ok
+test write::tests::copy_source_selection::no_match_names_nothing ... ok
+test write::tests::a_byte_changed_in_a_late_chunk_differs ... ok
+test write::tests::content_that_cannot_be_read_answers_unreadable ... ok
+test write::tests::concurrent_writers_of_same_address_dedup_through_tracker ... ok
+test write::tests::a_file_shorter_than_its_list_differs ... ok
+test write::tests::a_recursively_fragmented_chunk_is_compared_through_its_sublist ... ok
+test write::tests::a_byte_changed_inside_a_recursively_fragmented_chunk_differs ... ok
+test write::tests::addressing_content_stores_nothing ... ok
+test write::tests::current_chunking_differs_from_an_edit_of_the_same_size ... ok
+test write::tests::follower_waits_for_token_before_querying ... ok
+test write::tests::follower_returns_err_when_no_entry_exists ... ok
+test write::tests::follower_returns_ok_when_leader_wrote_terminal_entry ... ok
+test write::tests::foreign_chunking_differs_from_an_edit_of_the_same_size ... ok
+test write::tests::a_sublist_that_cannot_be_loaded_is_indeterminate ... ok
+test write::tests::current_chunking_matches_the_unchanged_file ... ok
+test write::tests::leader_error_surfaces_through_tracker_await_all ... ok
+test write::tests::many_concurrent_writers_all_succeed_with_single_upload ... ok
+test write::tests::remote_put_retry_accepts_arc_storage_session_and_is_send ... ok
+test write::tests::store_fragment_already_durable_short_circuits ... ok
+test write::tests::foreign_chunking_matches_the_unchanged_file ... ok
+test write::tests::one_fragment_in_the_header_decided_band_matches_by_its_own_hash ... ok
+test write::tests::foreign_chunking_without_its_list_is_indeterminate ... ok
+test write::tests::current_chunking_matches_the_unchanged_file_without_its_list ... ok
+test write::tests::current_chunking_without_its_list_is_indeterminate_on_an_edit ... ok
+test write::tests::store_fragment_follower_path_registers_in_tracker ... ok
+test write::tests::store_fragment_no_tracker_writes_synchronously ... ok
+test write_stats::tests::a_copy_is_a_remote_write_that_carries_no_bytes ... ok
+test write_stats::tests::a_difference_is_taken_field_by_field ... ok
+test write_stats::tests::a_fragment_list_contributes_no_content_to_a_total ... ok
+test write_stats::tests::a_fresh_snapshot_is_all_zero ... ok
+test write_stats::tests::a_list_fragment_is_counted_apart_from_data ... ok
+test write_stats::tests::local_writes_split_into_metadata_only_and_payload_bearing ... ok
+test write_stats::tests::offered_fragments_split_into_deduplicated_and_processed ... ok
+test write_stats::tests::payload_outcomes_account_for_every_processed_fragment ... ok
+test write_stats::tests::the_remote_outcomes_account_for_every_processed_fragment ... ok
+test write_tracker::tests::arc_into_inner_uniqueness_check ... ok
+test write::tests::store_fragment_leader_path_spawns_into_tracker_no_remote ... ok
+test write_tracker::tests::await_all_empty_returns_ok ... ok
+test write_tracker::tests::await_all_leader_and_follower_success ... ok
+test write::tests::there_is_nothing_to_read_ahead_at_the_end_of_the_list ... ok
+test write::tests::one_fragment_in_the_header_decided_band_differs_from_an_edit ... ok
+test write_tracker::tests::in_flight_counter_returns_to_zero ... ok
+test write::tests::one_fragment_in_the_header_decided_band_matches_without_its_store ... ok
+test write::tests::addressing_content_agrees_with_storing_it ... ok
+test write::tests::there_is_nothing_to_read_ahead_before_a_recursively_fragmented_chunk ... ok
+test write_tracker::tests::await_all_drains_all_leaders_even_when_one_fails ... ok
+test write::tests::the_read_ahead_starts_at_the_first_chunk_the_window_does_not_hold ... ok
+test write::tests::an_unchanged_file_matches_across_every_window ... ok
+test write_tracker::tests::await_all_returns_first_error_drops_later ... ok
+test write::tests::memory_permit_stress_caps_concurrent_leaders_under_budget ... ok
+test write::tests::tracker_parallelises_writes_vs_inline_serialisation ... ok
+test compress::tests::the_workspace_estimate_holds_at_every_level ... ok
+
+test result: ok. 394 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.92s
+
+     Running tests/journal_crash.rs (target/debug/deps/journal_crash-37b5509f227552cb)
+
+running 1 test
+test a_killed_writer_reopens_with_every_flush_it_finished ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 18.11s
+
+   Doc-tests lore
+
+running 1 test
+test lore/src/storage/mod.rs - storage (line 37) ... ignored
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test lore/src/call.rs - call::repository_call_read (line 45) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+all doctests ran in 0.36s; merged doctests compilation took 0.24s
+   Doc-tests lore_revision
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests lore_storage
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: 1 target failed:
+    `-p lore-revision --test instance`

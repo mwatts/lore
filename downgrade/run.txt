@@ -1,0 +1,10 @@
+== written by Lore tip (writer-tip), read by Lore 24545866
+WRITER immutable/journal: 68096 bytes left unfolded
+WRITER mutable/journal: 104 bytes left unfolded
+WRITER immutable/info: [73, 83, 95, 73, 0, 0, 0, 0]
+READER opened: 0 of 16 fragments read back; the key reads Err(AddressNotFound(Traced { inner: AddressNotFound(c999449d4706a0e63c22eddad30b1c2fec0c7a5e13bf398cda35d2ca42ebcd9d-00000000000000000000000000000000), trace: Trace { locations: [Location { file: "lore-storage/src/local/mutable_store.rs", line: 1395, column: 21, context: None }], overflow: false } })) (wanted 91636656247dc05b8990e526e3edb1274ce075e42b06d7c9157320a4b9f1cc59)
+== written by Lore new (writer-new), read by Lore 24545866
+WRITER immutable/journal: 68096 bytes left unfolded
+WRITER mutable/journal: 104 bytes left unfolded
+WRITER immutable/info: [73, 83, 95, 73, 1, 0, 0, 0]
+READER the immutable store refused to open: Failed to load store info file: Info file has unsupported version 1, expected 0

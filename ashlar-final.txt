@@ -1,0 +1,891 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling pin-project-lite v0.2.17
+   Compiling portable-atomic v1.15.0
+   Compiling scopeguard v1.2.0
+   Compiling parking_lot_core v0.9.12
+   Compiling zerocopy v0.8.57
+   Compiling version_check v0.9.5
+   Compiling thiserror v2.0.20
+   Compiling stable_deref_trait v1.2.1
+   Compiling lock_api v0.4.14
+   Compiling num-traits v0.2.19
+   Compiling socket2 v0.6.5
+   Compiling shlex v2.0.1
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.3
+   Compiling typenum v1.20.1
+   Compiling rand_core v0.10.1
+   Compiling subtle v2.6.1
+   Compiling slab v0.4.12
+   Compiling indexmap v2.14.2
+   Compiling cc v1.4.7
+   Compiling zmij v1.0.23
+   Compiling percent-encoding v2.3.2
+   Compiling rustversion v1.0.23
+   Compiling generic-array v0.14.7
+   Compiling getrandom v0.4.3
+   Compiling semver v1.0.28
+   Compiling regex-syntax v0.8.11
+   Compiling aho-corasick v1.1.5
+   Compiling writeable v0.6.4
+   Compiling siphasher v1.0.3
+   Compiling form_urlencoded v1.2.2
+   Compiling rustc_version v0.4.1
+   Compiling utf8_iter v1.0.4
+   Compiling syn v3.0.6
+   Compiling syn v2.0.119
+   Compiling rand_core v0.9.5
+   Compiling serde_json v1.0.151
+   Compiling regex-automata v0.4.18
+   Compiling rand_core v0.6.4
+   Compiling strsim v0.11.1
+   Compiling once_cell v1.21.4
+   Compiling ring v0.17.14
+   Compiling num-conv v0.2.2
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.20
+   Compiling zerocopy-derive v0.8.57
+   Compiling tokio-macros v2.7.2
+   Compiling tracing-attributes v0.1.31
+   Compiling futures-macro v0.3.34
+   Compiling synstructure v0.14.0
+   Compiling zeroize_derive v1.5.0
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling crypto-common v0.1.7
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.3
+   Compiling time-core v0.1.9
+   Compiling futures-util v0.3.34
+   Compiling zeroize v1.9.0
+   Compiling powerfmt v0.2.0
+   Compiling untrusted v0.9.0
+   Compiling tinyvec v1.13.3
+   Compiling unicase v2.9.0
+   Compiling zerofrom v0.1.8
+   Compiling async-trait v0.1.92
+   Compiling ppv-lite86 v0.2.21
+   Compiling uuid v1.28.0
+   Compiling rustls-pki-types v1.15.1
+   Compiling smallvec v1.16.1
+   Compiling bytes v1.12.1
+   Compiling chrono v0.4.45
+   Compiling num-integer v0.1.47
+   Compiling yoke v0.8.3
+   Compiling rand_chacha v0.9.0
+   Compiling rustls v0.23.45
+   Compiling blake3 v1.8.7
+   Compiling futures-executor v0.3.34
+   Compiling parking v2.2.1
+   Compiling http v1.5.0
+   Compiling heapless v0.8.0
+   Compiling rand_chacha v0.3.1
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling rand v0.9.5
+   Compiling futures v0.3.34
+   Compiling block-buffer v0.10.4
+   Compiling tracing-core v0.1.36
+   Compiling http-body v1.1.0
+   Compiling bytemuck_derive v1.12.1
+   Compiling parking_lot v0.12.5
+   Compiling tower-service v0.3.3
+   Compiling rustls-webpki v0.103.15
+   Compiling rand v0.8.8
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.6
+   Compiling digest v0.10.7
+   Compiling time-macros v0.2.32
+   Compiling tracing v0.1.44
+   Compiling darling_core v0.20.11
+   Compiling deranged v0.5.8
+   Compiling bytemuck v1.25.2
+   Compiling try-lock v0.2.5
+   Compiling tokio v1.53.1
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling num-bigint v0.4.8
+   Compiling darling_macro v0.20.11
+   Compiling sync_wrapper v1.0.2
+   Compiling openssl-probe v0.2.1
+   Compiling time v0.3.55
+   Compiling want v0.3.1
+   Compiling rustc-hash v2.1.3
+   Compiling regex v1.13.1
+   Compiling icu_provider v2.3.1
+   Compiling rustix v1.1.5
+   Compiling tower-layer v0.3.3
+   Compiling ryu v1.0.23
+   Compiling rustls-native-certs v0.8.4
+   Compiling http-body-util v0.1.5
+   Compiling rust_decimal v1.43.0
+   Compiling darling v0.20.11
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling pin-project-internal v1.1.13
+   Compiling tokio-util v0.7.19
+   Compiling tokio-rustls v0.26.5
+   Compiling pkg-config v0.3.34
+   Compiling webpki-roots v1.0.9
+   Compiling tiny-keccak v2.0.2
+   Compiling logos-codegen v0.16.1
+   Compiling sha2 v0.10.9
+   Compiling rstar v0.12.2
+   Compiling idna_adapter v1.2.2
+   Compiling approx v0.5.1
+   Compiling cmake v0.1.58
+   Compiling ahash v0.8.12
+   Compiling h2 v0.4.19
+   Compiling pin-project v1.1.13
+   Compiling tower v0.5.3
+   Compiling logos-derive v0.16.1
+   Compiling idna v1.1.0
+   Compiling seize v0.5.1
+   Compiling geo-types v0.7.20
+   Compiling sif-itree v0.4.1
+   Compiling aws-lc-sys v0.45.0
+   Compiling robust v1.2.0
+   Compiling xxhash-rust v0.8.18
+   Compiling url v2.5.8
+   Compiling papaya v0.2.5
+   Compiling hyper v1.11.1
+   Compiling web-time v1.1.0
+   Compiling logos v0.16.1
+   Compiling chacha20 v0.10.2
+   Compiling signature v2.2.0
+   Compiling tokio-stream v0.1.19
+   Compiling geo v0.32.0
+   Compiling const-random-macro v0.1.16
+   Compiling inout v0.1.4
+   Compiling flatbuffers v25.12.19
+   Compiling rand v0.10.3
+   Compiling heapless v0.7.17
+   Compiling hyper-util v0.1.20
+   Compiling winnow v1.0.4
+   Compiling const-random v0.1.18
+   Compiling untrusted v0.7.1
+   Compiling cipher v0.4.4
+   Compiling derive_builder_core v0.20.2
+   Compiling serde_urlencoded v0.7.1
+   Compiling simple_asn1 v0.6.4
+   Compiling event-listener v5.4.2
+   Compiling phf_shared v0.13.1
+   Compiling pem v3.0.6
+   Compiling mime v0.3.17
+   Compiling toml_parser v1.1.3+spec-1.1.0
+   Compiling aws-lc-rs v1.18.1
+   Compiling derive_builder_macro v0.20.2
+   Compiling phf_generator v0.13.1
+   Compiling event-listener-strategy v0.5.4
+   Compiling prost-derive v0.14.4
+   Compiling roaring v0.11.5
+   Compiling quick_cache v0.6.24
+   Compiling cobs v0.3.0
+   Compiling revision-derive v0.30.0
+   Compiling postcard-derive v0.2.2
+   Compiling vergen-lib v9.1.0
+   Compiling arc-swap v1.9.2
+   Compiling lru-slab v0.1.3
+   Compiling syn v1.0.109
+   Compiling phf_macros v0.13.1
+   Compiling async-channel v2.5.0
+   Compiling derive_builder v0.20.2
+   Compiling camino v1.2.6
+   Compiling revision v0.30.0
+   Compiling postcard v1.1.3
+   Compiling surrealdb-parse-common v3.3.4
+   Compiling surrealdb-types-derive v3.3.4
+   Compiling surrealdb-protocol v0.13.1
+   Compiling ulid v1.2.1
+   Compiling rand_distr v0.5.1
+   Compiling vergen v9.1.0
+   Compiling castaway v0.2.4
+   Compiling num-complex v0.4.6
+   Compiling cargo-platform v0.3.3
+   Compiling num_threads v0.1.7
+   Compiling jsonwebtoken v10.4.0
+   Compiling unicode-segmentation v1.13.3
+   Compiling phf v0.13.1
+   Compiling tempfile v3.27.0
+   Compiling unicode-normalization v0.1.25
+   Compiling half v2.7.1
+   Compiling surrealdb-types v3.3.4
+   Compiling sysinfo v0.37.2
+   Compiling cargo_metadata v0.23.1
+   Compiling twox-hash v2.1.4
+   Compiling pulldown-cmark v0.13.4
+   Compiling prettyplease v0.2.37
+   Compiling simdutf8 v0.1.5
+   Compiling unicode-xid v0.2.6
+   Compiling password-hash v0.5.0
+   Compiling winnow v0.7.15
+   Compiling dashmap v6.2.1
+   Compiling surrealdb-common v3.3.4
+   Compiling prost v0.14.4
+   Compiling hmac v0.12.1
+   Compiling phf_shared v0.14.0
+   Compiling object v0.37.3
+   Compiling path-clean v1.0.1
+   Compiling petgraph v0.8.3
+   Compiling prost-types v0.14.4
+   Compiling pbkdf2 v0.12.2
+   Compiling axum-core v0.5.6
+   Compiling blake2 v0.10.6
+   Compiling darling_core v0.24.1
+   Compiling lore-error-set-macro v0.1.0 (/home/mwatts/code/github/mwatts/lore/lore-error-set-macro)
+   Compiling surrealdb-cnf v3.3.4
+   Compiling pulldown-cmark-to-cmark v22.0.1
+   Compiling n0-error-macros v1.0.1
+   Compiling spez v0.1.2
+   Compiling serde_path_to_error v0.1.20
+   Compiling thread_local v1.1.10
+   Compiling multimap v0.10.1
+   Compiling option-ext v0.2.0
+   Compiling matchit v0.8.4
+   Compiling unicode-properties v0.1.3
+   Compiling unicode-bidi v0.3.18
+   Compiling miniz_oxide v0.8.9
+   Compiling darling_macro v0.24.1
+   Compiling prost-build v0.14.4
+   Compiling n0-error v1.0.1
+   Compiling dirs-sys v0.5.0
+   Compiling tonic-build v0.14.6
+   Compiling argon2 v0.5.3
+   Compiling axum v0.8.9
+   Compiling lore-base v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-base)
+   Compiling stringprep v0.1.5
+   Compiling hyper-timeout v0.5.2
+   Compiling hyper-rustls v0.27.10
+   Compiling tower-http v0.6.11
+   Compiling futures-lite v2.6.1
+   Compiling enum_dispatch v0.3.13
+   Compiling strum_macros v0.28.0
+   Compiling hybrid-array v0.4.15
+   Compiling rustc-demangle v0.1.28
+   Compiling thiserror v1.0.69
+   Compiling tonic v0.14.6
+   Compiling tonic-prost-build v0.14.6
+   Compiling surrealdb-iam v3.3.4
+   Compiling backtrace v0.3.76
+   Compiling directories v6.0.0
+   Compiling darling v0.24.1
+   Compiling lore-io v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-io)
+   Compiling phf_generator v0.14.0
+   Compiling strum v0.28.0
+   Compiling convert_case v0.10.0
+   Compiling pem v4.0.0
+   Compiling yasna v0.6.0
+   Compiling pem-rfc7468 v1.0.0
+   Compiling num-rational v0.4.2
+   Compiling num-iter v0.1.46
+   Compiling derive_more-impl v2.1.1
+   Compiling storekey-derive v0.11.0
+   Compiling thiserror-impl v1.0.69
+   Compiling quinn-udp v0.5.15
+   Compiling n0-future v0.3.2
+   Compiling serde_bytes v0.11.19
+   Compiling serde_spanned v1.1.1
+   Compiling toml_datetime v0.7.5+spec-1.1.0
+   Compiling spin v0.10.1
+   Compiling toml_writer v1.1.2+spec-1.1.0
+   Compiling ucd-trie v0.1.7
+   Compiling der v0.8.2
+   Compiling derive_more v2.1.1
+   Compiling futures-buffered v0.2.13
+   Compiling storekey v0.11.0
+   Compiling pest v2.9.2
+   Compiling toml v0.9.12+spec-1.1.0
+   Compiling num v0.4.3
+   Compiling rcgen v0.14.10
+   Compiling serde_with_macros v3.23.0
+   Compiling lore-proto v0.1.62 (/home/mwatts/code/github/mwatts/lore/lore-proto)
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling zstd-sys v2.1.2+zstd.1.5.7
+   Compiling serde_columnar_derive v0.3.7
+   Compiling fastbloom v0.14.1
+   Compiling derive_arbitrary v1.4.2
+   Compiling quinn v0.11.9
+   Compiling lz4-sys v1.11.1+lz4-1.10.0
+   Compiling num_cpus v1.17.0
+   Compiling rayon-core v1.13.0
+   Compiling quinn-proto v0.11.13 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/vendor/quinn-proto)
+   Compiling serde_columnar v0.3.14
+   Compiling arbitrary v1.4.2
+   Compiling affinitypool v0.8.0
+   Compiling loro-rle v1.6.0
+   Compiling digest v0.11.3
+   Compiling serde_with v3.23.0
+   Compiling pest_meta v2.9.2
+   Compiling spki v0.8.1
+   Compiling heapless v0.9.3
+   Compiling tonic-prost v0.14.6
+   Compiling string_cache_codegen v0.11.2
+   Compiling phf_codegen v0.14.0
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling opentelemetry v0.32.0
+   Compiling universal-hash v0.5.1
+   Compiling enum-as-inner v0.6.1
+   Compiling async-stream-impl v0.3.6
+   Compiling ptr_meta_derive v0.3.2
+   Compiling noq-udp v1.3.0
+   Compiling curve25519-dalek v5.0.0
+   Compiling rmp v0.8.15
+   Compiling bitmaps v2.1.0
+   Compiling im v15.1.0
+   Compiling new_debug_unreachable v1.0.6
+   Compiling nonmax v0.5.5
+   Compiling loro-thunderdome v0.6.2
+   Compiling opaque-debug v0.3.1
+   Compiling paste v1.0.15
+   Compiling toml_datetime v1.1.1+spec-1.1.0
+   Compiling loro-common v1.16.0
+   Compiling generic-btree v0.10.7
+   Compiling ptr_meta v0.3.2
+   Compiling serdect v0.4.3
+   Compiling polyval v0.6.2
+   Compiling toml_edit v0.25.15+spec-1.1.0
+   Compiling rmp-serde v1.3.1
+   Compiling sized-chunks v0.6.5
+   Compiling async-stream v0.3.6
+   Compiling opentelemetry_sdk v0.32.1
+   Compiling web_atoms v0.3.0
+   Compiling pkcs8 v0.11.0
+   Compiling pest_generator v2.9.2
+   Compiling surrealdb-kvs v3.3.4
+   Compiling surrealdb-strand v3.3.4
+   Compiling lz4_flex v0.11.6
+   Compiling enum-as-inner v0.5.1
+   Compiling is-docker v0.2.0
+   Compiling rand_xoshiro v0.6.0
+   Compiling signature v3.0.0
+   Compiling lore-storage v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-storage)
+   Compiling opentelemetry-semantic-conventions v0.31.0
+   Compiling precomputed-hash v0.1.1
+   Compiling yansi v1.0.1
+   Compiling loro-kv-store v1.16.0
+   Compiling ed25519 v3.0.0
+   Compiling data-encoding-macro-internal v0.1.19
+   Compiling loro-delta v1.13.0
+   Compiling string_cache v0.11.0
+   Compiling is-wsl v0.4.0
+   Compiling pretty_assertions v1.4.1
+   Compiling sha2 v0.11.0
+   Compiling surrealdb-sql v3.3.4
+   Compiling pest_derive v2.9.2
+   Compiling rayon v1.12.0
+   Compiling proc-macro-crate v3.5.0
+   Compiling ghash v0.5.1
+   Compiling rancor v0.1.3
+   Compiling phf v0.14.0
+   Compiling aes v0.8.4
+   Compiling ctr v0.9.2
+   Compiling loro_fractional_index v1.13.0
+   Compiling quanta v0.12.6
+   Compiling cfb v0.7.3
+   Compiling aead v0.5.2
+   Compiling bytecheck_derive v0.8.3
+   Compiling encoding_rs v0.8.41
+   Compiling spinning_top v0.3.0
+   Compiling lore-revision v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-revision)
+   Compiling reblessive v0.4.3
+   Compiling md5 v0.7.0
+   Compiling urlencoding v2.1.3
+   Compiling trice v0.4.0
+   Compiling nonzero_ext v0.3.0
+   Compiling fastnum v0.7.5
+   Compiling loro-internal v1.16.2
+   Compiling surrealdb-syn v3.3.4
+   Compiling governor v0.10.4
+   Compiling dmp v0.2.3
+   Compiling bytecheck v0.8.3
+   Compiling aes-gcm v0.10.3
+   Compiling ciborium-ll v0.2.2
+   Compiling infer v0.19.0
+   Compiling netlink-packet-core v0.8.2
+   Compiling ed25519-dalek v3.0.0
+   Compiling data-encoding-macro v0.1.21
+   Compiling open v5.4.4
+   Compiling cbindgen v0.29.2
+   Compiling tendril v0.5.1
+   Compiling surrealdb-collections v3.3.4
+   Compiling md-5 v0.10.6
+   Compiling fastbloom v0.17.0
+   Compiling lore-macro v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-macro)
+   Compiling munge_macro v0.4.7
+   Compiling enum-assoc v1.4.1
+   Compiling noq v1.3.0
+   Compiling cairn-paths v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-paths)
+   Compiling rand_pcg v0.10.2
+   Compiling matrixmultiply v0.3.11
+   Compiling netdev v0.46.3
+   Compiling n0-dns-resolver v0.1.0
+   Compiling sorted-index-buffer v0.2.1
+   Compiling snap v1.1.2
+   Compiling multiversion_no_op v1.0.0
+   Compiling glob-match v0.2.1 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/vendor/glob-match)
+   Compiling netlink-packet-core v0.9.0
+   Compiling noq-proto v1.3.0
+   Compiling munge v0.4.7
+   Compiling surrealdb-expr v3.3.4
+   Compiling netlink-packet-route v0.33.0
+   Compiling markup5ever v0.40.0
+   Compiling lore v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore)
+   Compiling iroh-base v1.2.0
+   Compiling ciborium v0.2.2
+   Compiling rend v0.5.4
+   Compiling loro v1.16.2
+   Compiling surrealdb-rpc v3.3.4
+   Compiling num_enum_derive v0.7.6
+warning: lore-base@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling reqwest v0.13.5
+   Compiling diskann-wide v0.56.0
+   Compiling netlink-sys v0.8.8
+   Compiling netlink-sys v0.9.0
+   Compiling iroh-metrics-derive v1.0.1
+   Compiling bitcode_derive v0.6.9
+   Compiling rkyv_derive v0.8.18
+   Compiling netwatch v0.19.3
+   Compiling simple-dns v0.12.0
+   Compiling lru v0.18.5
+   Compiling proc-macro-error-attr v0.4.12
+   Compiling csv-core v0.1.13
+   Compiling xml-rs v0.8.29
+   Compiling mac-addr v0.3.0
+   Compiling rawpointer v0.2.1
+   Compiling xmltree v0.10.3
+   Compiling csv v1.4.0
+   Compiling iroh-metrics v1.0.2
+   Compiling rkyv v0.8.18
+   Compiling bitcode v0.6.9
+   Compiling netlink-proto v0.12.2
+   Compiling diskann-vector v0.56.0
+   Compiling num_enum v0.7.6
+   Compiling html5ever v0.40.1
+   Compiling encoding_rs_io v0.1.8
+   Compiling cssparser v0.38.0
+   Compiling netlink-packet-route v0.31.0
+   Compiling n0-watcher v1.0.0
+   Compiling lz4_flex v0.12.2
+   Compiling syn-mid v0.5.4
+   Compiling blowfish v0.9.1
+   Compiling salsa20 v0.10.2
+   Compiling attohttpc v0.30.1
+   Compiling sha1 v0.10.7
+   Compiling curve25519-dalek v4.1.3
+   Compiling proc-macro-error v0.4.12
+   Compiling memmap2 v0.9.11
+   Compiling maplit v1.0.2
+   Compiling psl-types v2.0.11
+   Compiling sha1_smol v1.0.1
+   Compiling surrealdb-datastore v3.3.4
+   Compiling proc-macro-hack v0.5.20+deprecated
+   Compiling ammonia v4.2.4
+   Compiling addr v0.15.6
+   Compiling tokio-websockets v0.13.3
+   Compiling lindera-dictionary v6.2.0
+   Compiling surrealkv v0.21.4
+   Compiling igd-next v0.17.1
+   Compiling scrypt v0.11.0
+   Compiling bcrypt v0.18.0
+   Compiling diskann-utils v0.56.0
+   Compiling iroh-dns v1.3.0
+   Compiling ndarray v0.17.2
+   Compiling tessera v1.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/tessera)
+   Compiling surrealdb-observe v3.3.4
+   Compiling surrealdb-catalog v3.3.4
+   Compiling fuzzy-matcher v0.3.7
+   Compiling fs4 v0.13.1
+   Compiling surrealdb-keyspace-macro v3.3.4
+   Compiling noisy_float v0.2.1
+   Compiling surrealdb-idx v3.3.4
+   Compiling ref-cast v1.0.27
+   Compiling same-file v1.0.6
+   Compiling surrealdb-runtime v3.3.4
+   Compiling iroh-relay v1.2.0
+   Compiling ndarray-stats v0.7.0
+   Compiling walkdir v2.5.0
+   Compiling diskann v0.56.0
+   Compiling portmapper v0.19.3
+   Compiling surrealdb-kvs-surrealkv v3.3.4
+   Compiling lindera v6.2.0
+   Compiling reqwest v0.12.28
+   Compiling ed25519 v2.2.3
+   Compiling backon v1.6.0
+   Compiling headers-core v0.3.0
+   Compiling quick-xml v0.39.4
+   Compiling rust-stemmers v1.2.0
+   Compiling ref-cast-impl v1.0.27
+   Compiling acto v0.8.2
+   Compiling surrealdb-core v3.3.4
+   Compiling headers v0.4.2
+   Compiling iroh v1.2.0
+   Compiling lore-error-set v0.1.0 (/home/mwatts/code/github/mwatts/lore/lore-error-set)
+   Compiling object_store v0.13.2
+   Compiling ed25519-dalek v2.2.0
+   Compiling surrealdb-kvs-any v3.3.4
+   Compiling ext-sort v0.1.6
+   Compiling inplace-vec-builder v0.1.1
+   Compiling redb v4.3.0
+   Compiling surrealdb-engine-local v3.3.4
+   Compiling smol_str v0.1.24
+   Compiling surrealdb-engine-api v3.3.4
+   Compiling hickory-proto v0.26.3
+   Compiling lore-telemetry v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-telemetry)
+   Compiling range-collections v0.4.6
+   Compiling iroh-io v0.6.2
+   Compiling irpc-derive v0.17.0
+   Compiling wait-timeout v0.2.1
+   Compiling positioned-io v0.3.5
+   Compiling surrealdb v3.3.4
+   Compiling self_cell v1.3.0
+   Compiling quick-error v1.2.3
+   Compiling swarm-discovery v0.6.3
+   Compiling irpc v0.17.0
+   Compiling rusty-fork v0.3.1
+   Compiling iroh-util v0.6.0
+   Compiling iroh-tickets v1.0.0
+   Compiling nested_enum_utils v0.2.3
+   Compiling ashlar-domain v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-domain)
+   Compiling reflink-copy v0.1.30
+   Compiling rand_xorshift v0.4.0
+   Compiling smartstring v1.0.1
+   Compiling unarray v0.1.4
+   Compiling qrcode v0.14.1
+   Compiling iroh-mdns-address-lookup v0.4.0
+   Compiling static_assertions v1.1.0
+   Compiling proptest v1.11.0
+   Compiling rhai_codegen v3.2.0
+   Compiling thin-vec v0.2.20
+   Compiling unicode-id v0.3.7
+   Compiling rhai v1.26.1
+   Compiling markdown v1.0.0
+   Compiling lore-credential v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-credential)
+   Compiling cairn-query v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-query)
+   Compiling genawaiter-proc-macro v0.99.1
+   Compiling genawaiter v0.99.1
+   Compiling ashlar-app v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-app)
+   Compiling bao-tree v0.16.1
+   Compiling iroh-blobs v0.103.0
+   Compiling ashlar-import v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-import)
+   Compiling ashlar-page v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-page)
+   Compiling lore-transport v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-transport)
+   Compiling cairn-tessera v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-tessera)
+   Compiling cairn-testkit v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-testkit)
+warning: lore@0.9.1-nightly: Failed to execute Lore to get revision information, unknown version generated: No such file or directory (os error 2)
+   Compiling lore-notification v0.9.1-nightly (/home/mwatts/code/github/mwatts/lore/lore-notification)
+   Compiling cairn-surreal v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-surreal)
+warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+   --> /proc/self/cwd/src/util/task_queue.rs:126:84
+    |
+126 |                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+    |                                                                                    ^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+help: replace the use of the deprecated method
+    |
+126 -                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.fetch_update(
+126 +                 let submitted_tasks_update = otel_clone.latent_num_submitted_tasks.try_update(
+    |
+
+warning: `lore-revision` (lib) generated 1 warning (run `cargo fix --lib -p lore-revision` to apply 1 suggestion)
+   Compiling cairn-lore v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore)
+   Compiling cairn-claims v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-claims)
+   Compiling cairn-member v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-member)
+   Compiling cairn-lore-store v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-lore-store)
+   Compiling cairn-grant v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-grant)
+   Compiling cairn-repl v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-repl)
+   Compiling cairn-host v0.0.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/vendor/cairn/crates/cairn-host)
+   Compiling ashlar-cairn v0.1.0 (/home/mwatts/code/github/mwatts/ashlar-r4-lore/crates/ashlar-cairn)
+warning: unused import: `NoObserver`
+ --> crates/ashlar-cairn/tests/trash.rs:8:34
+  |
+8 | use ashlar_app::reconciliation::{NoObserver, ReconciliationApp};
+  |                                  ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/annotations.rs:10:28
+   |
+10 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `Archive`
+  --> crates/ashlar-cairn/tests/enrichment.rs:11:28
+   |
+11 | use ashlar_app::{AppError, Archive as _, NotesApp};
+   |                            ^^^^^^^
+
+warning: unused import: `ReplicaMerges`
+  --> crates/ashlar-cairn/tests/trash.rs:10:75
+   |
+10 | use ashlar_app::{AppError, Archive, CaptureInput, ContentCodec, NotesApp, ReplicaMerges};
+   |                                                                           ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+   --> crates/ashlar-cairn/tests/list_window.rs:253:9
+    |
+253 |     let mut run = |label: u64| {
+    |         ----^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `children` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:163:10
+    |
+163 | async fn children(replica: &Replica, root: &ObjectId) -> Vec<ObjectId> {
+    |          ^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `body_text` is never used
+   --> crates/ashlar-cairn/tests/trash.rs:178:10
+    |
+178 | async fn body_text(replica: &Replica, block: &ObjectId) -> String {
+    |          ^^^^^^^^^
+
+warning: `ashlar-cairn` (test "cairn") generated 7 warnings (run `cargo fix --test "cairn" -p ashlar-cairn` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34m 57s
+     Running tests/main.rs (target/debug/deps/cairn-d77c986c25f8d51c)
+
+running 121 tests
+test footprint::seeding_footprint_probe ... ignored, scale: R4 measurement, run on request with R4_RECORDS
+test import_schema_upgrade::a_0_2_5_archive_upgrades_and_accepts_a_bible_verse_window ... ok
+test hosts_upgrade::a_0_2_4_archive_upgrades_and_accepts_a_hosts_embed ... ok
+test capture::real_root_duplicate_url_focuses_existing_id ... ok
+test indexing::q5_upgrade_probe ... ignored, probe: Q5 step 0, run on request with Q5_NOTES
+test capture::real_root_file_argument_does_not_create_an_object ... ok
+test capture::real_root_bookmark_create_requires_url ... ok
+test list_window::inbox_at_500k ... ignored, scale: 500,000 records, after a major change
+test list_window::inbox_count_at_20k ... ignored, release: scale diagnostic at 20,000 inbox rows
+test list_window::probe_inbox_query_cost ... ignored, probe: seeds 6,000 inbox notes and times page shapes
+test list_window::probe_query_cost_by_set_size ... ignored, probe: seeds 6,000 rows (about 5 minutes)
+test capture::real_root_captures_note_bookmark_and_snippet ... ok
+test history::a_child_only_edit_is_a_tip_that_opens_as_it_was ... ok
+test list_window::window_at_500k ... ignored, scale: 500,000 rows, after a major change
+test binary_property::a_binary_property_is_stored_as_a_blob ... ok
+test annotations::passages_first_commented_in_one_second_keep_their_order ... ok
+test enrichment::a_run_enriches_the_armed_records_it_selects ... ok
+test annotations::a_comment_and_its_reply_attach_to_one_passage ... ok
+test inbox_union::single_inbox_query_matches_the_batch ... ok
+test live_bytes::a_field_read_does_not_read_the_page_under_it ... ok
+test indexing::a_dropped_archive_lets_go_of_its_lock_while_its_rebuild_runs ... ok
+test live_bytes::a_save_after_the_page_read_leaves_its_bodies_readable ... ok
+test list_window::the_inbox_reads_oldest_first_when_asked ... ok
+test live_bytes::a_save_between_a_record_and_its_field_leaves_the_field_readable ... ok
+test live_bytes::a_save_during_a_reconcile_conflicts_again ... ok
+test indexing::an_upgrade_open_answers_while_its_rebuild_runs ... FAILED
+test list_window::windows_jump_by_checkpoint_and_a_write_invalidates_them ... ok
+test live_bytes::an_earlier_body_or_cover_keeps_its_bytes ... ok
+test list_window::the_inbox_union_merges_types_by_created_desc ... ok
+test indexing::writes_answer_indexing_at_once_while_the_projection_rebuilds ... ok
+test live_bytes::page_opens_behind_the_lore_tip_load_one_table ... ok
+test local_notes::backfill_candidate_rejects_metadata_and_body_edits ... ok
+test local_notes::refuse_legacy_writable_open_until_migration_gate ... ok
+test local_notes::active_extractor_upgrade_backfills_without_an_authored_content_change ... ok
+test live_bytes::an_export_racing_a_save_carries_each_named_body ... ok
+test local_notes::body_term_finds_repeated_child_and_save_drops_old_hit ... ok
+test local_notes::extractor_upgrade_backfill_without_content_revision_and_stale_job_fails ... ok
+test local_notes::failed_upgrade_extraction_keeps_the_archive_open_and_retries ... ok
+test local_notes::open_new_root_approves_bundled_schema_and_settings ... ok
+test local_notes::read_composition_lists_child_occurrences_cached_residency_and_cycle_bounds ... ok
+test local_notes::missing_extracts_leave_coverage_incomplete_without_search_reads ... ok
+test local_notes::real_root_conditional_saves_extracts_and_title_queries ... ok
+test meeting_capture::meeting_capture_commits_once ... ok
+test local_notes::racing_backfill_and_interrupted_publication_never_expose_stale_text ... ok
+test page_scale::large_page_stays_within_budget ... ignored, release: release-mode page budget; cargo test --release
+test meeting_worker::worker_writes_supported_claims ... ok
+test meeting_worker::worker_fails_on_a_change_and_a_retry_extracts ... ok
+test indexing::reads_answer_behind_while_the_projection_rebuilds ... ok
+test member_sync::an_older_peer_is_served_no_restored_link_and_named_for_update ... ok
+test query_advisor::q3_probe ... ignored, probe: Q3's numbers, run on request with Q3_SEED_DIR and Q3_MODE
+test query_advisor::saved_query_moves_onto_its_index ... ignored, release: 100,000 Records, about 5 minutes, one with Q3_SEED_DIR
+test query_advisor::saved_query_moves_onto_its_index_held ... ignored, release: 100,000 Records, about 5 minutes, one with Q3_SEED_DIR
+test passages_gate::capture_across_blocks_then_reorder_and_remove_a_placement ... ok
+test organization::release_organization_views ... ok
+test planner_close::close_stores_the_planner_record ... ok
+test member_sync::an_older_peer_learns_of_the_delete_of_a_restored_link ... ok
+test member_sync::concurrent_note_edits_settle_on_one_version ... ok
+test query_advisor::a_saved_query_runs_on_the_index_its_first_run_asked_for ... ok
+test member_sync::paired_replicas_transfer_native_notes_both_ways_and_reopen ... ok
+test planner_close::an_upgrade_opens_when_the_planner_record_cannot_be_stored ... ok
+test member_sync::staged_merge_lets_a_local_read_run_between_files ... ok
+test member_sync::ui_archive_read_does_not_wait_for_the_whole_import_batch ... ok
+test member_checkpoint::negotiated_checkpoints_transfer_edits_and_keep_idle_rounds_small ... ok
+test schema_0_2_10::a_0_2_9_archive_upgrades_to_0_2_10 ... ok
+test reconciliation::imports_wait_for_the_capability_check ... ok
+test reconciliation::pasted_image_reaches_a_sparse_replica_and_hydrates_without_a_save ... ok
+test reconciliation::a_file_edited_on_top_of_a_save_elsewhere_reaches_this_replica ... ok
+test schema_0_2_8::a_0_2_7_archive_upgrades_to_0_2_8 ... ok
+test reconciliation::concurrent_body_edits_converge_through_the_codec_and_acknowledge ... ok
+test reconciliation::concurrent_inserts_moves_and_unlink_converge_in_one_order ... ok
+test reconciliation::an_edit_from_a_device_whose_clock_is_behind_still_wins ... ok
+test reconciliation::imported_cycle_keeps_both_links_and_reads_stay_bounded ... ok
+test schema_gate::approve_place_edit_restart_and_reject_malformed_schema ... ok
+test reconciliation::kit_bodies_sync_merge_and_converge_to_identical_bytes ... ok
+test reconciliation::unsupported_kind_bytes_are_preserved_through_sync_and_conflict ... ok
+test sets::malformed_query_and_reserved_name_leave_the_saved_set ... ok
+test reconciliation::kit_image_block_hydrates_on_a_sparse_replica ... ok
+test reconciliation::trashing_a_file_elsewhere_keeps_a_concurrent_save ... ok
+test tags::an_empty_member_list_keeps_unfinished_imports ... ok
+test tags::every_pair_of_merge_scripts_keeps_every_tag ... ignored, slow: every pair of scripts
+test tags::an_import_that_lands_documents_after_the_hold_starts_it_again ... ok
+test tags::a_saved_set_lists_items_on_either_twin ... ok
+test tags::a_removed_tag_added_back_reaches_the_other_device ... ok
+test tags::a_day_old_unfinished_import_stops_holding_the_tag_pass ... ok
+test tags::a_merge_imported_during_a_rebuild_settles_after_it ... ok
+test tags::a_partly_imported_undo_is_not_merged_again ... ok
+test tags::an_unreadable_import_marker_holds ... ok
+test tags::a_stub_settles_when_its_kept_tag_arrives_in_a_later_import ... ok
+test tags::devices_name_an_unfinished_import_before_any_tag_pass ... ok
+test tags::a_merge_of_paged_tags_undoes_and_redoes ... ok
+test timeline_backfill::an_upgraded_archive_backfills_across_a_kill ... ok
+test tags::a_merge_survives_sync_and_undo ... ok
+test tags::only_a_relink_over_an_unlink_carries_a_restore_token ... ok
+test timeline_capture::each_writer_commits_its_placement_with_the_object ... ok
+test timeline_schema::a_pasted_overlap_document_binds_and_answers_with_its_bindings ... ok
+test timeline_schema::upgrade_adds_life_and_no_links ... ok
+test timeline_schema::a_placement_is_not_a_generic_link ... ok
+test trash::a_lost_precondition_conflicts_and_writes_nothing ... ok
+test trash::a_new_archive_reads_the_default_retention ... ok
+test timeline_schema::cairn_and_memory_read_the_same_overlap ... ok
+test trash::a_stale_purge_plan_conflicts_and_deletes_nothing ... ok
+test trash::purge_tombstones_the_object_its_blocks_and_relations ... ok
+test trashable_upgrade::a_0_2_3_archive_upgrades_and_every_record_and_set_is_untrashed ... ok
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_a_sends_first ... ok
+test tags::merges_both_ways_converge_on_one_kept_tag ... ok
+test trash::trash_then_restore_round_trips_and_hides_from_lists ... ok
+test tags::merges_and_undos_on_two_devices_never_drop_a_tag_when_b_sends_first ... ok
+test types::ir_catalog_flattens_record_fields ... ok
+test trash::search_hides_a_trashed_note_and_its_blocks ... ok
+test trashable_upgrade::every_built_in_list_query_drops_a_trashed_row ... ok
+test types::saved_projection_keeps_nested_slots_without_binary_fetches ... ok
+test types::real_root_creates_each_record_type_and_rejects_missing_required ... ok
+test types::real_root_metadata_patch_preserves_omitted_record_fields ... ok
+test types::tag_is_filed_and_absent_from_inbox_projection ... ok
+test views::view_definition_saves_lists_opens_and_revises_on_cairn ... ok
+test uniqueness::same_day_and_same_url_converge_a_first ... ok
+test uniqueness::same_day_and_same_url_converge_b_first ... ok
+test uniqueness::allocated_daily_notes_form_a_group_the_owner_resolves ... ok
+test trash::purge_beats_a_concurrent_edit_in_both_sync_orders ... ok
+test trash::purge_beats_a_concurrent_restore_in_both_sync_orders ... ok
+test trash::trash_and_a_concurrent_edit_both_survive_in_both_sync_orders ... ok
+
+failures:
+
+---- indexing::an_upgrade_open_answers_while_its_rebuild_runs stdout ----
+panic: panicked at crates/ashlar-cairn/tests/indexing.rs:386:6:
+the upgrade open does not wait for the rebuild: Elapsed(())
+   0: std::backtrace_rs::backtrace::libunwind::trace
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/libunwind.rs:117:9
+   1: std::backtrace_rs::backtrace::trace_unsynchronized::<<std::backtrace::Backtrace>::create::{closure#0}>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/../../backtrace/src/backtrace/mod.rs:66:14
+   2: <std::backtrace::Backtrace>::create
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/backtrace.rs:331:13
+   3: {closure#0}
+             at /proc/self/cwd/src/interface.rs:1037:26
+   4: <alloc::boxed::Box<dyn for<'a, 'b> core::ops::function::Fn<(&'a std::panic::PanicHookInfo<'b>,), Output = ()> + core::marker::Send + core::marker::Sync> as core::ops::function::Fn<(&std::panic::PanicHookInfo,)>>::call
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2334:9
+   5: std::panicking::panic_with_hook
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:823:13
+   6: std::panicking::panic_handler::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:688:13
+   7: std::sys::backtrace::__rust_end_short_backtrace::<std::panicking::panic_handler::{closure#0}, !>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:182:18
+   8: __rustc::rust_begin_unwind
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:679:5
+   9: core::panicking::panic_fmt
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panicking.rs:80:14
+  10: core::result::unwrap_failed
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1871:5
+  11: <core::result::Result<core::result::Result<ashlar_cairn::archive::CairnArchive, ashlar_app::error::AppError>, tokio::time::error::Elapsed>>::expect
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/result.rs:1184:23
+  12: {async_block#0}
+             at /proc/self/cwd/crates/ashlar-cairn/tests/indexing.rs:386:6
+  13: poll<&mut dyn core::future::future::Future<Output=()>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/future/future.rs:133:9
+  14: {closure#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/park.rs:284:71
+  15: with_budget<core::task::poll::Poll<()>, tokio::runtime::park::{impl#4}::block_on::{closure_env#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/task/coop/mod.rs:167:5
+  16: budget<core::task::poll::Poll<()>, tokio::runtime::park::{impl#4}::block_on::{closure_env#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/task/coop/mod.rs:133:5
+  17: block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/park.rs:284:31
+  18: block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/context/blocking.rs:66:14
+  19: {closure#0}<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/scheduler/multi_thread/mod.rs:92:22
+  20: tokio::runtime::context::runtime::enter_runtime::<<tokio::runtime::scheduler::multi_thread::MultiThread>::block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>::{closure#0}, ()>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/context/runtime.rs:65:16
+  21: block_on<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/scheduler/multi_thread/mod.rs:91:9
+  22: block_on_inner<core::pin::Pin<&mut dyn core::future::future::Future<Output=()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/runtime.rs:376:50
+  23: <tokio::runtime::runtime::Runtime>::block_on::<core::pin::Pin<&mut dyn core::future::future::Future<Output = ()>>>
+             at /kache/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tokio-1.53.1/src/runtime/runtime.rs:343:18
+  24: an_upgrade_open_answers_while_its_rebuild_runs
+             at /proc/self/cwd/crates/ashlar-cairn/tests/indexing.rs:449:37
+  25: cairn::indexing::an_upgrade_open_answers_while_its_rebuild_runs::{closure#0}
+             at /proc/self/cwd/crates/ashlar-cairn/tests/indexing.rs:372:58
+  26: <cairn::indexing::an_upgrade_open_answers_while_its_rebuild_runs::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  27: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  28: test::__rust_begin_short_backtrace::<core::result::Result<(), alloc::string::String>, fn() -> core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:733:18
+  29: test::run_test_in_process::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:74
+  30: <core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  31: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  32: std::panicking::catch_unwind::<core::result::Result<(), alloc::string::String>, core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  33: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<test::run_test_in_process::{closure#0}>, core::result::Result<(), alloc::string::String>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  34: test::run_test_in_process
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:756:27
+  35: test::run_test::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:677:43
+  36: test::run_test::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/test/src/lib.rs:707:41
+  37: std::sys::backtrace::__rust_begin_short_backtrace::<test::run_test::{closure#1}, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/backtrace.rs:166:18
+  38: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:70:13
+  39: <core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/panic/unwind_safe.rs:275:9
+  40: std::panicking::catch_unwind::do_call::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:576:43
+  41: std::panicking::catch_unwind::<(), core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panicking.rs:544:19
+  42: std::panic::catch_unwind::<core::panic::unwind_safe::AssertUnwindSafe<std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1}::{closure#0}>, ()>
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/panic.rs:359:14
+  43: std::thread::lifecycle::spawn_unchecked::<test::run_test::{closure#1}, ()>::{closure#1}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/thread/lifecycle.rs:68:26
+  44: <std::thread::lifecycle::spawn_unchecked<test::run_test::{closure#1}, ()>::{closure#1} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/core/src/ops/function.rs:250:5
+  45: <alloc::boxed::Box<dyn core::ops::function::FnOnce<(), Output = ()> + core::marker::Send> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/alloc/src/boxed.rs:2320:9
+  46: <std::sys::thread::unix::Thread>::new::thread_start
+             at /rustc/58cf8f9c35b355199727627d07ae34a4e2846d67/library/std/src/sys/thread/unix.rs:123:17
+  47: <unknown>
+  48: <unknown>
+
+
+
+failures:
+    indexing::an_upgrade_open_answers_while_its_rebuild_runs
+
+test result: FAILED. 108 passed; 1 failed; 12 ignored; 0 measured; 0 filtered out; finished in 116.49s
+
+error: test failed, to rerun pass `-p ashlar-cairn --test cairn`

@@ -1,0 +1,80 @@
+ 01:47:38 up 2 days, 16:43,  1 user,  load average: 5.33, 4.10, 9.34
+
+running 1 test
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 6 records, 3 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm fold journal 17336755 dirty 256 buckets 256
+R4FOLDLOG imm fold done None journal 0
+seeded 20000/50000 in 24.1s: write_bytes 842.4 MB wchar 777.0 MB
+R4FOLDLOG imm fold journal 17391490 dirty 256 buckets 256
+R4FOLDLOG imm fold done None journal 0
+seeded 40000/50000 in 53.1s: write_bytes 2233.1 MB wchar 2114.6 MB
+test footprint::seeding_footprint_probe has been running for over 60 seconds
+R4FOLDLOG imm fold journal 16874021 dirty 256 buckets 256
+R4FOLDLOG imm fold done None journal 0
+seeded 49900/50000 in 70.1s: write_bytes 3574.8 MB wchar 3410.7 MB
+seeded 49950/50000 in 70.6s: write_bytes 3600.2 MB wchar 3435.1 MB
+seeded 49990/50000 in 71.4s: write_bytes 3601.1 MB wchar 3435.8 MB
+seeded 50000/50000 in 72.0s: write_bytes 3601.5 MB wchar 3436.1 MB
+R4FOLDLOG imm open replays 308 records, 154 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+  after a reopen: Lore packfiles 43805166 B, journals 0 B; the close and reopen wrote 33.7 MB
+single creates: 20 in 13.4s, write_bytes 4.0 MB (198246 B per commit), wchar 106888 B per commit
+  single creates, thread cairn-surreal-c: 40141 B per commit (live threads only)
+  single creates, thread lore-io: 158106 B per commit (live threads only)
+  single creates on .cairn/projection/gen-2/db/wal: grew 1 files by 40360 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/immutable: grew 1 files by 64156 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single creates on .lore/mutable: grew 1 files by 416 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+R4FOLDLOG imm open replays 520 records, 260 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+  after a reopen: Lore packfiles 45046682 B, journals 0 B; the close and reopen wrote 28.0 MB
+single creates: kept 62076 B per commit in Lore's packfiles
+R4FOLDLOG imm open replays 22 records, 11 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+  after a reopen: Lore packfiles 45085431 B, journals 0 B; the close and reopen wrote 17.6 MB
+single edits: 20 in 15.0s, write_bytes 3.5 MB (175309 B per commit), wchar 84769 B per commit
+  single edits, thread cairn-surreal-c: 43418 B per commit (live threads only)
+  single edits, thread lore-io: 131891 B per commit (live threads only)
+  single edits on .cairn/projection/gen-2/db/wal: grew 1 files by 42759 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/immutable: grew 1 files by 39095 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+  single edits on .lore/mutable: grew 1 files by 416 B per commit; replaced 0 files holding 0 B per commit; new 0 files holding 0 B per commit
+R4FOLDLOG imm open replays 400 records, 200 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+R4FOLDLOG imm open replays 0 records, 0 entries
+  after a reopen: Lore packfiles 45835332 B, journals 0 B; the close and reopen wrote 23.7 MB
+single edits: kept 37495 B per commit in Lore's packfiles
+R4 footprint at 50000 Records, seeded in 72.0s, 242 samples
+bytes written (write_bytes): open 8.0 MB, seed 3601.5 MB (72030 B/rec), through close 3712.5 MB (74249 B/rec)
+write syscalls (wchar): 3485.2 MB (69704 B/rec); cancelled_write_bytes 0.0 MB
+peak on disk: 887.3 MB (17745 B/rec) at 67.9s
+final on disk after close: 652.0 MB apparent (13039 B/rec), 654.1 MB allocated
+component                                               final         peak   at root peak    written>=    files
+.cairn-private                                         1.9 MB       1.9 MB         0.0 MB       7.4 MB        7  final 37 B/rec written 148 B/rec
+.cairn/projection/gen-1/db/wal                         0.0 MB       1.5 MB         0.0 MB       1.5 MB        1  final 0 B/rec written 30 B/rec
+.cairn/projection/gen-2/db/sstables                  281.1 MB     535.6 MB       535.6 MB    2277.3 MB       64  final 5623 B/rec written 45546 B/rec
+.cairn/projection/gen-2/db/vlog                      318.0 MB     318.0 MB       303.1 MB     318.0 MB        2  final 6359 B/rec written 6359 B/rec
+.cairn/projection/gen-2/db/wal                         0.0 MB      16.0 MB         0.0 MB     146.1 MB       54  final 0 B/rec written 2922 B/rec
+.lore/immutable                                        0.0 MB      17.4 MB        15.9 MB      17.4 MB        3  final 0 B/rec written 348 B/rec
+.lore/immutable/index/xx                               5.2 MB       5.2 MB         3.5 MB      19.1 MB     1463  final 103 B/rec written 382 B/rec
+.lore/immutable/index/xx/pack                         45.8 MB      45.8 MB        29.2 MB      45.8 MB      256  final 917 B/rec written 917 B/rec
+bytes written by thread (largest counters sampled; a thread that ended after its last sample is undercounted):
+  cairn-surreal-c                  write_bytes    3407.3 MB wchar    3358.4 MB threads 8
+  lore-io                          write_bytes     296.4 MB wchar     119.1 MB threads 16
+  footprint::seed                  write_bytes       8.4 MB wchar       7.4 MB threads 2
+test footprint::seeding_footprint_probe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 123.24s
+
+exit 0
+ 01:49:41 up 2 days, 16:46,  1 user,  load average: 2.45, 3.64, 8.55

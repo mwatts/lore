@@ -1,0 +1,14 @@
+Pin Lore to the fork's R4 commits
+
+Cargo.toml and Cargo.lock name Lore `cbb2efc5` on `mwatts/lore` branch
+`ashlar`: `24545866` plus the four R4 commits (commit contents from
+memory without a staged state; a flush's payloads durable with one
+journal sync; index changes durable by journal; a name table for a large batch). docs/lore-embed.md
+records them.
+
+The rev is not on the remote yet, so the lockfile resolves only once
+`mwatts/lore` has the branch. Until then a build needs a `[patch]` of
+the Lore git source to a local checkout.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+

@@ -1,0 +1,96 @@
+=== lore-storage
+     Running unittests src/lib.rs (target/debug/deps/lore_storage-6c8f1e46a521ae7d)
+test result: ok. 394 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.94s
+     Running tests/journal_crash.rs (target/debug/deps/journal_crash-b7cd428681b82675)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.08s
+     Running tests/journal_reopen.rs (target/debug/deps/journal_reopen-b3eeb6fd4be718d8)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.75s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== lore-revision
+     Running unittests src/lib.rs (target/debug/deps/lore_revision-39cc30291d7eac65)
+test result: ok. 457 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+     Running tests/auth.rs (target/debug/deps/auth-44286d76f98ac795)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/auth_exchange.rs (target/debug/deps/auth_exchange-96b754b1dc97bde3)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/branch_latest.rs (target/debug/deps/branch_latest-0216011bdf3f646c)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/change.rs (target/debug/deps/change-b3a8cdc92fb7cb48)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/clone.rs (target/debug/deps/clone-32a80615a0f2ffb5)
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+     Running tests/commit.rs (target/debug/deps/commit-e7d1c9b8655e32d9)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+     Running tests/commit_in_memory.rs (target/debug/deps/commit_in_memory-a5c86ebf76978769)
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/composite_store.rs (target/debug/deps/composite_store-f075b9f1e0fe83be)
+test result: ok. 51 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+     Running tests/dependency.rs (target/debug/deps/dependency-a724d6158743aec9)
+test result: ok. 48 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/diff3_streaming.rs (target/debug/deps/diff3_streaming-b0efe6c76ec525e4)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+     Running tests/dirty.rs (target/debug/deps/dirty-e049aeecb117f484)
+test result: ok. 21 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.11s
+     Running tests/errors.rs (target/debug/deps/errors-8c9f719509ef82c2)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/filesystem.rs (target/debug/deps/filesystem-c5949563c32ec527)
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/filesystem_diff_stream.rs (target/debug/deps/filesystem_diff_stream-2201e6d75bff1f3a)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+     Running tests/filter.rs (target/debug/deps/filter-e91726453dd09e82)
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/filter_bench.rs (target/debug/deps/filter_bench-1f468283f824e042)
+test result: ok. 0 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/filter_descend_bench.rs (target/debug/deps/filter_descend_bench-703f41c2e01b1e9f)
+test result: ok. 0 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/filter_gitignore.rs (target/debug/deps/filter_gitignore-fa04dce0a6a0176f)
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.23s
+     Running tests/filter_walk_bench.rs (target/debug/deps/filter_walk_bench-ed4f6ada57d70af4)
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/fragment.rs (target/debug/deps/fragment-4f64bb384261b9b9)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/hash.rs (target/debug/deps/hash-0fb7735f7fb34932)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/helper.rs (target/debug/deps/helper-20cef8b40658512b)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/immutable.rs (target/debug/deps/immutable-974b57fb226f5bef)
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+     Running tests/immutablestore.rs (target/debug/deps/immutablestore-53ce4f2b4d6506d6)
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+     Running tests/in_memory_store.rs (target/debug/deps/in_memory_store-50bf81f3dd625869)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/inflight.rs (target/debug/deps/inflight-71404a8b7e4966cd)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/instance.rs (target/debug/deps/instance-0af497765db32f30)
+test tests::instance_staleness_classifies_registrations ... FAILED
+panic: panicked at lore-revision/tests/instance.rs:710:17:
+panic: panicked at lore-revision/tests/instance.rs:728:14:
+test result: FAILED. 19 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+=== lore
+     Running unittests src/lib.rs (target/debug/deps/lore-cddf0b654a0059cd)
+test result: ok. 273 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+     Running tests/calls_after_shutdown.rs (target/debug/deps/calls_after_shutdown-eb5c5a726331ce39)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/events.rs (target/debug/deps/events-0e457f8edf3faf91)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/ffi_error_events.rs (target/debug/deps/ffi_error_events-748c903571768896)
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+     Running tests/file_write.rs (target/debug/deps/file_write-8d3acd0e13cef466)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+     Running tests/in_memory.rs (target/debug/deps/in_memory-ff8f4c8cbc98e5b2)
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+     Running tests/metadata.rs (target/debug/deps/metadata-0f306da3ce8b5400)
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+     Running tests/no_remote.rs (target/debug/deps/no_remote-6863500390c4d936)
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+     Running tests/remote_message.rs (target/debug/deps/remote_message-0cd808b6d3929217)
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+     Running tests/revision_commit_contents.rs (target/debug/deps/revision_commit_contents-555459c382c9e2a6)
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.64s
+     Running tests/shutdown.rs (target/debug/deps/shutdown-084832814cfe6e82)
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+     Running tests/test_util.rs (target/debug/deps/test_util-9c0a72fddb76c3e0)
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+done

@@ -1,0 +1,28 @@
+
+running 1 test
+seeded 16000/20000 in 23.7s: write_bytes 581.8 MB wchar 562.9 MB
+seeded 19960/20000 in 32.9s: write_bytes 1595.2 MB wchar 786.1 MB
+seeded 19980/20000 in 33.1s: write_bytes 1595.9 MB wchar 786.7 MB
+seeded 19996/20000 in 33.3s: write_bytes 1596.3 MB wchar 787.0 MB
+seeded 20000/20000 in 33.5s: write_bytes 1596.6 MB wchar 787.1 MB
+R4 footprint at 20000 Records, seeded in 33.5s, 70 samples
+bytes written (write_bytes): open 7.3 MB, seed 1596.6 MB (79832 B/rec), through close 1610.2 MB (80509 B/rec)
+write syscalls (wchar): 800.1 MB (40003 B/rec); cancelled_write_bytes 0.0 MB
+peak on disk: 293.4 MB (14671 B/rec) at 28.2s
+final on disk after close: 259.5 MB apparent (12975 B/rec), 321.0 MB allocated
+component                                               final         peak   at root peak    written>=    files
+.cairn/projection/gen-1/db/wal                         0.0 MB       1.5 MB         0.0 MB       1.5 MB        1  final 0 B/rec written 75 B/rec
+.cairn/projection/gen-2/db/sstables                  112.8 MB     177.1 MB       177.1 MB     325.1 MB       22  final 5642 B/rec written 16253 B/rec
+.cairn/projection/gen-2/db/vlog                      126.7 MB     126.7 MB        99.5 MB     126.7 MB        1  final 6333 B/rec written 6333 B/rec
+.cairn/projection/gen-2/db/wal                         0.0 MB      16.0 MB         0.2 MB      50.1 MB       20  final 0 B/rec written 2504 B/rec
+.lore/immutable                                        3.4 MB      17.4 MB         0.0 MB      17.4 MB        3  final 170 B/rec written 869 B/rec
+.lore/immutable/index/xx                               2.0 MB       2.0 MB         2.0 MB       2.0 MB    15344  final 99 B/rec written 99 B/rec
+.lore/immutable/index/xx/pack                         14.6 MB      14.6 MB        14.6 MB      14.6 MB      256  final 730 B/rec written 730 B/rec
+bytes written by thread (largest counters sampled; a thread that ended after its last sample is undercounted):
+  lore-io                          write_bytes     809.0 MB wchar      37.4 MB threads 16
+  cairn-surreal-c                  write_bytes     800.7 MB wchar     762.6 MB threads 4
+kept the archive at /home/mwatts/code/github/mwatts/r4-scratch/keep20k
+test footprint::seeding_footprint_probe ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 120 filtered out; finished in 35.80s
+

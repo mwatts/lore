@@ -1,0 +1,33 @@
+lore-storage: Make index changes durable by journal, not bucket rewrites
+
+A flush made each changed index entry durable by rewriting its whole
+bucket file through a temporary file, a sync, a rename, and a directory
+sync. A small revision touches a dozen or more immutable buckets and a
+handful of mutable ones, so a flush cost that many rewrites whatever
+the entries changed.
+
+A journaled store now appends the entries changed since the last flush
+to its journal, beside the payloads, in the same write and the same
+sync. The immutable store records the hashes `store` and `copy` change
+and journals their entries as they are at the flush; the mutable store
+records the keys `store` and `compare_and_swap` change. Buckets are
+written only in a fold: when the journal passes its fold size, when a
+change the journal does not record (an eviction, a compaction, an
+obliteration) asks for one, before a compaction drops a packfile, and
+when the store opens, which first replays what a crash left. Each fold
+empties the journal and no bucket is written between folds, so no
+record is older than the bucket it lands in, and a replay is
+idempotent. A store opened without the journal setting still folds a
+journal it finds. Client repository mutable stores turn the journal on.
+
+A flush that changes more than `JOURNAL_BULK_ENTRY_BYTES` of entries
+(a revision of hundreds of objects) is journaled like any other and
+also writes its buckets, as a flush without the journal does: it
+touches most buckets anyway, and journaling it alone only moved those
+rewrites into a later fold.
+
+The crash test now journals the mutable store too, and checks its keys
+after the reopen.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+

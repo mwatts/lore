@@ -1,0 +1,85 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/cairn-claims",
+    "crates/cairn-cli",
+    "crates/cairn-did",
+    "crates/cairn-grant",
+    "crates/cairn-host",
+    "crates/cairn-lore",
+    "crates/cairn-lore-store",
+    "crates/cairn-member",
+    "crates/cairn-paths",
+    "crates/cairn-query",
+    "crates/cairn-repl",
+    "crates/cairn-rns",
+    "crates/cairn-surreal",
+    "crates/cairn-surreal-probe",
+    "crates/cairn-tessera",
+    "crates/cairn-testkit",
+]
+# cargo-fuzz owns its own package graph; keep it out of the main workspace.
+exclude = ["fuzz"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+rust-version = "1.91"
+
+[workspace.dependencies]
+cairn-claims = { path = "crates/cairn-claims" }
+cairn-did = { path = "crates/cairn-did" }
+cairn-grant = { path = "crates/cairn-grant" }
+cairn-host = { path = "crates/cairn-host" }
+cairn-lore = { path = "crates/cairn-lore" }
+cairn-lore-store = { path = "crates/cairn-lore-store" }
+cairn-surreal = { path = "crates/cairn-surreal" }
+cairn-member = { path = "crates/cairn-member" }
+cairn-paths = { path = "crates/cairn-paths" }
+cairn-query = { path = "crates/cairn-query" }
+cairn-repl = { path = "crates/cairn-repl" }
+cairn-rns = { path = "crates/cairn-rns" }
+cairn-tessera = { path = "crates/cairn-tessera" }
+cairn-testkit = { path = "crates/cairn-testkit" }
+anyhow = "1"
+thiserror = "2"
+proptest = "1"
+# ADR 010: the projection adapter (cairn-surreal) and its probes. No host uses it until unit 5.
+surrealdb = { version = "=3.3.4", default-features = false, features = ["kv-surrealkv"] }
+# Opening a datastore with a config map (memtable and block cache sizes),
+# which the SDK's local engine does not pass through.
+surrealdb-cnf = "=3.3.4"
+surrealdb-engine-local = { version = "=3.3.4", default-features = false, features = ["kv-surrealkv"] }
+# Tests check read scripts with SurrealDB's own parser and read-only rule.
+surrealdb-sql = "=3.3.4"
+surrealdb-syn = "=3.3.4"
+blake3 = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tessera = { git = "ssh://git@github.com/mwatts/tessera.git", rev = "d11ecf095f87639283353076722eaa5d63b4c093" }
+
+# Lore byte/revision substrate — pinned git rev (publish = false upstream).
+# Rev recorded in docs/lore-embed.md; bump only with a deliberate pin update.
+# Fork commit: EpicGames/lore 5fa7453f plus the macOS getattrlist name lookup.
+# The upstream pull request branch is fix/macos-exact-name-lookup on current main.
+lore = { git = "https://github.com/mwatts/lore.git", rev = "24545866cf1a8f5ae3f0a996270e7aa7cdd868ac" }
+lore-base = { git = "https://github.com/mwatts/lore.git", rev = "24545866cf1a8f5ae3f0a996270e7aa7cdd868ac" }
+
+# Lore's own workspace patches these crates; root workspaces must re-apply them
+# (git deps do not inherit upstream [patch.crates-io]). See vendor/README.md.
+[patch.crates-io]
+quinn-proto = { path = "vendor/quinn-proto" }
+glob-match = { path = "vendor/glob-match" }
+
+[profile.dev.package.blake3]
+opt-level = 3
+
+# One rustc for surrealdb-core with full debug info peaks near 15 GB.
+[profile.dev.package.surrealdb-core]
+debug = false
+
+# DEV ONLY (r4-lore): build against the local Lore checkout.
+[patch."https://github.com/mwatts/lore.git"]
+lore = { path = "/home/mwatts/code/github/mwatts/lore/lore" }
+lore-base = { path = "/home/mwatts/code/github/mwatts/lore/lore-base" }

@@ -1,0 +1,235 @@
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b8/pack") id=1 off=0 len=160 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b8/pack") id=1 off=0 size=160 tail_start=Some(0) tail_n=1 size_all=160
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b8/pack") id=1 off=0 size=160 tail_start=Some(0) tail_n=1 size_all=160
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 len=124 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 size=124 tail_start=Some(0) tail_n=1 size_all=124
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 len=19 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/96/pack") id=1 off=0 len=143 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/96/pack") id=1 off=0 size=143 tail_start=Some(0) tail_n=1 size_all=143
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/df/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/df/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5f/pack") id=1 off=0 len=63 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5f/pack") id=1 off=0 size=63 tail_start=Some(0) tail_n=1 size_all=63
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a2/pack") id=1 off=0 len=59 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a2/pack") id=1 off=0 size=59 tail_start=Some(0) tail_n=1 size_all=59
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a2/pack") id=1 off=0 size=59 tail_start=Some(0) tail_n=1 size_all=59
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5f/pack") id=1 off=0 size=63 tail_start=Some(0) tail_n=1 size_all=63
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/df/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/96/pack") id=1 off=0 size=143 tail_start=Some(0) tail_n=1 size_all=143
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=0 len=3 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=0 size=3 tail_start=Some(0) tail_n=1 size_all=3
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8c/pack") id=1 off=0 len=10 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8c/pack") id=1 off=0 size=10 tail_start=Some(0) tail_n=1 size_all=10
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c7/pack") id=1 off=0 len=24 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c7/pack") id=1 off=0 size=24 tail_start=Some(0) tail_n=1 size_all=24
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2f/pack") id=1 off=0 len=94 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2f/pack") id=1 off=0 size=94 tail_start=Some(0) tail_n=1 size_all=94
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bb/pack") id=1 off=0 len=203 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bb/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fd/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fd/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 len=136 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 len=95 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=0 len=49 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=0 size=49 tail_start=Some(0) tail_n=1 size_all=49
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 size=124 tail_start=Some(0) tail_n=1 size_all=124
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 size=124 tail_start=Some(0) tail_n=1 size_all=124
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e1/pack") id=1 off=0 len=220 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e1/pack") id=1 off=0 size=220 tail_start=Some(0) tail_n=1 size_all=220
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fd/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bb/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e5/pack") id=1 off=0 len=204 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e5/pack") id=1 off=0 size=204 tail_start=Some(0) tail_n=1 size_all=204
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cb/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cb/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/79/pack") id=1 off=0 len=136 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/79/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=0 len=93 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=0 size=93 tail_start=Some(0) tail_n=1 size_all=93
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=0 size=93 tail_start=Some(0) tail_n=1 size_all=93
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/79/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cb/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e5/pack") id=1 off=0 size=204 tail_start=Some(0) tail_n=1 size_all=204
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c7/pack") id=1 off=0 size=24 tail_start=Some(0) tail_n=1 size_all=24
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=49 len=99 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=49 size=99 tail_start=Some(0) tail_n=2 size_all=148
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c4/pack") id=1 off=0 len=3 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c4/pack") id=1 off=0 size=3 tail_start=Some(0) tail_n=1 size_all=3
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0e/pack") id=1 off=0 len=12 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0e/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/9a/pack") id=1 off=0 len=203 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/9a/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bf/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bf/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 len=70 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 size=70 tail_start=Some(0) tail_n=1 size_all=70
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=3 len=166 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=3 size=166 tail_start=Some(0) tail_n=2 size_all=169
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 len=129 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=0 size=49 tail_start=Some(0) tail_n=2 size_all=148
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/49/pack") id=1 off=0 len=64 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/49/pack") id=1 off=0 size=64 tail_start=Some(0) tail_n=1 size_all=64
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 size=124 tail_start=Some(0) tail_n=1 size_all=124
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/75/pack") id=1 off=0 size=124 tail_start=Some(0) tail_n=1 size_all=124
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=93 len=220 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=93 size=220 tail_start=Some(0) tail_n=2 size_all=313
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fd/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bb/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a4/pack") id=1 off=0 len=204 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a4/pack") id=1 off=0 size=204 tail_start=Some(0) tail_n=1 size_all=204
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ad/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ad/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0c/pack") id=1 off=0 len=136 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0c/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/99/pack") id=1 off=0 len=93 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/99/pack") id=1 off=0 size=93 tail_start=Some(0) tail_n=1 size_all=93
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/99/pack") id=1 off=0 size=93 tail_start=Some(0) tail_n=1 size_all=93
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0c/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ad/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a4/pack") id=1 off=0 size=204 tail_start=Some(0) tail_n=1 size_all=204
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=1 size_all=19
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/1e/pack") id=1 off=0 len=16 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/1e/pack") id=1 off=0 size=16 tail_start=Some(0) tail_n=1 size_all=16
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c7/pack") id=1 off=0 size=24 tail_start=Some(0) tail_n=1 size_all=24
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=19 len=203 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=19 size=203 tail_start=Some(0) tail_n=2 size_all=222
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e0/pack") id=1 off=0 len=12 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e0/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/7d/pack") id=1 off=0 len=113 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/7d/pack") id=1 off=0 size=113 tail_start=Some(0) tail_n=1 size_all=113
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/16/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/16/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 len=166 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 len=129 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=0 size=49 tail_start=Some(0) tail_n=2 size_all=148
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ab/pack") id=1 off=0 len=64 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ab/pack") id=1 off=0 size=64 tail_start=Some(0) tail_n=1 size_all=64
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e1/pack") id=1 off=0 size=220 tail_start=Some(0) tail_n=1 size_all=220
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/2e/pack") id=1 off=93 size=220 tail_start=Some(0) tail_n=2 size_all=313
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/58/pack") id=1 off=49 size=99 tail_start=Some(0) tail_n=2 size_all=148
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/7d/pack") id=1 off=0 size=113 tail_start=Some(0) tail_n=1 size_all=113
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bc/pack") id=1 off=0 size=136 tail_start=Some(0) tail_n=1 size_all=136
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fd/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bb/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=3 size=166 tail_start=Some(0) tail_n=2 size_all=169
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bf/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/9a/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/16/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=19 size=203 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/16/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=19 size=203 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/16/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=19 size=203 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c4/pack") id=1 off=0 size=3 tail_start=Some(0) tail_n=1 size_all=3
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=3 size=166 tail_start=Some(0) tail_n=2 size_all=169
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bf/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/9a/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 size=70 tail_start=Some(0) tail_n=1 size_all=70
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 size=70 tail_start=Some(0) tail_n=1 size_all=70
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cc/pack") id=1 off=0 len=42 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cc/pack") id=1 off=0 size=42 tail_start=Some(0) tail_n=1 size_all=42
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5e/pack") id=1 off=0 len=205 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5e/pack") id=1 off=0 size=205 tail_start=Some(0) tail_n=1 size_all=205
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/be/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/be/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ac/pack") id=1 off=0 len=166 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ac/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/04/pack") id=1 off=0 len=159 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/04/pack") id=1 off=0 size=159 tail_start=Some(0) tail_n=1 size_all=159
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/b1/pack") id=1 off=0 size=95 tail_start=Some(0) tail_n=1 size_all=95
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/04/pack") id=1 off=0 size=159 tail_start=Some(0) tail_n=1 size_all=159
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/cc/pack") id=1 off=0 size=42 tail_start=Some(0) tail_n=1 size_all=42
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ac/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/be/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/5e/pack") id=1 off=0 size=205 tail_start=Some(0) tail_n=1 size_all=205
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/4e/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/03/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/e0/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 size=70 tail_start=Some(0) tail_n=1 size_all=70
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/fe/pack") id=1 off=0 size=129 tail_start=Some(0) tail_n=1 size_all=129
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/da/pack") id=1 off=0 len=12 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/da/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/da/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/89/pack") id=1 off=3 size=166 tail_start=Some(0) tail_n=2 size_all=169
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/bf/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/8f/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/9a/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/91/pack") id=1 off=0 size=70 tail_start=Some(0) tail_n=1 size_all=70
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/0e/pack") id=1 off=0 size=12 tail_start=Some(0) tail_n=1 size_all=12
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/a7/pack") id=1 off=0 size=19 tail_start=Some(0) tail_n=2 size_all=222
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ce/pack") id=1 off=0 len=114 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ce/pack") id=1 off=0 size=114 tail_start=Some(0) tail_n=1 size_all=114
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/de/pack") id=1 off=0 len=203 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/de/pack") id=1 off=0 size=203 tail_start=Some(0) tail_n=1 size_all=203
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/05/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/05/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/7f/pack") id=1 off=0 len=141 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/7f/pack") id=1 off=0 size=141 tail_start=Some(0) tail_n=1 size_all=141
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/86/pack") id=1 off=0 len=32 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/86/pack") id=1 off=0 size=32 tail_start=Some(0) tail_n=1 size_all=32
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c5/pack") id=1 off=0 len=166 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/c5/pack") id=1 off=0 size=166 tail_start=Some(0) tail_n=1 size_all=166
+R4STORE path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ef/pack") id=1 off=0 len=159 deferred=true
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ef/pack") id=1 off=0 size=159 tail_start=Some(0) tail_n=1 size_all=159
+R4LOAD path=Some("/home/mwatts/code/github/mwatts/ashlar/.tmp/lore-stage-test-5kB535/.lore/immutable/index/ab/pack") id=1 off=0 size=64 tail_start=Some(0) tail_n=1 size_all=64
+Local store data failed decompression or verification
+Test task failed: JoinError::Panic(Id(1), "Local store data failed decompression or verification", ...)

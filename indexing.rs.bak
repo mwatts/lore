@@ -1,0 +1,633 @@
+//! Q5: reads answer behind while the projection rebuilds
+//! ([plan](../../../docs/design-reads-while-indexing.md)).
+//!
+//! A held generation build (`Faults::hold_builds`) stands in for a long
+//! rebuild. A write publishes its own change in place (up to 2,000 objects),
+//! so the 600 Notes that need the rebuild reach Lore with their publication
+//! refused (`FaultPoint::Incremental`), as a member import's do. While it is held, the Inbox opens from the active generation and
+//! says it is behind, a write answers `Indexing`, and the end of the build
+//! repaints the list current. An unreadable generation answers nothing, and
+//! says so; a backend-3 generation answers everything, current.
+
+use std::collections::BTreeMap;
+use std::path::Path;
+use std::sync::Arc;
+use std::time::{Duration, Instant};
+
+use ashlar_app::{
+    AppError, Archive, ContentCodec, InvalidReason, ListCount, ListKind, ListOpened, ListSource,
+    ListSpec, Replacement,
+};
+use ashlar_cairn::{CairnArchive, CairnLists};
+use ashlar_domain::trash::PurgePlan;
+use ashlar_domain::{
+    BlobRef, BlockKind, BlockMetadata, CompositionDraft, ContentWrite, ExtractionBatch,
+    MutationReadSet, ObjectId, PlaceIntent, RelationMutation, TypeName, Value,
+};
+use ashlar_page::{KitSnapshotCodec, encode_paragraph};
+use cairn_host::Faults;
+use cairn_query::stamp::ProjectionFormat;
+use cairn_testkit::faults::FaultPoint;
+
+/// A read or write that waited for the held rebuild would never answer, so
+/// any bound well short of a hang shows it did not wait. 1 s failed under
+/// the full suite's load on a debug build; each answer prints its time.
+const AT_ONCE: Duration = Duration::from_secs(10);
+
+const OLD: u64 = 300;
+const NEW: u64 = 600;
+
+fn old(n: u64) -> ObjectId {
+    ObjectId(format!("ashlar/note/opaque/a{n:07}"))
+}
+
+fn new(n: u64) -> ObjectId {
+    ObjectId(format!("ashlar/note/opaque/b{n:07}"))
+}
+
+fn inbox() -> ListSpec {
+    ListSpec {
+        kind: ListKind::Inbox,
+        reference: None,
+        text: None,
+        sort: None,
+        filter: None,
+    }
+}
+
+fn note() -> TypeName {
+    TypeName("ashlar.Note".into())
+}
+
+/// The Inbox newest first: the new Notes, then the old, each newest first.
+fn all_notes() -> Vec<ObjectId> {
+    (0..NEW)
+        .rev()
+        .map(new)
+        .chain((0..OLD).rev().map(old))
+        .collect()
+}
+
+fn keys(opened: &ListOpened) -> Vec<ObjectId> {
+    opened
+        .first_window
+        .rows
+        .iter()
+        .map(|row| row.key.clone())
+        .collect()
+}
+
+async fn indexing_ends(archive: &CairnArchive) {
+    let mut watch = archive.indexing_changes().expect("a bound archive");
+    tokio::time::timeout(Duration::from_secs(60), watch.wait_for(|on| !on))
+        .await
+        .expect("the rebuild ends")
+        .expect("the indexer lives");
+}
+
+/// Close and drop `archive`, restamp its active generation as `format`, and
+/// reopen it with its builds held until the reopen's rebuild has started.
+async fn reopened_as(
+    root: &Path,
+    archive: Arc<CairnArchive>,
+    format: ProjectionFormat,
+) -> (Arc<CairnArchive>, Faults) {
+    archive.close().await.unwrap();
+    drop(archive);
+    cairn_host::mark_format(&root.join(".cairn").join("projection"), format).unwrap();
+    let faults = Faults::default();
+    faults.hold_builds();
+    let started = Instant::now();
+    let archive = tokio::time::timeout(
+        Duration::from_secs(5),
+        CairnArchive::open_existing_with_faults(root, faults.clone()),
+    )
+    .await
+    .expect("the open does not wait for the rebuild")
+    .unwrap();
+    eprintln!("open with a held rebuild: {:?}", started.elapsed());
+    tokio::time::timeout(Duration::from_secs(5), faults.build_started())
+        .await
+        .expect("the open starts the rebuild");
+    (Arc::new(archive), faults)
+}
+
+/// Opens the Inbox and walks it to the end: its first window, and every id.
+async fn whole_inbox(lists: &CairnLists) -> (ListOpened, Vec<ObjectId>) {
+    let started = Instant::now();
+    let opened = tokio::time::timeout(AT_ONCE, lists.open(inbox(), None))
+        .await
+        .expect("the Inbox opens without waiting for the held rebuild")
+        .unwrap();
+    eprintln!("Inbox open: {:?}", started.elapsed());
+    lists.settle(&opened.list_id).await.unwrap();
+    let ids = lists
+        .ids(&opened.list_id, opened.generation, 0, 1_000)
+        .await
+        .unwrap();
+    (opened, ids)
+}
+
+/// A new archive at `root` holding `OLD` Notes, settled.
+async fn settled(root: &Path, faults: &Faults) -> Arc<CairnArchive> {
+    // 1. 300 Notes, settled.
+    let archive = Arc::new(
+        CairnArchive::open_new_with_faults(root, faults.clone())
+            .await
+            .unwrap(),
+    );
+    let seed: Vec<_> = (0..OLD).map(|n| (old(n), 1_000_000 + n as i64)).collect();
+    archive
+        .seed_for_scale(&note(), "Old ", &seed)
+        .await
+        .unwrap();
+    assert!(!archive.indexing());
+    archive
+}
+
+/// Start a rebuild of `archive`, held by `faults` until they open builds.
+/// The task is the seed that needed it, and ends with the build.
+async fn held_rebuild(
+    archive: &Arc<CairnArchive>,
+    faults: &Faults,
+) -> tokio::task::JoinHandle<Result<(), AppError>> {
+    // 2. 600 more land in Lore unprojected, as a member import does: their
+    // commit's own publication is refused. At two thirds of the archive the
+    // settle after it rebuilds, held.
+    faults.arm(FaultPoint::Incremental);
+    faults.hold_builds();
+    let seeding = tokio::spawn({
+        let archive = Arc::clone(archive);
+        async move {
+            let seed: Vec<_> = (0..NEW).map(|n| (new(n), 2_000_000 + n as i64)).collect();
+            archive.seed_for_scale(&note(), "New ", &seed).await
+        }
+    });
+    tokio::time::timeout(Duration::from_secs(10), faults.build_started())
+        .await
+        .expect("the seed's settle rebuilds");
+    faults.disarm(FaultPoint::Incremental);
+    seeding
+}
+
+#[tokio::test(flavor = "multi_thread")]
+async fn reads_answer_behind_while_the_projection_rebuilds() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("archive");
+    let faults = Faults::default();
+
+    let archive = settled(&root, &faults).await;
+    let seeding = held_rebuild(&archive, &faults).await;
+
+    // 3. The Inbox answers from the active generation, behind.
+    assert!(archive.indexing());
+    let lists = CairnLists::new(Arc::clone(&archive));
+    let mut invalidated = lists.subscribe();
+    let started = Instant::now();
+    let (opened, ids) = whole_inbox(&lists).await;
+    eprintln!("Inbox open while rebuilding: {:?}", started.elapsed());
+    let first: Vec<_> = (OLD - 200..OLD).rev().map(old).collect();
+    assert_eq!(keys(&opened), first);
+    assert!(opened.behind);
+    assert_eq!(ids, (0..OLD).rev().map(old).collect::<Vec<_>>());
+    let tail = lists
+        .range(&opened.list_id, opened.generation, 200, 400)
+        .await
+        .unwrap();
+    assert_eq!(
+        (tail.window.rows.len(), tail.count, tail.behind),
+        (100, ListCount::Exact(OLD), true)
+    );
+    let write = archive
+        .upsert_meta(
+            ObjectId("ashlar/note/opaque/c0000000".into()),
+            note(),
+            BTreeMap::from([("title".into(), Value::String("During".into()))]),
+            None,
+        )
+        .await;
+    assert_eq!(write, Err(AppError::Indexing));
+
+    // 4. The end of the rebuild repaints the list, current.
+    faults.open_builds();
+    seeding.await.unwrap().unwrap();
+    let event = tokio::time::timeout(Duration::from_secs(10), async {
+        loop {
+            let event = invalidated.recv().await.unwrap();
+            if event.list_id == opened.list_id && event.reason == InvalidReason::Indexed {
+                return event;
+            }
+        }
+    })
+    .await
+    .expect("the list hears the rebuild end");
+    assert!(!archive.indexing());
+    lists.settle(&opened.list_id).await.unwrap();
+    let head = lists
+        .range(&opened.list_id, event.generation, 0, 200)
+        .await
+        .unwrap();
+    assert_eq!(
+        (head.stale, head.count, head.behind),
+        (false, ListCount::Exact(OLD + NEW), false)
+    );
+    assert_eq!(
+        head.window
+            .rows
+            .iter()
+            .map(|row| row.key.clone())
+            .collect::<Vec<_>>(),
+        all_notes()[..200]
+    );
+    let ids = lists
+        .ids(&opened.list_id, event.generation, 0, 1_000)
+        .await
+        .unwrap();
+    assert_eq!(ids, all_notes());
+    drop((lists, invalidated));
+
+    // 5. An unreadable generation answers nothing, and says so.
+    let unreadable = ProjectionFormat {
+        key_codec: ProjectionFormat::CURRENT.key_codec + 1,
+        ..ProjectionFormat::CURRENT
+    };
+    let (archive, faults) = reopened_as(&root, archive, unreadable).await;
+    assert!(archive.indexing());
+    let lists = CairnLists::new(Arc::clone(&archive));
+    let refused = tokio::time::timeout(AT_ONCE, lists.open(inbox(), None))
+        .await
+        .expect("the Inbox answers without waiting for the held rebuild");
+    assert_eq!(refused.err(), Some(AppError::Indexing));
+    faults.open_builds();
+    indexing_ends(&archive).await;
+    let (opened, ids) = whole_inbox(&lists).await;
+    assert_eq!(keys(&opened), all_notes()[..200]);
+    assert!(!opened.behind);
+    assert_eq!(ids, all_notes());
+    drop(lists);
+
+    // 6. A backend-3 generation answers everything, current, while its
+    // replacement builds.
+    let backend_3 = ProjectionFormat {
+        backend: 3,
+        ..ProjectionFormat::CURRENT
+    };
+    let (archive, faults) = reopened_as(&root, archive, backend_3).await;
+    assert!(archive.indexing());
+    let lists = CairnLists::new(Arc::clone(&archive));
+    let (opened, ids) = whole_inbox(&lists).await;
+    assert_eq!(keys(&opened), all_notes()[..200]);
+    assert!(!opened.behind);
+    assert_eq!(ids, all_notes());
+    assert!(archive.indexing());
+    faults.open_builds();
+    indexing_ends(&archive).await;
+}
+
+/// A 0.2.3 archive at `root` (before Trashable, which added `trashed` to
+/// every Record) holding Settings and `notes` inbox Notes, `old(0)` oldest.
+async fn archive_0_2_3(root: &Path, notes: u64) {
+    use cairn_query::QualifiedName;
+    use cairn_query::plan::MutationPlan;
+    use cairn_query::types::FieldValue;
+
+    let compiled = cairn_tessera::CompiledSchema::from_source(
+        "ashlar.tessera",
+        include_str!("../../../schema/history/0.2.3.tessera"),
+    )
+    .unwrap();
+    let mut node = cairn_host::create_replica(
+        root,
+        "ashlar",
+        cairn_repl::NodeConfig::fat("ashlar-local", Default::default()),
+    )
+    .await
+    .unwrap();
+    node.approve_compiled(&compiled, 1).await.unwrap();
+    let enumeration = |type_name: &str, variant: &str| FieldValue::Enum {
+        type_name: type_name.into(),
+        variant: variant.into(),
+    };
+    let settings = BTreeMap::from([
+        ("meta_warn_bytes".into(), FieldValue::Int(64 * 1024)),
+        ("meta_refuse_bytes".into(), FieldValue::Int(256 * 1024)),
+        ("enrich_watcher".into(), FieldValue::Bool(false)),
+        ("open_after_capture".into(), FieldValue::Bool(false)),
+        ("theme".into(), enumeration("ashlar.Theme", "system")),
+        ("mcp_port".into(), FieldValue::Int(4734)),
+        ("idle_save_ms".into(), FieldValue::Int(2000)),
+    ]);
+    node.apply_plan(MutationPlan::UpsertEntity {
+        create: true,
+        type_name: QualifiedName::new("ashlar", "Settings"),
+        id: cairn_query::parse_object_id(ashlar_domain::settings_id().as_str()).unwrap(),
+        fields: settings,
+    })
+    .await
+    .unwrap();
+    let ids: Vec<u64> = (0..notes).collect();
+    for chunk in ids.chunks(1_000) {
+        let ops = chunk
+            .iter()
+            .map(|&n| MutationPlan::UpsertEntity {
+                create: true,
+                type_name: QualifiedName::new("ashlar", "Note"),
+                id: cairn_query::parse_object_id(old(n).as_str()).unwrap(),
+                fields: BTreeMap::from([
+                    ("title".into(), FieldValue::String(format!("Note {n}"))),
+                    ("state".into(), enumeration("ashlar.State", "inbox")),
+                    (
+                        "created".into(),
+                        FieldValue::Timestamp(1_000_000 + n as i64),
+                    ),
+                    (
+                        "updated".into(),
+                        FieldValue::Timestamp(1_000_000 + n as i64),
+                    ),
+                    ("enrich".into(), FieldValue::Bool(false)),
+                    (
+                        "enrich_status".into(),
+                        enumeration("ashlar.EnrichStatus", "idle"),
+                    ),
+                    ("is_template".into(), FieldValue::Bool(false)),
+                ]),
+            })
+            .collect();
+        node.apply_plan(MutationPlan::Bulk { ops }).await.unwrap();
+        node.catch_up().await.unwrap();
+    }
+}
+
+/// More Notes than one publication reshapes in place (2,000), so the
+/// upgrade's reshape rebuilds the generation.
+const UPGRADED: u64 = 2_100;
+
+/// An open that upgrades a 0.2.3 archive returns while the rebuild its new
+/// schema needs runs, held. Every Note already carries the `trashed`
+/// default the upgrade filled. Queries bound to the new schema (the Inbox
+/// among them, which filters on `trashed`) say they wait on indexing; the
+/// type listing, bound to none, answers from the old generation. Released,
+/// the rebuild brings every list current.
+#[tokio::test(flavor = "multi_thread")]
+async fn an_upgrade_open_answers_while_its_rebuild_runs() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("archive");
+    archive_0_2_3(&root, UPGRADED).await;
+    let newest_first: Vec<ObjectId> = (0..UPGRADED).rev().map(old).collect();
+
+    let faults = Faults::default();
+    faults.hold_builds();
+    let started = Instant::now();
+    let archive = tokio::time::timeout(
+        Duration::from_secs(5),
+        CairnArchive::open_existing_with_faults(&root, faults.clone()),
+    )
+    .await
+    .expect("the upgrade open does not wait for the rebuild")
+    .unwrap();
+    eprintln!("upgrade open with a held rebuild: {:?}", started.elapsed());
+    let archive = Arc::new(archive);
+    tokio::time::timeout(Duration::from_secs(5), faults.build_started())
+        .await
+        .expect("the open starts the rebuild");
+    assert!(archive.indexing());
+
+    let lists = CairnLists::new(Arc::clone(&archive));
+    let refused = tokio::time::timeout(AT_ONCE, lists.open(inbox(), None))
+        .await
+        .expect("the Inbox answers without waiting for the held rebuild");
+    assert_eq!(refused.err(), Some(AppError::Indexing));
+    let first_500 = BTreeMap::from([("first".to_string(), tessera::Value::Int(500))]);
+    assert_eq!(
+        archive
+            .run_saved_projection("inbox", &first_500)
+            .await
+            .err(),
+        Some(AppError::Indexing)
+    );
+    let mut listed: Vec<ObjectId> = archive
+        .list_notes_by_title("")
+        .await
+        .unwrap()
+        .rows
+        .into_iter()
+        .map(|row| row.id)
+        .collect();
+    listed.sort();
+    assert_eq!(listed, (0..UPGRADED).map(old).collect::<Vec<_>>());
+    for n in 0..UPGRADED {
+        let doc = archive.get_meta(&old(n)).await.unwrap();
+        assert_eq!(
+            (doc.fields.get("title"), doc.fields.get("trashed")),
+            (
+                Some(&Value::String(format!("Note {n}"))),
+                Some(&Value::Bool(false))
+            ),
+            "{n}"
+        );
+    }
+    assert!(archive.indexing());
+
+    faults.open_builds();
+    indexing_ends(&archive).await;
+    let opened = tokio::time::timeout(AT_ONCE, lists.open(inbox(), None))
+        .await
+        .expect("the Inbox opens without waiting for the held rebuild")
+        .unwrap();
+    assert_eq!(keys(&opened), newest_first[..200]);
+    assert!(!opened.behind);
+    lists.settle(&opened.list_id).await.unwrap();
+    let ids = lists
+        .ids(&opened.list_id, opened.generation, 0, UPGRADED)
+        .await
+        .unwrap();
+    assert_eq!(ids, newest_first);
+    let page = archive
+        .run_saved_projection("inbox", &first_500)
+        .await
+        .unwrap();
+    assert_eq!(page.rows.len(), 500);
+}
+
+/// Step 0 of the plan: how much an open that upgrades the schema rebuilds.
+/// A 0.2.3 archive (before Trashable, which added a field to every Record)
+/// with `Q5_NOTES` Notes (default 3,000) opens with this build; it prints the
+/// generation builds the open started and how long it took.
+#[tokio::test(flavor = "multi_thread")]
+#[ignore = "probe: Q5 step 0, run on request with Q5_NOTES"]
+async fn q5_upgrade_probe() {
+    let notes: u64 = std::env::var("Q5_NOTES")
+        .ok()
+        .and_then(|n| n.parse().ok())
+        .unwrap_or(3_000);
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("archive");
+    let started = Instant::now();
+    archive_0_2_3(&root, notes).await;
+    eprintln!("q5: seeded {notes} 0.2.3 Notes in {:?}", started.elapsed());
+
+    let faults = Faults::default();
+    let started = Instant::now();
+    let archive = CairnArchive::open_existing_with_faults(&root, faults.clone())
+        .await
+        .unwrap();
+    eprintln!(
+        "q5: upgrade open of {notes} Notes: {:?}, {} generation builds, indexing after: {}",
+        started.elapsed(),
+        faults.builds(),
+        archive.indexing()
+    );
+}
+
+fn body_child(id: &str, parent: &ObjectId, child: &ObjectId) -> RelationMutation {
+    RelationMutation {
+        id: ObjectId(format!("ashlar/child/opaque/{id}")),
+        type_name: TypeName("ashlar.Child".into()),
+        fields: BTreeMap::from([
+            ("parent".into(), Value::String(parent.as_str().into())),
+            ("child".into(), Value::String(child.as_str().into())),
+            ("slot".into(), Value::String("body".into())),
+        ]),
+        tombstone: false,
+    }
+}
+
+/// A draft that appends `block`, reading `text`, to `page`'s body.
+fn appending(page: &ObjectId, child: &str, block: &ObjectId, text: &str) -> CommitArgs {
+    let bytes = encode_paragraph(block, text);
+    let extract = KitSnapshotCodec.extract(block, &bytes).unwrap();
+    let relation = body_child(child, page, block);
+    let draft = CompositionDraft {
+        root: page.clone(),
+        read_set: MutationReadSet::default(),
+        content: BTreeMap::new(),
+        placements: vec![(
+            relation.id.clone(),
+            PlaceIntent::Append {
+                parent: page.clone(),
+                slot: "body".into(),
+            },
+        )],
+        relations: vec![relation],
+        new_images: BTreeMap::new(),
+    };
+    let content = ContentWrite {
+        id: block.clone(),
+        body_hash: BlobRef {
+            hash_hex: blake3::hash(&bytes).to_hex().to_string(),
+        },
+        bytes,
+        block: BlockMetadata {
+            kind: BlockKind::Paragraph,
+            language: None,
+        },
+    };
+    (draft, vec![content], vec![extract])
+}
+
+type CommitArgs = (CompositionDraft, Vec<ContentWrite>, Vec<ExtractionBatch>);
+
+/// A write plans through reads of the current projection. Behind a held
+/// rebuild those would wait for it with the writer held, and every write and
+/// search would queue behind them: each write answers `Indexing` at once
+/// instead, and a search answers from the active generation.
+#[tokio::test(flavor = "multi_thread")]
+async fn writes_answer_indexing_at_once_while_the_projection_rebuilds() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("archive");
+    let faults = Faults::default();
+    let archive = settled(&root, &faults).await;
+    let page = old(0);
+    let block = ObjectId("ashlar/block/opaque/alpha".into());
+    let (draft, contents, extracts) = appending(&page, "alpha", &block, "alpha stone");
+    archive
+        .commit_composition(draft, contents, extracts, None)
+        .await
+        .unwrap();
+    let child = ObjectId("ashlar/child/opaque/alpha".into());
+    let seeding = held_rebuild(&archive, &faults).await;
+    assert!(archive.indexing());
+
+    let beta = ObjectId("ashlar/block/opaque/beta".into());
+    let (draft, contents, extracts) = appending(&page, "beta", &beta, "beta stone");
+    let edit = tokio::time::timeout(
+        AT_ONCE,
+        archive.commit_composition(draft, contents, extracts, None),
+    )
+    .await
+    .expect("a composition edit answers without waiting for the held rebuild");
+    assert_eq!(edit.err(), Some(AppError::Indexing));
+    let replace = tokio::time::timeout(
+        AT_ONCE,
+        archive.commit_replacement(Replacement {
+            check: Vec::new(),
+            revise: Vec::new(),
+            create: None,
+            unlink: vec![(TypeName("ashlar.Child".into()), child.clone())],
+            children: Vec::new(),
+            links: Vec::new(),
+            outlive_deletes: false,
+        }),
+    )
+    .await
+    .expect("a replacement answers without waiting for the held rebuild");
+    assert_eq!(replace.err(), Some(AppError::Indexing));
+    let trash = tokio::time::timeout(
+        AT_ONCE,
+        archive.set_trashed(
+            std::slice::from_ref(&page),
+            Some(1_790_000_000),
+            &MutationReadSet::default(),
+        ),
+    )
+    .await
+    .expect("a trash answers without waiting for the held rebuild");
+    assert_eq!(trash.err(), Some(AppError::Indexing));
+    let purge = tokio::time::timeout(
+        AT_ONCE,
+        archive.commit_purge(&PurgePlan {
+            objects: vec![page.clone(), block.clone()],
+            relations: vec![child],
+            read_set: MutationReadSet::default(),
+        }),
+    )
+    .await
+    .expect("a purge answers without waiting for the held rebuild");
+    assert_eq!(purge.err(), Some(AppError::Indexing));
+    let hits = tokio::time::timeout(AT_ONCE, archive.search_ids("alpha", None, 10))
+        .await
+        .expect("a search answers without waiting for the held rebuild")
+        .unwrap();
+    assert_eq!(hits.ids, vec![block]);
+
+    faults.open_builds();
+    seeding.await.unwrap().unwrap();
+    assert!(!archive.indexing());
+}
+
+/// Why: a host that lets go of the archive mid-rebuild lets go of its lock,
+/// as a quit would. Before, the rebuild settling in the background kept the
+/// archive, so a reopen in the same process answered "open in another
+/// process" until the rebuild ended, and a held one never ends.
+#[tokio::test(flavor = "multi_thread")]
+async fn a_dropped_archive_lets_go_of_its_lock_while_its_rebuild_runs() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("archive");
+    let faults = Faults::default();
+    let archive = settled(&root, &faults).await;
+    // The open hands the rebuild to the background indexer, held: only
+    // the archive's own handle could stop it.
+    let unreadable = ProjectionFormat {
+        key_codec: ProjectionFormat::CURRENT.key_codec + 1,
+        ..ProjectionFormat::CURRENT
+    };
+    let (archive, _held) = reopened_as(&root, archive, unreadable).await;
+    assert!(archive.indexing());
+
+    drop(archive);
+    let reopened = tokio::time::timeout(AT_ONCE, CairnArchive::open_existing(&root))
+        .await
+        .expect("the reopen answers without waiting for the held rebuild")
+        .expect("the reopen takes the lock");
+    drop(reopened);
+}

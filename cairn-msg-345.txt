@@ -1,0 +1,35 @@
+cairn-lore: Commit a batch from memory, with no marker and no checkout
+
+`commit_changes_in` wrote each file into the working tree, staged them
+with `file::stage`, and committed with `revision::commit`. Two calls
+meant a pending-batch marker, written and synced before and removed
+after, so a crash between them could be unstaged. Staging from the
+working tree also wrote the `meta/` checkout and made Lore stamp its
+clock probe.
+
+It now commits with Lore's `revision::commit_contents` (Lore fork,
+`lore-revision: Commit in-memory contents without a staged state`):
+one call, so nothing is staged between calls, there is no marker to
+write, and no working-tree file is written. An interrupted save leaves
+the tip where it was. A checkout file at a path the batch writes or
+removes is deleted first, so a checkout never disagrees with the tip,
+and every read falls back to the store. `commit_file_from`, which
+streams a large file from disk, keeps the staging path and its marker.
+
+Content residency no longer takes a tip leaf on trust when there is no
+checkout to hash: the leaf counts when its Lore hash is the cited hash
+(a one-fragment file), or when its committed bytes hash to it.
+
+The session is opened before the commit, so the root's Lore stores stay
+open from one call to the next.
+
+Tests that read or removed the working-tree checkout now check that
+none is written and read through the store; the two batch-failure tests
+fail the batch with a file at the tip where it needs a directory. A new
+crash test kills a writer mid-save across all three write paths and
+checks that the root reopens at a committed revision with every logged
+revision whole.
+
+R4 (Ashlar docs/design-seeding-footprint.md), Step 0 changes 3 to 5.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

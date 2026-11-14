@@ -1,0 +1,22 @@
+lore-revision: Commit in-memory contents without a staged state
+
+A caller that already holds a file's bytes committed them through the
+working tree: write the file, `file::stage` it, then `revision::commit`.
+The stage serializes a whole staged state and its anchor only for the
+commit to replace them, which for a one-file save is about half of the
+fragments a revision writes and keeps.
+
+`revision::commit_contents` loads the current revision, applies writes
+and removals to it in memory, and publishes the result as one revision,
+moving the branch tip by compare-and-swap and the current anchor after
+it, as a working-tree commit does. Nothing is staged between calls and
+the working tree is neither read nor written. Unchanged contents commit
+nothing, a write under a file fails with nothing published, and an
+instance with a staged state is refused.
+
+`commit_in_memory_revision_with` takes an `InMemoryCommitRecovery`. The
+default keeps the pre-freeze snapshot; `Discard` skips it for a caller
+that rebuilds its state on failure, as `commit_contents` does.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
